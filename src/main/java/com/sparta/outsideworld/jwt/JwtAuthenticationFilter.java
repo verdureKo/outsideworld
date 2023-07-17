@@ -1,6 +1,10 @@
 package com.sparta.outsideworld.jwt;
 
+import java.io.IOException;
+
 import com.fasterxml.jackson.databind.ObjectMapper;
+import com.sparta.outsideworld.dto.UserRequestDto;
+import com.sparta.outsideworld.entity.UserRoleEnum;
 import com.sparta.outsideworld.security.UserDetailsImpl;
 import jakarta.servlet.FilterChain;
 import jakarta.servlet.http.HttpServletRequest;
@@ -24,7 +28,7 @@ public class JwtAuthenticationFilter extends UsernamePasswordAuthenticationFilte
     @Override
     public Authentication attemptAuthentication(HttpServletRequest request, HttpServletResponse response) throws AuthenticationException {
         try {
-            LoginRequestDto requestDto = new ObjectMapper().readValue(request.getInputStream(), LoginRequestDto.class);
+            UserRequestDto requestDto = new ObjectMapper().readValue(request.getInputStream(), UserRequestDto.class);
 
             return getAuthenticationManager().authenticate(
                     new UsernamePasswordAuthenticationToken(requestDto.getUsername(), requestDto.getPassword(),null)

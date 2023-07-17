@@ -1,6 +1,8 @@
 package com.sparta.outsideworld.security;
 
 import com.sparta.outsideworld.entity.User;
+import com.sparta.outsideworld.entity.UserRoleEnum;
+
 import lombok.Getter;
 import lombok.RequiredArgsConstructor;
 import org.springframework.security.core.GrantedAuthority;

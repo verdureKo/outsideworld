@@ -3,9 +3,12 @@ package com.sparta.outsideworld.entity;
 import jakarta.persistence.Column;
 import jakarta.persistence.EntityListeners;
 import jakarta.persistence.MappedSuperclass;
+import jakarta.persistence.Temporal;
+import jakarta.persistence.TemporalType;
 import lombok.Getter;
 import org.hibernate.annotations.CreationTimestamp;
 import org.hibernate.annotations.UpdateTimestamp;
+import org.springframework.data.annotation.CreatedDate;
 import org.springframework.data.jpa.domain.support.AuditingEntityListener;
 
 import java.time.LocalDateTime;
@@ -14,11 +17,13 @@ import java.time.LocalDateTime;
 @EntityListeners(AuditingEntityListener.class)
 @Getter
 public class TimeStamped {
-    @CreationTimestamp
+    @CreatedDate
     @Column(updatable = false)
-    private LocalDateTime createdTime;
+    @Temporal(TemporalType.TIMESTAMP)
+    private LocalDateTime createdAt;
 
-    @UpdateTimestamp
+    @CreatedDate
     @Column(insertable = false)
-    private LocalDateTime updatedTime;
+    @Temporal(TemporalType.TIMESTAMP)
+    private LocalDateTime updatedAt;
 }
