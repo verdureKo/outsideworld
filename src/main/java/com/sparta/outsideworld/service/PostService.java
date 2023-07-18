@@ -5,6 +5,8 @@ import com.sparta.outsideworld.dto.ApiResponseDto;
 import com.sparta.outsideworld.dto.PostRequestDto;
 import com.sparta.outsideworld.dto.PostResponseDto;
 import com.sparta.outsideworld.entity.Post;
+import com.sparta.outsideworld.entity.User;
+import com.sparta.outsideworld.entity.UserRoleEnum;
 import com.sparta.outsideworld.jwt.JwtUtil;
 import com.sparta.outsideworld.repository.PostRepository;
 import com.sparta.outsideworld.security.UserDetailsImpl;
@@ -77,7 +79,7 @@ public class PostService {
 
     // 게시글 삭제 API
     @Transactional
-    public ApiResponseDto deletePost(Long id, UserDetailsImpl userDetails) {
+    public ApiResponseDto deletePost(Long id, User user) {
         Post post = postRepository.findById(id).orElseThrow(
                 () -> new NullPointerException("선택하신 게시물은 존재하지 않습니다.")
         );
