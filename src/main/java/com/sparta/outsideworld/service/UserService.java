@@ -1,18 +1,77 @@
 package com.sparta.outsideworld.service;
 
+import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
+import org.springframework.security.crypto.password.PasswordEncoder;
+import org.springframework.stereotype.Service;
+
 import com.sparta.outsideworld.dto.PasswordRequestDto;
 import com.sparta.outsideworld.dto.ProfileRequestDto;
 import com.sparta.outsideworld.dto.ProfileResponseDto;
+import com.sparta.outsideworld.dto.UserRequestDto;
 import com.sparta.outsideworld.entity.User;
-import jakarta.transaction.Transactional;
-import lombok.extern.slf4j.Slf4j;
-import org.springframework.http.HttpStatus;
-import org.springframework.http.ResponseEntity;
-import org.springframework.stereotype.Service;
+import com.sparta.outsideworld.entity.UserRoleEnum;
+import com.sparta.outsideworld.repository.UserRepository;
+import com.sparta.outsideworld.security.UserDetailsImpl;
 
-@Slf4j
+import jakarta.transaction.Transactional;
+import lombok.RequiredArgsConstructor;
+import lombok.extern.slf4j.Slf4j;
+
 @Service
+@Slf4j
+@RequiredArgsConstructor
 public class UserService {
+
+    private final UserRepository userRepository;
+    private final PasswordEncoder passwordEncoder;
+
+    // signup
+    // ADMIN_TOKEN -- 일반 사용자와 관리자 권한 사용자 구분
+    private final String ADMIN_TOKEN = "AAABnvxRVklrnYxKZ0aHgTBcXukeZygoC";
+
+    @Transactional
+    public void signup(UserRequestDto userRequestDto){
+        String username = userRequestDto.getUsername();
+        String password = passwordEncoder.encode(userRequestDto.getPassword());
+        String introduction = userRequestDto.getIntroduction();
+        String email = userRequestDto.getEmail();
+
+        // 가입된 정보와 신규 회원 중복 확인
+        if (userRepository.findByUsername(username).isPresent()) {
+            throw new IllegalArgumentException("이미 존재하는 Username 입니다.");
+        } else if (userRepository.findByEmail(email).isPresent()) {
+            throw new IllegalArgumentException("이미 존재하는 email 입니다.");
+        }
+
+        // 사용자 ROLE 확인
+        UserRoleEnum role = UserRoleEnum.USER;
+        if (userRequestDto.isAdmin()) {
+            if (!ADMIN_TOKEN.equals(userRequestDto.getAdminToken())) {
+                throw new IllegalArgumentException("관리자 암호가 틀려 등록이 불가능합니다.");
+            }
+            role = UserRoleEnum.ADMIN;
+        }
+
+        // 사용자 정보 DB 에 저장
+        User user = new User(username, password, email, introduction, role);
+        userRepository.save(user);
+    }
+
+    @Transactional
+    public void login(UserRequestDto loginRequestDto){
+        String username = loginRequestDto.getUsername();
+        String password = loginRequestDto.getPassword();
+
+        User user = userRepository.findByUsername(username).orElseThrow(
+            () -> new IllegalArgumentException("등록된 사용자가 없습니다"));
+
+        if(!passwordEncoder.matches(password,user.getPassword())){
+            throw new IllegalArgumentException("비밀번호가 일치하지 않습니다.");
+        }
+
+    }
+
     public ProfileResponseDto getMyPage(User user) {
         return new ProfileResponseDto(user);
     }
@@ -29,7 +88,7 @@ public class UserService {
     }
 
     @Transactional
-    public ResponseEntity<String> updatePassword(UserDetailsImpl userDetails, PasswordRequestDto passwordRequestDto) {
+    public ResponseEntity <String> updatePassword(UserDetailsImpl userDetails, PasswordRequestDto passwordRequestDto) {
         User user = userDetails.getUser();
         String password = passwordEncoder.encode(passwordRequestDto.getPassword());
         if (password.equals(user.getPassword())) {
@@ -42,7 +101,7 @@ public class UserService {
     }
 
     // 비밀번호 확인
-    public ResponseEntity<String> confirmPassword(UserDetailsImpl userDetails, PasswordRequestDto passwordRequestDto) {
+    public ResponseEntity <String> confirmPassword(UserDetailsImpl userDetails, PasswordRequestDto passwordRequestDto) {
         log.info(userDetails.getPassword());
         log.info(passwordRequestDto.getPassword());
 

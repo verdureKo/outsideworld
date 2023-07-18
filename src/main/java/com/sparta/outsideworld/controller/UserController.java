@@ -13,6 +13,7 @@ import com.sparta.outsideworld.jwt.JwtUtil;
 import com.sparta.outsideworld.service.UserService;
 
 import jakarta.servlet.http.HttpServletResponse;
+import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 
 @RequestMapping("/api")
@@ -24,7 +25,7 @@ public class UserController {
 	private final JwtUtil jwtUtil;
 
 	@PostMapping("/user/signup")
-	public ResponseEntity <ApiResponseDto> signup (@RequestBody UserRequestDto userRequestDto){
+	public ResponseEntity <ApiResponseDto> signup (@Valid @RequestBody UserRequestDto userRequestDto){
 		try {
 			userService.signup(userRequestDto);
 		} catch (IllegalArgumentException e) {
@@ -37,7 +38,7 @@ public class UserController {
 	public ResponseEntity <ApiResponseDto> login (@RequestBody UserRequestDto loginRequestDto, HttpServletResponse response) {
 		try {
 			userService.login(loginRequestDto);
-			// response.addHeader(JwtUtil.AUTHORIZATION_HEADER, jwtUtil.createToken(loginRequestDto.getUsername(), loginRequestDto);
+			response.addHeader(JwtUtil.AUTHORIZATION_HEADER, jwtUtil.createToken(loginRequestDto.getUsername(),loginRequestDto.getRole()));
 		} catch (IllegalArgumentException e) {
 			return ResponseEntity.badRequest().body(new ApiResponseDto(e.getMessage(), HttpStatus.BAD_REQUEST.value()));
 		}
