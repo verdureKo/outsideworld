@@ -27,8 +27,8 @@ public class CommentService {
     private final MessageSource messageSource;
 
     @Transactional
-    public CommentResponseDto addComment(Long boardId, CommentRequestDto requestDto, User user) {
-        Post post = postRepository.findById(boardId).orElseThrow(
+    public CommentResponseDto addComment(Long postId, CommentRequestDto requestDto, User user) {
+        Post post = postRepository.findById(postId).orElseThrow(
                 () -> new NullPointerException(messageSource.getMessage(
                         "not.exist.post",
                         null,

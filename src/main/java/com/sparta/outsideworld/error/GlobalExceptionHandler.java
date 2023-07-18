@@ -1,5 +1,6 @@
 package com.sparta.outsideworld.error;
 
+import com.sparta.outsideworld.dto.ApiResponseDto;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.ExceptionHandler;
@@ -9,22 +10,22 @@ import org.springframework.web.bind.annotation.RestControllerAdvice;
 
 public class GlobalExceptionHandler {
     @ExceptionHandler({IllegalArgumentException.class})
-    public ResponseEntity<Message> illegalArgumentExceptionHandler(IllegalArgumentException ex) {
-        Message message = new Message(ex.getMessage(), HttpStatus.BAD_REQUEST.value());
+    public ResponseEntity<ApiResponseDto> illegalArgumentExceptionHandler(IllegalArgumentException ex) {
+        ApiResponseDto apiResponseDto = new ApiResponseDto(ex.getMessage(), HttpStatus.BAD_REQUEST.value());
         return new ResponseEntity<>(
                 // HTTP body
-                message,
+                apiResponseDto,
                 // HTTP error code
                 HttpStatus.BAD_REQUEST
         );
     }
 
     @ExceptionHandler({NullPointerException.class})
-    public ResponseEntity<Message> NullPointerExceptionHandler(IllegalArgumentException ex) {
-        Message message = new Message(ex.getMessage(), HttpStatus.BAD_REQUEST.value());
+    public ResponseEntity<ApiResponseDto> NullPointerExceptionHandler(IllegalArgumentException ex) {
+        ApiResponseDto apiResponseDto = new ApiResponseDto(ex.getMessage(), HttpStatus.BAD_REQUEST.value());
         return new ResponseEntity<>(
                 // HTTP body
-                message,
+                apiResponseDto,
                 // HTTP error code
                 HttpStatus.BAD_REQUEST
         );
