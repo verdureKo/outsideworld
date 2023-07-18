@@ -4,6 +4,7 @@ import com.sparta.outsideworld.entity.Post;
 import lombok.Getter;
 
 import java.time.LocalDateTime;
+import java.util.List;
 import java.util.stream.Collectors;
 
 @Getter
@@ -15,7 +16,7 @@ public class PostResponseDto {
     private Integer likeCount; // 좋아요 수
     private LocalDateTime createAt; // 게시글 생성시간
     private LocalDateTime modifiedAt; // 게시글 수정시간
-    // private List<CommentResponseDto> commentList; // 게시글에 포함된 댓글목록
+    private List<CommentResponseDto> commentList; // 게시글에 포함된 댓글목록
 
 
     public PostResponseDto(Post post){
@@ -26,9 +27,9 @@ public class PostResponseDto {
         this.likeCount = post.getLikeList().size();
         this.createAt = post.getCreatedTime();
         this.modifiedAt = post.getCreatedTime();
-        // 댓글목록
-        // this.commentList = post.getCommentList().stream()
-        //        .map(CommentResponseDto::new).collect(Collectors.toList());
+    // 댓글목록
+         this.commentList = post.getCommentList().stream()
+                .map(CommentResponseDto::new).collect(Collectors.toList());
     }
 
 }
