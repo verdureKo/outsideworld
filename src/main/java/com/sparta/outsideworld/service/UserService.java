@@ -88,10 +88,12 @@ public class UserService {
     @Transactional
     public ResponseEntity <String> updatePassword(UserDetailsImpl userDetails, PasswordRequestDto passwordRequestDto) {
         User user = userDetails.getUser();
-        String password = passwordEncoder.encode(passwordRequestDto.getPassword());
-        if (password.equals(user.getPassword())) {
+        if (passwordEncoder.matches(passwordRequestDto.getPassword(), userDetails.getPassword()) || passwordEncoder.matches(passwordRequestDto.getPassword(), user.getOldPassword1()) || passwordEncoder.matches(passwordRequestDto.getPassword(), user.getOldPassword2())) {
             return ResponseEntity.status(HttpStatus.BAD_REQUEST).body("최근 3회 이내로 사용했던 비밀번호입니다.");
         } else {
+            String password = passwordEncoder.encode(passwordRequestDto.getPassword());
+            user.setOldPassword2(user.getOldPassword1());
+            user.setOldPassword1(userDetails.getPassword());
             user.setPassword(password);
             userRepository.save(user);
             return ResponseEntity.ok().body("Success");

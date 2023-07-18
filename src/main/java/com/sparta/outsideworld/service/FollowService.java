@@ -18,7 +18,6 @@ import java.util.List;
 import java.util.stream.Collectors;
 
 @Service
-@Slf4j
 @RequiredArgsConstructor
 public class FollowService {
 
@@ -67,14 +66,17 @@ public class FollowService {
     }
 
     // 팔로우 한 유저의 전체게시글 조회 API
-    @Transactional(readOnly = true)
+    @Transactional
     public List<PostResponseDto> getFollowPosts(Long followerId) {
-        List<Follow> followList = followRepository.findByFollower(followerId);
+        List<Follow> followList = followRepository.findByFollowerId(followerId);
+        if(followList.isEmpty()){
+            throw new IllegalArgumentException("팔로우 하는 사용자가 존재하지 않습니다.");
+        }
         List<User> followingUser = followList.stream().map(Follow::getFollowing).collect(Collectors.toList());
         List<PostResponseDto> followUserPost = new ArrayList<>();
 
         for(User user : followingUser){
-            List<PostResponseDto> posts = postRepository.findAllByOrderByCreatedAtDesc(user)
+            List<PostResponseDto> posts = postRepository.findAllByUserOrderByCreatedAtDesc(user)
                     .stream().map(PostResponseDto::new).collect(Collectors.toList());
                     followUserPost.addAll(posts);
         }
