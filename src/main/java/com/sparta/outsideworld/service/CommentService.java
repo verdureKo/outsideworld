@@ -90,5 +90,4 @@ public class CommentService {
         UserRoleEnum userRoleEnum = user.getRole();
         return userRoleEnum != UserRoleEnum.USER || Objects.equals(comment.getUser().getId(), user.getId());
     }
-
 }
