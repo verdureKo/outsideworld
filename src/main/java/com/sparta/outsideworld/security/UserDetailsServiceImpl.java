@@ -1,6 +1,8 @@
 package com.sparta.outsideworld.security;
 
 import com.sparta.outsideworld.entity.User;
+import com.sparta.outsideworld.repository.UserRepository;
+
 import lombok.RequiredArgsConstructor;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.core.userdetails.UserDetailsService;
