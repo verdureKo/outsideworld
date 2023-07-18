@@ -37,4 +37,6 @@ public class Like {
         this.post = comment.getPost();
         this.comment = comment;
     }
+
+
 }

@@ -37,14 +37,6 @@ public class WebSecurityConfig {
         return configuration.getAuthenticationManager();
     }
 
-    // 인증 처리
-//    @Bean
-//    public JwtAuthenticationFilter jwtAuthenticationFilter() throws Exception {
-//        JwtAuthenticationFilter filter = new JwtAuthenticationFilter(jwtUtil);
-//        filter.setAuthenticationManager(authenticationManager(authenticationConfiguration));
-//        return filter;
-//    }
-
     // 인가 처리
     @Bean
     public JwtAuthorizationFilter jwtAuthorizationFilter() {
@@ -71,8 +63,6 @@ public class WebSecurityConfig {
 
         // 필터 관리
         http.addFilterBefore(jwtAuthorizationFilter(), UsernamePasswordAuthenticationFilter.class);
-//        http.addFilterBefore(jwtAuthorizationFilter(), JwtAuthenticationFilter.class);
-//        http.addFilterBefore(jwtAuthenticationFilter(), UsernamePasswordAuthenticationFilter.class);
 
         return http.build();
     }

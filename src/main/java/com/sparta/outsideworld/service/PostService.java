@@ -7,9 +7,7 @@ import com.sparta.outsideworld.dto.PostResponseDto;
 import com.sparta.outsideworld.entity.Post;
 import com.sparta.outsideworld.entity.User;
 import com.sparta.outsideworld.entity.UserRoleEnum;
-import com.sparta.outsideworld.jwt.JwtUtil;
 import com.sparta.outsideworld.repository.PostRepository;
-import com.sparta.outsideworld.security.UserDetailsImpl;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -27,7 +25,7 @@ public class PostService {
     // 게시글 전체 조회 API
     @Transactional(readOnly = true)
     public List<PostResponseDto> getPosts() {
-        List<Post> posts = postRepository.findAllByOrderByCreateAtDesc();
+        List<Post> posts = postRepository.findAllByOrderByCreatedAtDesc();
         List<PostResponseDto> postResponseDto = new ArrayList<>();
 
         for(Post post : posts){

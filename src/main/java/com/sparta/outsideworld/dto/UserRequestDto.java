@@ -24,6 +24,7 @@ public class UserRequestDto {
 	private String password;
 	@NotBlank(message = "필수 입력 값입니다.")
 	private String introduction;
+
 	private UserRoleEnum role;
 
 	// 관리자 권한 로그인

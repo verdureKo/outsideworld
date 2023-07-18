@@ -25,9 +25,8 @@ public class Post extends TimeStamped{
     @Column(length = 500)
     private String contents;
 
-//    @Column
-//    private Long likeCount;
-
+    @Column
+    private Long likeCount;
 
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "user_id", nullable = false)
@@ -52,5 +51,7 @@ public class Post extends TimeStamped{
         this.contents = postRequestDto.getContents();
     }
 
-
+    public void setLikeCount(Long likeCount) {
+        this.likeCount = likeCount;
+    }
 }

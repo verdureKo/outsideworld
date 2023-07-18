@@ -1,10 +1,5 @@
 package com.sparta.outsideworld.service;
 
-import org.springframework.http.HttpStatus;
-import org.springframework.http.ResponseEntity;
-import org.springframework.security.crypto.password.PasswordEncoder;
-import org.springframework.stereotype.Service;
-
 import com.sparta.outsideworld.dto.PasswordRequestDto;
 import com.sparta.outsideworld.dto.ProfileRequestDto;
 import com.sparta.outsideworld.dto.ProfileResponseDto;
@@ -13,10 +8,13 @@ import com.sparta.outsideworld.entity.User;
 import com.sparta.outsideworld.entity.UserRoleEnum;
 import com.sparta.outsideworld.repository.UserRepository;
 import com.sparta.outsideworld.security.UserDetailsImpl;
-
 import jakarta.transaction.Transactional;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
+import org.springframework.security.crypto.password.PasswordEncoder;
+import org.springframework.stereotype.Service;
 
 @Service
 @Slf4j
@@ -66,7 +64,7 @@ public class UserService {
         User user = userRepository.findByUsername(username).orElseThrow(
             () -> new IllegalArgumentException("등록된 사용자가 없습니다"));
 
-        if(!passwordEncoder.matches(password,user.getPassword())){
+        if(!passwordEncoder.matches(password, user.getPassword())){
             throw new IllegalArgumentException("비밀번호가 일치하지 않습니다.");
         }
 

@@ -1,6 +1,7 @@
 package com.sparta.outsideworld.controller;
 
 import com.sparta.outsideworld.dto.ProfileResponseDto;
+import com.sparta.outsideworld.security.UserDetailsImpl;
 import com.sparta.outsideworld.service.UserService;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;

@@ -2,6 +2,7 @@ package com.sparta.outsideworld.controller;
 
 import com.sparta.outsideworld.dto.PasswordRequestDto;
 import com.sparta.outsideworld.dto.ProfileRequestDto;
+import com.sparta.outsideworld.security.UserDetailsImpl;
 import com.sparta.outsideworld.service.UserService;
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;

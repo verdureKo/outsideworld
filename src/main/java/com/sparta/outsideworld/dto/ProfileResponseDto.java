@@ -17,6 +17,6 @@ public class ProfileResponseDto {
         this.username = user.getUsername();
         this.email = user.getEmail();
         this.introduction = user.getIntroduction();
-        this.posts = user.getPostList().stream().map(ProfilePostListResponseDto::new).sorted(Comparator.comparing(ProfilePostListResponseDto::getCreatedAt).reversed()).toList();
+//        this.posts = user.getPostList().stream().map(ProfilePostListResponseDto::new).sorted(Comparator.comparing(ProfilePostListResponseDto::getCreatedAt).reversed()).toList();
     }
 }
