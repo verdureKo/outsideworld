@@ -1,10 +1,6 @@
 package com.sparta.outsideworld.dto;
 
-import java.security.PrivateKey;
-
-import com.sparta.outsideworld.entity.User;
 import com.sparta.outsideworld.entity.UserRoleEnum;
-
 import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.Pattern;
 import lombok.Getter;
@@ -24,6 +20,7 @@ public class UserRequestDto {
 	private String password;
 	@NotBlank(message = "필수 입력 값입니다.")
 	private String introduction;
+	private String image;	// 프론트에서 default 이미지 부탁합니다
 
 	private UserRoleEnum role;
 

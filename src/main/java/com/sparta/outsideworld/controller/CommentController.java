@@ -39,14 +39,14 @@ public class CommentController {
     }
 
     // 댓글 좋아요 API
-    @PostMapping("/blog/{blogId}/comment/{commentId}/like")
-    public ResponseEntity<ApiResponseDto> likeComment(@PathVariable Long blogId, @PathVariable Long commentId, @AuthenticationPrincipal UserDetailsImpl userDetails) {
-        return ResponseEntity.ok().body(likeService.likeComment(blogId, commentId, userDetails.getUser()));
+    @PostMapping("/post/{postId}/comment/{commentId}/like")
+    public ResponseEntity<ApiResponseDto> likeComment(@PathVariable Long postId, @PathVariable Long commentId, @AuthenticationPrincipal UserDetailsImpl userDetails) {
+        return ResponseEntity.ok().body(likeService.likeComment(postId, commentId, userDetails.getUser()));
     }
 
     // 댓글 좋아요 취소 API
-    @DeleteMapping("/blog/{blogId}/comment/{commentId}/like")
-    public ResponseEntity<ApiResponseDto> deleteLikeComment(@PathVariable Long blogId, @PathVariable Long commentId, @AuthenticationPrincipal UserDetailsImpl userDetails) {
-        return ResponseEntity.ok().body(likeService.deleteLikeComment(blogId, commentId, userDetails.getUser()));
+    @DeleteMapping("/post/{postId}/comment/{commentId}/like")
+    public ResponseEntity<ApiResponseDto> deleteLikeComment(@PathVariable Long postId, @PathVariable Long commentId, @AuthenticationPrincipal UserDetailsImpl userDetails) {
+        return ResponseEntity.ok().body(likeService.deleteLikeComment(postId, commentId, userDetails.getUser()));
     }
 }

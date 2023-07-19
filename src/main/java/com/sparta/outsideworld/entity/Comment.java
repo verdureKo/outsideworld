@@ -13,7 +13,7 @@ import java.util.List;
 @Getter
 @Setter
 @NoArgsConstructor
-@Table(name = "comment")
+@Table(name = "comments")
 public class Comment extends TimeStamped {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -22,7 +22,7 @@ public class Comment extends TimeStamped {
     @Column(nullable = false)
     private String comment;
 
-    @Column(name = "likes", nullable = false)
+    @Column(name = "likes")
     private Long likeCount;
 
     @ManyToOne
