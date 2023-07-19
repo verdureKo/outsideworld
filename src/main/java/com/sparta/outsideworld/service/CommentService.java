@@ -36,7 +36,7 @@ public class CommentService {
                         Locale.getDefault()
                 ))
         );
-        Comment comment = commentRepository.save(new Comment(requestDto, user, post));
+        Comment comment = commentRepository.save(new Comment(requestDto, user, post, 0L));
 
         return new CommentResponseDto(comment);
     }
