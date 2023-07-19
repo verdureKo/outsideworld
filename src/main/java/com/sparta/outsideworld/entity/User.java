@@ -1,5 +1,6 @@
 package com.sparta.outsideworld.entity;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import org.hibernate.annotations.ColumnDefault;
 import org.hibernate.annotations.DynamicInsert;
 
@@ -31,12 +32,23 @@ public class User extends TimeStamped{
     @Column(nullable = false, length = 500)
     private String introduction;
 
+    ///////////////
+    @JsonIgnore
+    @Column(nullable = true)
+    private String oldPassword1;
+
+    @JsonIgnore
+    @Column(nullable = true)
+    private String oldPassword2;
+    //////////////
+
     // 관리자 권한 로그인
     // @ColumnDefault("user")
     // DB 엔 UserRoleEnum 이 없기 때문에 Annotation 을 통해 String 임을 밝힌다
     @Enumerated(value = EnumType.STRING)
     // ADMIN, USER 로 타입 고정
     private UserRoleEnum role;
+
 
     public User(String username, String password, String email, String introduction,UserRoleEnum role) {
         this.username = username;
