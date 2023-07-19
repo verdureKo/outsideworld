@@ -1,14 +1,12 @@
 package com.sparta.outsideworld.controller;
 
 import com.sparta.outsideworld.dto.ApiResponseDto;
-import com.sparta.outsideworld.dto.ApiResponseDto;
 import com.sparta.outsideworld.dto.PostRequestDto;
 import com.sparta.outsideworld.dto.PostResponseDto;
 import com.sparta.outsideworld.security.UserDetailsImpl;
 import com.sparta.outsideworld.service.LikeService;
 import com.sparta.outsideworld.service.PostService;
 import lombok.RequiredArgsConstructor;
-import org.springframework.http.ResponseEntity;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.web.bind.annotation.*;
@@ -30,9 +28,9 @@ public class PostController {
 
 
     // 게시글 선택 조회 API
-    @GetMapping("/post/{id}")
-    public PostResponseDto getPost(@PathVariable Long id){
-        return postService.getPost(id);
+    @GetMapping("/post/{postId}")
+    public PostResponseDto getPost(@PathVariable Long postId){
+        return postService.getPost(postId);
     }
 
 
@@ -45,31 +43,31 @@ public class PostController {
 
 
     // 게시글 수정 API
-    @PutMapping("/post/{id}")
-    public PostResponseDto updatePost(@PathVariable Long id,
+    @PutMapping("/post/{postId}")
+    public PostResponseDto updatePost(@PathVariable Long postId,
                                      @RequestBody PostRequestDto postRequestDto,
                                      @AuthenticationPrincipal UserDetailsImpl userDetails){
-        return postService.updatePost(id, postRequestDto, userDetails.getUser());
+        return postService.updatePost(postId, postRequestDto, userDetails.getUser());
     }
 
 
     // 게시글 삭제 API
-    @DeleteMapping("/post/{id}")
-    public ApiResponseDto deletePost(@PathVariable Long id,
+    @DeleteMapping("/post/{postId}")
+    public ApiResponseDto deletePost(@PathVariable Long postId,
                                      @AuthenticationPrincipal UserDetailsImpl userDetails){
-        return postService.deletePost(id, userDetails.getUser());
+        return postService.deletePost(postId, userDetails.getUser());
     }
 
     //블로그 게시글 좋아요 API
-    @PostMapping("/post/{id}/like")
-    public ResponseEntity<ApiResponseDto> likeBlog(@PathVariable Long id, @AuthenticationPrincipal UserDetailsImpl userDetails) {
-        return ResponseEntity.ok().body(likeService.likePost(id, userDetails.getUser()));
+    @PostMapping("/post/{postId}/like")
+    public ResponseEntity<ApiResponseDto> likeBlog(@PathVariable Long postId, @AuthenticationPrincipal UserDetailsImpl userDetails) {
+        return ResponseEntity.ok().body(likeService.likePost(postId, userDetails.getUser()));
     }
 
     //블로그 게시글 좋아요 취소 API
-    @DeleteMapping("/post/{id}/like")
-    public ResponseEntity<ApiResponseDto> deleteLikeBlog(@PathVariable Long id, @AuthenticationPrincipal UserDetailsImpl userDetails) {
-        return ResponseEntity.ok().body(likeService.deleteLikePost(id, userDetails.getUser()));
+    @DeleteMapping("/post/{postId}/like")
+    public ResponseEntity<ApiResponseDto> deleteLikeBlog(@PathVariable Long postId, @AuthenticationPrincipal UserDetailsImpl userDetails) {
+        return ResponseEntity.ok().body(likeService.deleteLikePost(postId, userDetails.getUser()));
     }
 
 }

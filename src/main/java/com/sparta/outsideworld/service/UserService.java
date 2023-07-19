@@ -32,8 +32,9 @@ public class UserService {
     public void signup(UserRequestDto userRequestDto){
         String username = userRequestDto.getUsername();
         String password = passwordEncoder.encode(userRequestDto.getPassword());
-        String introduction = userRequestDto.getIntroduction();
         String email = userRequestDto.getEmail();
+        String introduction = userRequestDto.getIntroduction();
+        String image = userRequestDto.getImage();
 
         // 가입된 정보와 신규 회원 중복 확인
         if (userRepository.findByUsername(username).isPresent()) {
@@ -52,7 +53,7 @@ public class UserService {
         }
 
         // 사용자 정보 DB 에 저장
-        User user = new User(username, password, email, introduction, role);
+        User user = new User(username, password, email, introduction, image, role);
         userRepository.save(user);
     }
 
@@ -80,6 +81,7 @@ public class UserService {
         log.info("회원정보 수정");
         user.setEmail(profileRequestDto.getEmail());
         user.setIntroduction(profileRequestDto.getIntroduction());
+        user.setImage(profileRequestDto.getImage());
         log.info("회원정보 수정 시도");
         userRepository.save(user);
         log.info("회원정보 수정 완료");

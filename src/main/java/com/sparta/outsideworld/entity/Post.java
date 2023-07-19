@@ -12,7 +12,7 @@ import java.util.List;
 @Entity
 @Getter
 @NoArgsConstructor
-@Table(name = "post")
+@Table(name = "posts")
 public class Post extends TimeStamped{
 
     @Id
@@ -24,6 +24,9 @@ public class Post extends TimeStamped{
 
     @Column(length = 500)
     private String contents;
+
+    @Column
+    private String image;
 
     @Column
     private Long likeCount;
@@ -44,11 +47,13 @@ public class Post extends TimeStamped{
         this.user = user;
         this.title = postRequestDto.getTitle();
         this.contents = postRequestDto.getContents();
+        this.image = postRequestDto.getImage();
     }
 
     public void update(PostRequestDto postRequestDto){
         this.title = postRequestDto.getTitle();
         this.contents = postRequestDto.getContents();
+        this.image = postRequestDto.getImage();
     }
 
     public void setLikeCount(Long likeCount) {

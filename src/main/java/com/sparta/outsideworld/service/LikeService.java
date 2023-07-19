@@ -64,9 +64,9 @@ public class LikeService {
 
     // 댓글 좋아요 api
     @Transactional
-    public ApiResponseDto likeComment(Long blogId, Long commentId, User user) {
+    public ApiResponseDto likeComment(Long postId, Long commentId, User user) {
         //해당 게시글, 댓글이 존재하는지 확인
-        Comment comment = commentRepository.findByIdAndPostId(commentId, blogId);
+        Comment comment = commentRepository.findByIdAndPostId(commentId, postId);
         if(comment == null) {
             throw new IllegalArgumentException("해당 댓글이 존재하지 않습니다.");
         }
@@ -89,9 +89,9 @@ public class LikeService {
 
     // 댓글 좋아요 취소 api
     @Transactional
-    public ApiResponseDto deleteLikeComment(Long blogId, Long commentId, User user) {
+    public ApiResponseDto deleteLikeComment(Long postId, Long commentId, User user) {
         //해당 게시글, 댓글이 존재하는지 확인
-        Comment comment = commentRepository.findByIdAndPostId(commentId, blogId);
+        Comment comment = commentRepository.findByIdAndPostId(commentId, postId);
         if(comment == null) {
             throw new IllegalArgumentException("해당 댓글이 존재하지 않습니다.");
         }

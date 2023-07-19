@@ -1,11 +1,7 @@
 package com.sparta.outsideworld.entity;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
-import org.hibernate.annotations.ColumnDefault;
-import org.hibernate.annotations.DynamicInsert;
-
 import jakarta.persistence.*;
-import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
@@ -32,6 +28,9 @@ public class User extends TimeStamped{
     @Column(nullable = false, length = 500)
     private String introduction;
 
+    @Column(name = "profile_image")
+    private String image;
+
     ///////////////
     @JsonIgnore
     @Column(nullable = true)
@@ -50,11 +49,12 @@ public class User extends TimeStamped{
     private UserRoleEnum role;
 
 
-    public User(String username, String password, String email, String introduction,UserRoleEnum role) {
+    public User(String username, String password, String email, String introduction, String image, UserRoleEnum role) {
         this.username = username;
         this.password = password;
         this.email = email;
         this.introduction = introduction;
+        this.image = image;
         this.role = role;
     }
 
