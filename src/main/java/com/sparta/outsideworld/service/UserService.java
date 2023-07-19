@@ -1,9 +1,6 @@
 package com.sparta.outsideworld.service;
 
-import com.sparta.outsideworld.dto.PasswordRequestDto;
-import com.sparta.outsideworld.dto.ProfileRequestDto;
-import com.sparta.outsideworld.dto.ProfileResponseDto;
-import com.sparta.outsideworld.dto.UserRequestDto;
+import com.sparta.outsideworld.dto.*;
 import com.sparta.outsideworld.entity.User;
 import com.sparta.outsideworld.entity.UserRoleEnum;
 import com.sparta.outsideworld.repository.UserRepository;
@@ -29,7 +26,7 @@ public class UserService {
     private final String ADMIN_TOKEN = "AAABnvxRVklrnYxKZ0aHgTBcXukeZygoC";
 
     @Transactional
-    public void signup(UserRequestDto userRequestDto){
+    public void signup(SignupRequestDto userRequestDto){
         String username = userRequestDto.getUsername();
         String password = passwordEncoder.encode(userRequestDto.getPassword());
         String email = userRequestDto.getEmail();

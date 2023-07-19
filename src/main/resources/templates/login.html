@@ -1,0 +1,103 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8">
+  <script src="https://code.jquery.com/jquery-3.7.0.min.js"
+          integrity="sha256-2Pmvv0kuTBOenSvLm6bvfBSSHrUJ+3A7x6P5Ebd07/g=" crossorigin="anonymous"></script>
+  <script src="https://cdn.jsdelivr.net/npm/sweetalert2@10"></script>
+  <title>밖에서 오늘 뭐하지?</title>
+  <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet"
+        integrity="sha384-9ndCyUaIbzAi2FUVXJi0CjmCapSmO7SnpJef0486qhLnuZ2cdeRhO02iuK6FUUVM" crossorigin="anonymous">
+
+  <style>
+    #SubmitBtn {
+      width: 355px;
+      margin-top: 10px;
+      margin-bottom: 10px;
+      height: 50px;
+    }
+
+    #KakaoLoginBtn {
+      width: 355px;
+      height: 50px;
+      background-color: #fef01b;
+    }
+
+    #inputUsername {
+      margin-top: 200px;
+      margin-bottom: 10px;
+      height: 50px;
+    }
+
+    #inputPassword {
+      height: 50px;
+    }
+
+    #homeBtn {
+      margin-right: 10px;
+    }
+  </style>
+
+
+</head>
+
+<body>
+<nav class="row navbar bg-body-tertiary">
+  <div class="col-1"></div>
+  <div class="col-5 container">
+    <h3>밖에서 오늘 뭐하지?</h3>
+  </div>
+
+  <div class="col-5 container justify-content-end">
+    <!-- <a class="navbar-brand" href="#">
+          <img src="/docs/5.3/assets/brand/bootstrap-logo.svg" alt="Bootstrap" width="30" height="24">
+        </a> -->
+    <a>
+      <button type="submit" class="btn btn-dark" id = "homeBtn">Home</button>
+    </a>
+    <a>
+      <button type="submit" class="btn btn-dark">SignUp</button>
+    </a>
+  </div>
+
+  <div class="col-1"></div>
+
+</nav>
+
+
+<form class="form-horizontal container justify-content-end" style="width: 450px;">
+  <div class="form-group">
+
+    <!-- <label for="inputUsername" class="col-sm-2 control-label">Username</label> -->
+    <div class="col-sm-10">
+      <input type="text" class="form-control" id="inputUsername" placeholder="Username">
+    </div>
+  </div>
+  <div class="form-group">
+    <!-- <label for="inputPassword" class="col-sm-2 control-label">Password</label> -->
+    <div class="col-sm-10">
+      <input type="password" class="form-control" id="inputPassword" placeholder="Password">
+    </div>
+
+  </div>
+
+  <div class="form-group">
+    <div class=>
+      <button type="submit" class="btn btn-dark" id="SubmitBtn"><strong>Submit</strong></button>
+
+    </div>
+    <div>
+      <button type="button" class="btn btn-warning" id="KakaoLoginBtn"><img
+              src="https://cdn-icons-png.flaticon.com/128/3669/3669973.png" alt="Bootstrap" width="30" height="24">
+        <strong>Kakao Login</strong></button>
+    </div>
+  </div>
+</form>
+
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"
+        integrity="sha384-geWF76RCwLtnZ8qwWowPQNguL3RmwHVBC9FhGdlKrxdiJJigb/j/68SIy3Te4Bkz"
+        crossorigin="anonymous"></script>
+</body>
+
+</html>
