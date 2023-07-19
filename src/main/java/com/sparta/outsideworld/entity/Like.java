@@ -19,7 +19,7 @@ public class Like {
     private User user;
 
     @ManyToOne
-    @JoinColumn(name = "blog_id")
+    @JoinColumn(name = "post_id")
     private Post post;
 
     @ManyToOne
