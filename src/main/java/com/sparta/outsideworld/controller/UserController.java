@@ -1,20 +1,15 @@
 package com.sparta.outsideworld.controller;
 
 import com.sparta.outsideworld.dto.SignupRequestDto;
-import lombok.extern.slf4j.Slf4j;
-import org.springframework.http.HttpStatus;
-import org.springframework.http.ResponseEntity;
-import org.springframework.stereotype.Controller;
-import org.springframework.web.bind.annotation.*;
-
-import com.sparta.outsideworld.dto.ApiResponseDto;
 import com.sparta.outsideworld.dto.UserRequestDto;
 import com.sparta.outsideworld.jwt.JwtUtil;
 import com.sparta.outsideworld.service.UserService;
-
 import jakarta.servlet.http.HttpServletResponse;
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
+import lombok.extern.slf4j.Slf4j;
+import org.springframework.stereotype.Controller;
+import org.springframework.web.bind.annotation.*;
 
 @RequestMapping("/api")
 @RequiredArgsConstructor
@@ -31,7 +26,7 @@ public class UserController {
 	}
 
 	@PostMapping("/user/signup")
-	public String signup(@Valid SignupRequestDto userRequestDto){
+	public String signup(@Valid @RequestParam SignupRequestDto userRequestDto){
 		log.info("회원가입 시도");
 		try {
 			userService.signup(userRequestDto);
