@@ -1,6 +1,9 @@
 package com.sparta.outsideworld.service;
 
+import java.util.UUID;
+
 import com.sparta.outsideworld.dto.*;
+import com.sparta.outsideworld.entity.KakaoProfile;
 import com.sparta.outsideworld.entity.User;
 import com.sparta.outsideworld.entity.UserRoleEnum;
 import com.sparta.outsideworld.repository.UserRepository;
@@ -51,6 +54,18 @@ public class UserService {
 
         // 사용자 정보 DB 에 저장
         User user = new User(username, password, email, introduction, image, role);
+        userRepository.save(user);
+    }
+
+    @Transactional
+    public void kakaoSignup(User user){
+        String Password = user.getPassword();
+        String encPassword = passwordEncoder.encode(Password);
+        user.setPassword(encPassword);
+
+        // introduction null 값일 수 없어서 추가
+        user.setIntroduction("반갑습니다. 잘 부탁드립니다!");
+        user.setRole(UserRoleEnum.USER);
         userRepository.save(user);
     }
 
