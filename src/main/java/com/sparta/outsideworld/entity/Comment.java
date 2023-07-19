@@ -22,7 +22,7 @@ public class Comment extends TimeStamped {
     @Column(nullable = false)
     private String comment;
 
-    @Column(name = "likes")
+    @Column(name = "like_count")
     private Long likeCount;
 
     @ManyToOne
@@ -30,7 +30,7 @@ public class Comment extends TimeStamped {
     private User user;
 
     @ManyToOne
-    @JoinColumn(name = "board_id", nullable = false)
+    @JoinColumn(name = "post_id", nullable = false)
     private Post post;
 
     @OneToMany(mappedBy = "comment", cascade = CascadeType.REMOVE)

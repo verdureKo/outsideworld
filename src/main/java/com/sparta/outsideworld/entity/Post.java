@@ -28,7 +28,7 @@ public class Post extends TimeStamped{
     @Column
     private String image;
 
-    @Column
+    @Column(name = "like_count")
     private Long likeCount;
 
     @ManyToOne(fetch = FetchType.LAZY)
