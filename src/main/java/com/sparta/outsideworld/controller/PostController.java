@@ -9,6 +9,7 @@ import com.sparta.outsideworld.service.PostService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
+import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
@@ -70,4 +71,11 @@ public class PostController {
         return ResponseEntity.ok().body(likeService.deleteLikePost(postId, userDetails.getUser()));
     }
 
+    @Controller
+    public static class HomeController {
+        @GetMapping("/")
+        public String home() {
+            return "index";
+        }
+    }
 }
