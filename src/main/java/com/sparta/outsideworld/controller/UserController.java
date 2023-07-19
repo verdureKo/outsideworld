@@ -26,14 +26,14 @@ public class UserController {
 	}
 
 	@PostMapping("/user/signup")
-	public String signup(@Valid @RequestParam SignupRequestDto userRequestDto){
+	public String signup(@Valid @RequestBody SignupRequestDto userRequestDto){
 		log.info("회원가입 시도");
 		try {
 			userService.signup(userRequestDto);
 		} catch (IllegalArgumentException e) {
 			return "signup";
 		}
-		return "redirect:/api/user/login";
+		return "redirect:/";
 	}
 
 	@GetMapping("/user/login")

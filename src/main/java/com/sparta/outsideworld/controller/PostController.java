@@ -71,11 +71,4 @@ public class PostController {
         return ResponseEntity.ok().body(likeService.deleteLikePost(postId, userDetails.getUser()));
     }
 
-    @Controller
-    public static class HomeController {
-        @GetMapping("/")
-        public String home() {
-            return "index";
-        }
-    }
 }
