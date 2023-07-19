@@ -22,7 +22,7 @@ public class Comment extends TimeStamped {
     @Column(nullable = false)
     private String comment;
 
-    @Column(name = "likes")
+    @Column(name = "like_count")
     private Long likeCount;
 
     @ManyToOne
