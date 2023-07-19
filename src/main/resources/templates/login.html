@@ -18,12 +18,6 @@
       height: 50px;
     }
 
-    #KakaoLoginBtn {
-      width: 355px;
-      height: 50px;
-      background-color: #fef01b;
-    }
-
     #inputUsername {
       margin-top: 200px;
       margin-bottom: 10px;
@@ -88,9 +82,8 @@
 
     </div>
     <div>
-      <button type="button" class="btn btn-warning" id="KakaoLoginBtn"><img
-              src="https://cdn-icons-png.flaticon.com/128/3669/3669973.png" alt="Bootstrap" width="30" height="24">
-        <strong>Kakao Login</strong></button>
+<!--      카카오 OAuth 인증 주소-->
+     <a href="https://kauth.kakao.com/oauth/authorize?client_id=a980dc3fcc17a75986d402184c8ecc00&redirect_uri=http://localhost:8080/api/user/kakao/callback&response_type=code"><img height="48px" width="353px" src="/image/kakao_login_btn.png"/></a>
     </div>
   </div>
 </form>
