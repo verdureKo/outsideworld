@@ -59,6 +59,9 @@ public class UserService {
 
     @Transactional
     public void kakaoSignup(User user){
+        if(userRepository.findByUsername(user.getUsername()).isPresent()) {
+            throw new IllegalArgumentException("이미 가입한 계정입니다.");
+        }
         String Password = user.getPassword();
         String encPassword = passwordEncoder.encode(Password);
         user.setPassword(encPassword);
