@@ -2,14 +2,12 @@ package com.sparta.outsideworld.service;
 
 import com.sparta.outsideworld.dto.ApiResponseDto;
 import com.sparta.outsideworld.dto.PostResponseDto;
-import com.sparta.outsideworld.dto.UserRequestDto;
 import com.sparta.outsideworld.entity.Follow;
 import com.sparta.outsideworld.entity.User;
 import com.sparta.outsideworld.repository.FollowRepository;
 import com.sparta.outsideworld.repository.PostRepository;
 import com.sparta.outsideworld.repository.UserRepository;
 import lombok.RequiredArgsConstructor;
-import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 

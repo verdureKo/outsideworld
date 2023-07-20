@@ -31,25 +31,28 @@ public class JwtAuthorizationFilter extends OncePerRequestFilter {
     private final UserDetailsServiceImpl userDetailsService;
 
     @Override
-    protected void doFilterInternal(HttpServletRequest request, HttpServletResponse response, FilterChain filterChain) throws ServletException,
-        IOException {
-        String token = jwtUtil.resolveToken(request);
+    protected void doFilterInternal(HttpServletRequest req, HttpServletResponse res, FilterChain filterChain) throws ServletException, IOException {
 
-        if(token != null) {
-            if(!jwtUtil.validateToken(token)){
+        String tokenValue = jwtUtil.getTokenFromRequest(req);
+
+        if (StringUtils.hasText(tokenValue)) {
+            tokenValue = jwtUtil.substringToken(tokenValue);
+            if (!jwtUtil.validateToken(tokenValue)) {
                 log.error("Token Error");
                 return;
             }
-            Claims info = jwtUtil.getUserInfoFromToken(token);
-            setAuthentication(info.getSubject());
+
+            Claims info = jwtUtil.getUserInfoFromToken(tokenValue);
+
+            try {
+                setAuthentication(info.getSubject());
+            } catch (Exception e) {
+                log.error(e.getMessage());
+                return;
+            }
         }
 
-        try {
-            // doFilter 역할을 다했다면 다음 필터로 넘어가라
-            filterChain.doFilter(request, response);
-        } catch(FileUploadException e){
-            log.error(e.getMessage());
-        }
+        filterChain.doFilter(req, res);
     }
 
 

@@ -3,6 +3,7 @@ package com.sparta.outsideworld.dto;
 import com.sparta.outsideworld.entity.User;
 import lombok.Getter;
 
+import java.util.Comparator;
 import java.util.List;
 
 @Getter
@@ -18,6 +19,6 @@ public class ProfileResponseDto {
         this.email = user.getEmail();
         this.introduction = user.getIntroduction();
         this.image = user.getImage();
-//        this.posts = user.getPostList().stream().map(ProfilePostListResponseDto::new).sorted(Comparator.comparing(ProfilePostListResponseDto::getCreatedAt).reversed()).toList();
+        this.posts = user.getPostList().stream().map(ProfilePostListResponseDto::new).sorted(Comparator.comparing(ProfilePostListResponseDto::getCreatedAt).reversed()).toList();
     }
 }
