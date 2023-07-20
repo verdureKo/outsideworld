@@ -26,11 +26,15 @@ public class User extends TimeStamped{
     @Column(nullable = false, unique = true)
     private String email;
 
-    @Column(nullable = false, length = 500)
+    @Column(length = 500)
     private String introduction;
 
     @Column(name = "profile_image")
     private String image;
+
+    ///////////////
+    private Long kakaoId;
+
 
     ///////////////
     @JsonIgnore
@@ -49,7 +53,6 @@ public class User extends TimeStamped{
     // ADMIN, USER 로 타입 고정
     private UserRoleEnum role;
 
-
     @Builder
     public User(String username, String password, String email, String introduction, String image, UserRoleEnum role) {
         this.username = username;
@@ -58,6 +61,22 @@ public class User extends TimeStamped{
         this.introduction = introduction;
         this.image = image;
         this.role = role;
+    }
+
+    // 카카오 로그인
+    public User(String username, String password, String email, Long kakaoId, String introduction, UserRoleEnum role) {
+        this.username = username;
+        this.password = password;
+        this.email = email;
+        this.kakaoId = kakaoId;
+        this.introduction = introduction;
+        this.role = role;
+    }
+
+    // 동일 이메일로 가입을 시도할 경우, 카카오 아이디 갱신
+    public User kakaoIdUpdate(Long kakaoId){
+        this.kakaoId = kakaoId;
+        return this;
     }
 
 }
