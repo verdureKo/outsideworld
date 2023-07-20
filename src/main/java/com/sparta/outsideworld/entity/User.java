@@ -7,6 +7,8 @@ import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
 
+import java.util.List;
+
 @Entity
 @Getter
 @Setter
@@ -45,6 +47,9 @@ public class User extends TimeStamped{
     @Column(nullable = true)
     private String oldPassword2;
     //////////////
+
+    @OneToMany(mappedBy = "user", fetch = FetchType.EAGER)
+    private List<Post> postList;
 
     // 관리자 권한 로그인
     // @ColumnDefault("user")

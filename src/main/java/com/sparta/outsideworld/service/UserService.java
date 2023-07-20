@@ -102,9 +102,6 @@ public class UserService {
 
     // 비밀번호 확인
     public ResponseEntity <String> confirmPassword(UserDetailsImpl userDetails, PasswordRequestDto passwordRequestDto) {
-        log.info(userDetails.getPassword());
-        log.info(passwordRequestDto.getPassword());
-
         if (passwordEncoder.matches(passwordRequestDto.getPassword(), userDetails.getPassword())) {
             log.info("성공");
             return ResponseEntity.ok("Success");

@@ -265,7 +265,8 @@
     <div class="postbody">
       <div class = "userinfo">
         <div class = "userinfos">
-          <p th:text="|별명: ${users.realname}|">별명</p>
+          <p th:text="|Username: ${users.username}|">Username</p>
+          <p th:text="|Email: ${users.email}|">Email</p>
           <p th:text="|한줄 소개: ${users.introduction}|">한줄소개</p>
         </div>
         <div class = "userbutton">
@@ -282,7 +283,7 @@
             <div class="card-body">
               <h3 class="card-title" th:text="${post.title}"></h3>
               <p class="card-text" th:text="|Posted on ${#temporals.format(post.createdAt, 'yyyy-MM-dd HH:mm')}|"></p>
-              <p class="card-text" th:text="${post.realname}"></p>
+              <p class="card-text" th:text="${post.username}"></p>
               <!-- <button th:href="@{/api/post/{id}(id=${posts.id})}" class="btn btn-primary">보러가기</button> -->
             </div>
           </div>

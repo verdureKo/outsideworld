@@ -3,39 +3,10 @@ package com.sparta.outsideworld.controller;
 import com.fasterxml.jackson.core.JacksonException;
 import com.sparta.outsideworld.dto.ApiResponseDto;
 import com.sparta.outsideworld.dto.LoginRequestDto;
-import java.util.UUID;
-
-import org.springframework.http.HttpEntity;
-import org.springframework.http.HttpHeaders;
-import org.springframework.http.HttpMethod;
-import org.springframework.http.ResponseEntity;
-import org.springframework.stereotype.Controller;
-import org.springframework.util.LinkedMultiValueMap;
-import org.springframework.util.MultiValueMap;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestMethod;
-import org.springframework.web.bind.annotation.RequestParam;
-import org.springframework.web.bind.annotation.ResponseBody;
-import org.springframework.web.client.RestTemplate;
-
-import com.fasterxml.jackson.core.JsonProcessingException;
-import com.fasterxml.jackson.databind.ObjectMapper;
-import com.fasterxml.jackson.databind.PropertyNamingStrategy;
-import com.sparta.outsideworld.dto.ApiResponseDto;
-import com.sparta.outsideworld.dto.LoginRequestDto;
 import com.sparta.outsideworld.dto.SignupRequestDto;
-import com.sparta.outsideworld.dto.UserRequestDto;
-import com.sparta.outsideworld.entity.KakaoProfile;
-import com.sparta.outsideworld.entity.OAuthToken;
-import com.sparta.outsideworld.entity.User;
-import com.sparta.outsideworld.entity.UserRoleEnum;
 import com.sparta.outsideworld.jwt.JwtUtil;
 import com.sparta.outsideworld.service.KakaoService;
 import com.sparta.outsideworld.service.UserService;
-
 import jakarta.servlet.http.Cookie;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
@@ -43,14 +14,10 @@ import jakarta.servlet.http.HttpSession;
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
-import org.springframework.http.*;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
-import org.springframework.util.LinkedMultiValueMap;
-import org.springframework.util.MultiValueMap;
 import org.springframework.web.bind.annotation.*;
-import org.springframework.web.client.RestTemplate;
-
-import java.util.UUID;
 
 @RequestMapping("/api")
 @RequiredArgsConstructor
