@@ -9,7 +9,7 @@ import org.springframework.web.bind.annotation.PathVariable;
 @Controller
 public class HomeController {
 
-    @GetMapping("/outsideworld")
+    @GetMapping("/")
     public String mainPage() {
         return "index";
     }
