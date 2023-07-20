@@ -1,0 +1,58 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css"
+          integrity="sha512-iecdLmaskl7CVkqkXNQ/ZH/XLlvWZOJyj7Yy7tcenmpD1ypASozpmT/E0iPtmFIB46ZmdtAc9eNBvH0H/ZpiBw=="
+          crossorigin="anonymous" referrerpolicy="no-referrer" />
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.2.3/dist/css/bootstrap.min.css" rel="stylesheet"
+          integrity="sha384-rbsA2VBKQhggwzxH7pPCaAqO46MgnOM80zW1RWuH61DGLwZJEdK2Kadq2F9CUG65" crossorigin="anonymous">
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.2.3/dist/js/bootstrap.bundle.min.js"
+            integrity="sha384-kenU1KFdBIe4zVF0s0G1M5b4hcpxyD9F7jL+jjXkk+Q2h455rYXK/7HAuoJl+0I4" crossorigin="anonymous"></script>
+    <link href="/css/style.css" rel="stylesheet">
+    <title>글 수정</title>
+</head>
+<header class="d-flex justify-content-between align-items-middle bg-transparent p-1">
+    <div class="h1 fs-3 px-4 pt-2 fw-bold"><a href="/outsideworld">밖에서 오늘 뭐하지?</a></div>
+    <div class="row">
+        <div class="col-md-12 board">
+            <span class="info-name fw-bold fs-3 ms-3" id="userName"></span>
+            <span class="fw-bold fs-6">님의 접속을 환영합니다</span>
+        </div>
+    </div>
+    <div class="is-login-box p-2" id="is-login-box" style="display: none;">
+        <a href="/post/new-post" class="ms-4 fs-4"><i class="fa-solid fa-pen-to-square fa"></i>글쓰기</a>
+        <a href="/api/mypage"><i class="fa-solid fa-user-pen fa-lg ms-4"></i>정보수정</a>
+        <a type="button" onclick="logout()" class="d-inline"><i class="fa-solid fa-person-walking-arrow-right fa-xl ms-4"></i>로그아웃</a>
+    </div>
+    <div class="not-login-box m-3" id="not-login-box">
+        <a href="/api/user/login"><i class="fa-solid fa-user-check fa-lg ms-4"></i>로그인</a>
+        <a href="/api/user/signup"><i class="fa-solid fa-user-plus fa-lg ms-4"></i>회원가입</a>
+    </div>
+</header>
+<div class="container">
+    <div class="mb-5 fs-2 fw-bold">글 수정</div>
+    <form id="updatePostForm" action="/api/post" method="post">
+        <div class="row mt-4">
+            <div class="col-md-12">
+                <input type="text" name="title" class="form-control shadow border-0 p-3" placeholder="제목을 입력하세요">
+                <textarea class="form-control col-sm-5 mt-2 shadow border-0 p-3" name="content" rows="15" placeholder="내용을 입력하세요"></textarea>
+                <input class="form-control col-sm-5 mt-2 shadow border-0 p-3" name="image" placeholder="이미지 URL을 입력하세요"></input>
+            </div>
+        </div>
+        <div class="row my-5">
+            <div class="col-md-12 d-flex justify-content-end">
+                <div class="align-items-center d-flex">
+                    <button onclick="updatePost()" class="btn btn-dark" value="updatePost">Submit</button>
+                    <button onclick="deletePost()" class="btn btn-outline-dark ms-2" value="deletePost">Delete</button>
+                </div>
+            </div>
+        </div>
+    </form>
+</div>
+<footer style="height: 200px; border-top: solid 1px #d9d9d9;" class="footer fw-bold fs-3 d-flex justify-content-center align-items-center mt-5">동행조 화이팅!</footer>
+
+</body>
+</html>
