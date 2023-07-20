@@ -39,10 +39,11 @@ public class UserService {
         } else if (userRepository.findByEmail(email).isPresent()) {
             throw new IllegalArgumentException("이미 존재하는 email 입니다.");
         }
-
+//        log.info(String.valueOf(userRequestDto.isAdmin()));
         // 사용자 ROLE 확인
         UserRoleEnum role = UserRoleEnum.USER;
-        if (userRequestDto.isAdmin()) {
+        // adminToken 이 빈 문자열이 아니면 검사
+        if (!userRequestDto.getAdminToken().equals("")) {
             if (!ADMIN_TOKEN.equals(userRequestDto.getAdminToken())) {
                 throw new IllegalArgumentException("관리자 암호가 틀려 등록이 불가능합니다.");
             }
