@@ -92,5 +92,35 @@
         integrity="sha384-geWF76RCwLtnZ8qwWowPQNguL3RmwHVBC9FhGdlKrxdiJJigb/j/68SIy3Te4Bkz"
         crossorigin="anonymous"></script>
 </body>
+<script>
+  function login(event) {
+    event.preventDefault(); // 폼 기본 동작 방지
+
+    let username = $('#inputUsername').val();
+    let password = $('#inputPassword').val();
+
+    let data = {
+      username: username,
+      password: password,
+    };
+
+    $.ajax({
+      type: "POST",
+      url: "/api/user/logout.do",
+      data: JSON.stringify(data),
+      contentType: "application/json; charset=utf-8",
+      dataType: "json",
+      success: function(response) {
+        // 처리 완료 후 작업
+        alert("로그인 성공");
+        location.href="/"
+      },
+      error: function(error) {
+        // 오류 발생 시 작업
+        alert(JSON.stringify(error));
+      }
+    });
+  }
+</script>
 
 </html>

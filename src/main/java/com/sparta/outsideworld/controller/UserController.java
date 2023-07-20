@@ -13,6 +13,7 @@ import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.client.RestTemplate;
@@ -29,7 +30,9 @@ import com.sparta.outsideworld.entity.UserRoleEnum;
 import com.sparta.outsideworld.jwt.JwtUtil;
 import com.sparta.outsideworld.service.UserService;
 
+import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
+import jakarta.servlet.http.HttpSession;
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
@@ -168,5 +171,14 @@ public class UserController {
 			return "login";
 		}
 		return "redirect:/";
+	}
+
+	// 비동기방식 로그아웃 메서드
+	@RequestMapping(value = "logout.do", method = RequestMethod.POST)
+	@ResponseBody
+	public void logoutPost(HttpServletRequest request) throws Exception{
+		log.info("비동기 로그아웃 메서드 진입");
+		HttpSession session = request.getSession();
+		session.invalidate();
 	}
 }

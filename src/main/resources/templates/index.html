@@ -35,10 +35,31 @@
             <span class="fw-bold fs-6">님의 접속을 환영합니다</span>
         </div>
     </div>
+
+
+    <div class="col-5 container justify-content-end">
+        <!-- <a class="navbar-brand" href="#">
+        <img src="/docs/5.3/assets/brand/bootstrap-logo.svg" alt="Bootstrap" width="30" height="24">
+      </a> -->
+        <c:choose>
+            <!--            c:when = if -->
+            <c:when test = "${empty sessionScope.principal}">
+                <a> <button id="login_btn" button type="submit" class="btn btn-dark" >Login</button></a>
+                <a> <button id="signup_btn" button type="submit" class="btn btn-dark" >Signup</button></a>
+            </c:when>
+            <!--            c:otherwise = else -->
+            <c:otherwise>
+                <a> <button id="home_btn" button type="submit" class="btn btn-dark" >My page</button></a>
+                <a> <button id="logout_btn" button type="submit" class="btn btn-dark" >Logout</button></a>
+            </c:otherwise>
+        </c:choose>
+
+
     <div class="is-login-box p-2" id="is-login-box" style="display: none;">
         <a href="/post/new-post" class="ms-4 fs-4"><i class="fa-solid fa-pen-to-square fa"></i>글쓰기</a>
         <a href="/api/mypage"><i class="fa-solid fa-user-pen fa-lg ms-4"></i>정보수정</a>
         <a type="button" onclick="logout()" class="d-inline"><i class="fa-solid fa-person-walking-arrow-right fa-xl ms-4"></i>로그아웃</a>
+
     </div>
     <div class="not-login-box m-3" id="not-login-box">
         <a href="/api/user/login"><i class="fa-solid fa-user-check fa-lg ms-4"></i>로그인</a>
@@ -96,9 +117,27 @@
 </div>
 <footer style="height: 200px; border-top: solid 1px #d9d9d9;" class="footer fw-bold fs-3 d-flex justify-content-center align-items-center mt-5">동행조 화이팅!</footer>
 
-    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"
-            integrity="sha384-geWF76RCwLtnZ8qwWowPQNguL3RmwHVBC9FhGdlKrxdiJJigb/j/68SIy3Te4Bkz"
-            crossorigin="anonymous"></script>
+
 </body>
+<script>
+
+    /* ajax 호출 시 default 가 비동기 호출*/
+    /* ajax 통신을 이용해서 json 으로 변경 */
+    /* ajax 가 통신을 성공하고 json 을 리턴해주면 자동으로 자바 오브젝트 생성 */
+    /* 로그아웃 버튼 작동 */
+    $("#logout_btn").click(function() {
+        $.ajax({
+            type: "POST",
+            url: "/api/user/logout.do",
+            success: function(data) {
+                alert("로그아웃 성공");
+                document.location.reload();
+            },
+            error: function() {
+                alert("로그아웃 중 오류가 발생했습니다.");
+            }
+        });
+    });
+</script>
 
 </html>
