@@ -1,7 +1,5 @@
 package com.sparta.outsideworld.service;
 
-import java.util.UUID;
-
 import com.sparta.outsideworld.dto.*;
 import com.sparta.outsideworld.entity.KakaoProfile;
 import com.sparta.outsideworld.entity.User;
@@ -45,7 +43,8 @@ public class UserService {
 
         // 사용자 ROLE 확인
         UserRoleEnum role = UserRoleEnum.USER;
-        if (userRequestDto.isAdmin()) {
+        // adminToken 이 빈 문자열이 아니면 검사
+        if (!userRequestDto.getAdminToken().equals("")) {
             if (!ADMIN_TOKEN.equals(userRequestDto.getAdminToken())) {
                 throw new IllegalArgumentException("관리자 암호가 틀려 등록이 불가능합니다.");
             }
@@ -73,7 +72,7 @@ public class UserService {
     }
 
     @Transactional
-    public void login(UserRequestDto loginRequestDto){
+    public void login(LoginRequestDto loginRequestDto){
         String username = loginRequestDto.getUsername();
         String password = loginRequestDto.getPassword();
 

@@ -3,20 +3,13 @@
 
 <head>
     <meta charset="UTF-8">
+    <link rel="icon" href="data:,">
     <title>밖에서 오늘 뭐하지?</title>
-    <script src="https://code.jquery.com/jquery-3.7.0.min.js"
-            integrity="sha256-2Pmvv0kuTBOenSvLm6bvfBSSHrUJ+3A7x6P5Ebd07/g=" crossorigin="anonymous"></script>
-    <script src="https://cdn.jsdelivr.net/npm/sweetalert2@10"></script>
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css"
-          integrity="sha512-iecdLmaskl7CVkqkXNQ/ZH/XLlvWZOJyj7Yy7tcenmpD1ypASozpmT/E0iPtmFIB46ZmdtAc9eNBvH0H/ZpiBw=="
-          crossorigin="anonymous" referrerpolicy="no-referrer" />
-    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.2.3/dist/css/bootstrap.min.css" rel="stylesheet"
-          integrity="sha384-rbsA2VBKQhggwzxH7pPCaAqO46MgnOM80zW1RWuH61DGLwZJEdK2Kadq2F9CUG65" crossorigin="anonymous">
-    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.2.3/dist/js/bootstrap.bundle.min.js"
-            integrity="sha384-kenU1KFdBIe4zVF0s0G1M5b4hcpxyD9F7jL+jjXkk+Q2h455rYXK/7HAuoJl+0I4" crossorigin="anonymous"></script>
-    <link href="/css/style.css" rel="stylesheet">
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet"
+          integrity="sha384-9ndCyUaIbzAi2FUVXJi0CjmCapSmO7SnpJef0486qhLnuZ2cdeRhO02iuK6FUUVM" crossorigin="anonymous">
+
     <style>
-        #homeBtn {
+        #mypage-btn, #newpost-btn, #welcome {
             margin-right: 10px;
         }
 
@@ -24,6 +17,8 @@
             margin-top: 30px;
         }
     </style>
+
+
 </head>
 
 <body>
@@ -36,11 +31,25 @@
         </div>
     </div>
 
-
     <div class="col-5 container justify-content-end">
         <!-- <a class="navbar-brand" href="#">
         <img src="/docs/5.3/assets/brand/bootstrap-logo.svg" alt="Bootstrap" width="30" height="24">
       </a> -->
+        <div style="display: none" id ="welcome">
+            <span id = "username"></span> 환영합니다.
+        </div>
+        <a>
+            <button type="submit" class="btn btn-dark" id="newpost-btn" style="display: none">글작성</button>
+        </a>
+        <a>
+            <button type="submit" class="btn btn-dark" id="mypage-btn" style="display: none">My page</button>
+        </a>
+        <a href="/api/user/login">
+            <button type="submit" class="btn btn-dark" id="login-btn">Login</button>
+        </a>
+        <a>
+            <button type="submit" class="btn btn-dark" id="logout-btn" style="display: none">Logout</button>
+        </a>
         <c:choose>
             <!--            c:when = if -->
             <c:when test = "${empty sessionScope.principal}">
@@ -113,10 +122,50 @@
                 </div>
             </div>
         </div>
+
+
     </div>
 </div>
 <footer style="height: 200px; border-top: solid 1px #d9d9d9;" class="footer fw-bold fs-3 d-flex justify-content-center align-items-center mt-5">동행조 화이팅!</footer>
 
+
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"
+            integrity="sha384-geWF76RCwLtnZ8qwWowPQNguL3RmwHVBC9FhGdlKrxdiJJigb/j/68SIy3Te4Bkz"
+            crossorigin="anonymous"></script>
+<script>
+    window.onload = function() {
+        var login_btn = document.getElementById("login-btn");
+        var logout_btn = document.getElementById("logout-btn");
+        var mypage_btn = document.getElementById("mypage-btn");
+        var newpost_btn = document.getElementById("newpost-btn");
+        var welcome = document.getElementById("welcome");
+
+        // "Authorization" 쿠키가 존재하는 경우 로그아웃 버튼을 표시
+        if (checkAuthorizationCookie()) {
+            logout_btn.style.display = "block";
+            mypage_btn.style.display = "block";
+            newpost_btn.style.display = "block";
+            welcome.style.display = "block";
+
+            login_btn.style.display = "none";
+        }
+
+        function checkAuthorizationCookie() {
+            var cookies = document.cookie.split(";");
+
+            for (var i = 0; i < cookies.length; i++) {
+                var cookie = cookies[i].trim();
+
+                // "Authorization" 쿠키가 존재하는 경우 true 반환
+                if (cookie.startsWith("Authorization")) {
+                    return true;
+                }
+            }
+            // "Authorization" 쿠키가 존재하지 않는 경우 false 반환
+            return false;
+        }
+    }
+</script>
 
 </body>
 <script>

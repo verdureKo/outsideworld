@@ -23,6 +23,6 @@ public class SignupRequestDto {
 
     private String image;
 
-    private boolean admin = false;
+    private boolean admin;
     private String adminToken = "";
 }

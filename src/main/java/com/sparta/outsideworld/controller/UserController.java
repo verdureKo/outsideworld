@@ -1,5 +1,7 @@
 package com.sparta.outsideworld.controller;
 
+import com.sparta.outsideworld.dto.ApiResponseDto;
+import com.sparta.outsideworld.dto.LoginRequestDto;
 import java.util.UUID;
 
 import org.springframework.http.HttpEntity;
@@ -36,6 +38,10 @@ import jakarta.servlet.http.HttpSession;
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
+import org.springframework.stereotype.Controller;
+import org.springframework.web.bind.annotation.*;
 
 @RequestMapping("/api")
 @RequiredArgsConstructor
@@ -51,15 +57,16 @@ public class UserController {
 		return "signup";
 	}
 
+	@ResponseBody
 	@PostMapping("/user/signup")
-	public String signup(@Valid SignupRequestDto userRequestDto){
+	public ResponseEntity<ApiResponseDto> signup(@Valid @RequestBody SignupRequestDto userRequestDto){
 		log.info("회원가입 시도");
 		try {
 			userService.signup(userRequestDto);
 		} catch (IllegalArgumentException e) {
-			return "signup";
+			return ResponseEntity.ok().body(new ApiResponseDto("회원가입에 실패했습니다.", HttpStatus.BAD_REQUEST.value()));
 		}
-		return "redirect:/api/user/login";
+		return ResponseEntity.ok().body(new ApiResponseDto("회원가입에 성공했습니다.", HttpStatus.CREATED.value()));
 	}
 
 	@GetMapping("/user/login")
@@ -162,15 +169,22 @@ public class UserController {
 		return "redirect:/";
 	}
 
+	@ResponseBody
 	@PostMapping("/user/login")
-	public String login (@RequestBody UserRequestDto loginRequestDto, HttpServletResponse response) {
+	public ResponseEntity<ApiResponseDto> login(@Valid @RequestBody LoginRequestDto loginRequestDto, HttpServletResponse response) {
+		log.info("login 시도");
 		try {
 			userService.login(loginRequestDto);
 			response.addHeader(JwtUtil.AUTHORIZATION_HEADER, jwtUtil.createToken(loginRequestDto.getUsername(),loginRequestDto.getRole()));
 		} catch (IllegalArgumentException e) {
-			return "login";
+			return ResponseEntity.ok().body(new ApiResponseDto("로그인에 실패했습니다.", HttpStatus.BAD_REQUEST.value()));
 		}
-		return "redirect:/";
+
+		response.addHeader(JwtUtil.AUTHORIZATION_HEADER, jwtUtil.createToken(loginRequestDto.getUsername(),loginRequestDto.getRole()));
+		jwtUtil.addJwtToCookie(response.getHeader(JwtUtil.AUTHORIZATION_HEADER), response);
+
+		log.info(response.getHeader(JwtUtil.AUTHORIZATION_HEADER));
+		return ResponseEntity.ok().body(new ApiResponseDto("로그인에 성공했습니다.", HttpStatus.OK.value()));
 	}
 
 	// 비동기방식 로그아웃 메서드
