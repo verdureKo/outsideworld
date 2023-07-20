@@ -9,10 +9,10 @@ import lombok.Setter;
 @NoArgsConstructor
 public class ApiResponseDto {
     private String msg;
-    private Integer statusCode;
+    private Integer status;
 
     public ApiResponseDto(String msg,Integer statusCode){
         this.msg = msg;
-        this.statusCode = statusCode;
+        this.status = statusCode;
     }
 }

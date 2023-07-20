@@ -3,6 +3,7 @@
 
 <head>
   <meta charset="UTF-8">
+  <link rel="icon" href="data:,">
   <script src="https://code.jquery.com/jquery-3.7.0.min.js"
           integrity="sha256-2Pmvv0kuTBOenSvLm6bvfBSSHrUJ+3A7x6P5Ebd07/g=" crossorigin="anonymous"></script>
   <script src="https://cdn.jsdelivr.net/npm/js-cookie@3.0.5/dist/js.cookie.min.js"></script>
@@ -36,6 +37,10 @@
       margin-top: 100px;
     }
 
+    #login-btn {
+      margin-left: 10px;
+    }
+
     #button {
       margin-top: 10px;
       padding-right: 70px;
@@ -52,7 +57,7 @@
       var box = document.getElementById("inputAdminToken");
 
       // If the checkbox is checked, display the output text
-      if (checkBox.checked == true) {
+      if (checkBox.checked === true) {
         box.style.display = "block";
       } else {
         box.style.display = "none";
@@ -72,8 +77,11 @@
     <!-- <a class="navbar-brand" href="#">
     <img src="/docs/5.3/assets/brand/bootstrap-logo.svg" alt="Bootstrap" width="30" height="24">
   </a> -->
-    <a>
+    <a href = "/">
       <button type="submit" class="btn btn-dark">Home</button>
+    </a>
+    <a href = "/api/user/login">
+      <button id = "login-btn" type="submit" class="btn btn-dark">Login</button>
     </a>
   </div>
 
@@ -159,16 +167,21 @@
         url:"/api/user/signup",
         data: JSON.stringify(data), // http body data
         contentType:"application/json; charset=urf-8",
+        dataType:"json"
       }).done(function(res){
         console.log(res)
-        alert("회원가입이 완료되었습니다.")
-        location.href = "/api/user/login"
-      }).fail(function (error){
+        console.log(res.status)
+        if (res.status === 201) {
+          alert("회원가입이 완료되었습니다.")
+          location.href = "/api/user/login"
+        } else if (res.status === 400) {
+          alert("회원가입에 실패했습니다.")
+        }
+      }).fail(function (request, status, error){
+        console.log(status)
         console.log(error)
         alert("회원가입에 실패했습니다.");
       }); //ajax 통신을 이용해서 파라미터를 json으로 변경하여 insert 요청
-
-
     }
   }
 

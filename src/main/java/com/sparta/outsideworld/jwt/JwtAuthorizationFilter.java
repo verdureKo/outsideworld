@@ -1,11 +1,14 @@
 package com.sparta.outsideworld.jwt;
 
 import java.io.IOException;
+import java.io.UnsupportedEncodingException;
+import java.net.URLEncoder;
 
 import com.sparta.outsideworld.security.UserDetailsServiceImpl;
 import io.jsonwebtoken.Claims;
 import jakarta.servlet.FilterChain;
 import jakarta.servlet.ServletException;
+import jakarta.servlet.http.Cookie;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
 import lombok.RequiredArgsConstructor;
@@ -49,6 +52,8 @@ public class JwtAuthorizationFilter extends OncePerRequestFilter {
         }
     }
 
+
+
     // 인증 처리
     public void setAuthentication(String username) {
         SecurityContext context = SecurityContextHolder.createEmptyContext();
@@ -64,4 +69,6 @@ public class JwtAuthorizationFilter extends OncePerRequestFilter {
         // Returns the authorities granted to the user. Cannot return null.
         return new UsernamePasswordAuthenticationToken(userDetails, null, userDetails.getAuthorities());
     }
+
+
 }

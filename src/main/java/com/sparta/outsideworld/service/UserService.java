@@ -56,7 +56,7 @@ public class UserService {
     }
 
     @Transactional
-    public void login(UserRequestDto loginRequestDto){
+    public void login(LoginRequestDto loginRequestDto){
         String username = loginRequestDto.getUsername();
         String password = loginRequestDto.getPassword();
 
