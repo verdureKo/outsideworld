@@ -1,0 +1,296 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Outside World</title>
+  <script src="https://code.jquery.com/jquery-3.7.0.min.js"
+          integrity="sha256-2Pmvv0kuTBOenSvLm6bvfBSSHrUJ+3A7x6P5Ebd07/g=" crossorigin="anonymous"></script>
+  <style>
+    * {
+      font-family: "Poppins", sans-serif;
+    }
+
+
+    html, body{
+      width: 100%;
+      height:  100%;
+      margin: 0;
+      padding: 0;
+      overflow: hidden;
+      color: #000000;
+    }
+
+    h1 {
+      margin: 0;
+    }
+
+    a {
+      position: relative;
+      display: inline-block;
+      color: #000000;
+      font-size: 16px;
+      text-decoration: none;
+      text-transform: uppercase;
+      overflow: hidden;
+      transition: 0.5s;
+      margin-top: 20px;
+      letter-spacing: 4px;
+    }
+
+    .logoutbtn {
+      width: 66%;
+      height: 15%;
+      margin: 10px auto 0px;
+      display: flex;
+      justify-content: flex-end;
+      align-items: center;
+      text-align: left;
+    }
+
+    .logoutbtn > div:nth-child(1) {
+      flex: 1;
+      display: flex;
+      justify-content: flex-start;
+    }
+
+    .logoutbtn > div:nth-child(2) {
+      flex: 1;
+      display: flex;
+      justify-content: flex-end;
+    }
+
+    .header{
+      margin: 0;
+      padding: 0;
+      width: 100%;
+      height: 25%;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      background-color: transparent;
+      flex-direction: column;
+    }
+
+    .title1 {
+      font-size: 40px;
+      color: #0096FF;
+      text-shadow: 0px 0px 20px #C3F8FF;
+      position: relative;
+      animation:ani 1s infinite alternate;
+    }
+
+    .title2 {
+      position: relative;
+      font-size: 20px;
+    }
+
+    .bottom {
+      margin-top: 0;
+      width: 100%;
+      background-color: transparent;
+      align-items: center;
+      justify-self: center;
+      height: 74.5%;
+      color: white;
+      display: flex;
+      flex-direction: column; /* 수정된 부분 */
+    }
+
+    .post {
+      background-color: transparent;
+      width: 80%;
+      margin: 10px auto;
+      padding: 20px;
+      margin-top: 10px;
+      overflow: hidden;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+    }
+
+
+    button {
+      padding: 8px 24px; /* 수정된 버튼의 크기 */
+      border-radius: 5px;
+      cursor: pointer;
+      color: #19376D;
+      font-size: 18px;
+      transition: all 0.3s ease;
+      position: relative;
+      background: #C3F8FF;
+      opacity: 0.8;
+      border: none;
+      z-index: 1;
+      box-shadow: 0 0 10px rgba(0, 0, 0, 0.3);
+    }
+
+    button::after {
+      position: absolute;
+      content: "";
+      width: 0;
+      height: 100%;
+      top: 0;
+      right: 0;
+      z-index: -1;
+      background-color: #AEE2FF;
+      border-radius: 5px;
+      box-shadow:inset 2px 2px 2px 0px rgba(255,255,255,.5),
+      7px 7px 20px 0px rgba(0,0,0,.1),
+      4px 4px 5px 0px rgba(0,0,0,.1);
+      transition: all 0.3s ease;
+    }
+
+    button:hover:after {
+      left: 0;
+      width: 100%;
+    }
+
+    .row-6{
+      margin-top: 5px;
+      margin-bottom: 10px;
+      display: flex;
+      align-items: center;
+      width: 100%;
+      min-height: 20px;
+      border-radius: 20px;
+      backdrop-filter: blur(5px);
+      background: rgba(255, 255, 255, 0.1);
+      /*box-shadow: 0 0px 25px rgba(0, 0, 0, 0.1);*/
+      border: 1px solid rgba(255, 255, 255, 0.5);
+      border-right: 1px solid rgba(255, 255, 255, 0.2);
+      border-bottom: 1px solid rgba(255, 255, 255, 0.2);
+      overflow: hidden;
+      color: #000
+    }
+    .postbody{
+      width: 80%;
+      min-height: 450px;
+      height: 85%;
+      padding: 20px;
+      border-radius: 20px;
+      backdrop-filter: blur(5px);
+      background: rgba(255, 255, 255, 0.1);
+      /*box-shadow: 0 0px 25px rgba(0, 0, 0, 0.1);*/
+      border: 1px solid rgba(255, 255, 255, 0.5);
+      border-right: 1px solid rgba(255, 255, 255, 0.2);
+      border-bottom: 1px solid rgba(255, 255, 255, 0.2);
+      /*overflow: hidden;*/
+      color: #000
+    }
+
+    .cards {
+      height: 60%;
+      background-color: transparent;
+      overflow: scroll;
+      overflow-x: hidden;
+      min-height: 350px;
+    }
+
+    .card {
+      margin-left:10px;
+    }
+
+    .cards::-webkit-scrollbar {
+      width: 6px;
+    }
+
+    .cards::-webkit-scrollbar-track {
+      background-color: transparent;
+    }
+
+    .cards::-webkit-scrollbar-thumb {
+      border-radius: 3px;
+      background-color: #A7ECEE;
+    }
+
+    .cards::-webkit-scrollbar-button {
+      width: 0;
+      height: 0;
+    }
+
+    .lines {
+      width: 100%;
+      height: 1px;
+      background-color: #000;
+      opacity: 0.2;
+      margin: 1px 1px 10px 1px;
+    }
+
+    .userinfo{
+      height: 20%;
+      color: #000;
+
+      display: flex;
+    }
+
+    .userinfo > div:nth-child(1) {
+      height: 100%;
+      width: 60%;
+    }
+
+    .userinfo > div:nth-child(2) {
+      height: 100%;
+      width: 40%;
+    }
+
+    .userinfos {
+
+    }
+
+    .userbutton {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+    }
+
+  </style>
+
+</head>
+<body>
+<div class="header">
+  <div><h1 class="title1" id="title1">Outside World</h1></div>
+  <div><h4 class="title2" id="title2">My Page</h4></div>
+</div>
+<div class="bottom">
+  <div class = "logoutbtn">
+    <div> <!--th:onclick="|location.href='/api/post'|"   onclick="location.href='/api/my-page'"-->
+      <button id="mypageButton" class="btn btn-secondary" onclick="location.href='/'">메인 페이지</button>
+    </div>
+    <div>
+      <button id="logoutbtn" href = "#"  onclick="location.href='/logout'">로그아웃</button>
+    </div>
+  </div>
+  <div class="post">
+    <div class="postbody">
+      <div class = "userinfo">
+        <div class = "userinfos">
+          <p th:text="|별명: ${users.realname}|">별명</p>
+          <p th:text="|한줄 소개: ${users.introduction}|">한줄소개</p>
+        </div>
+        <div class = "userbutton">
+          <!--          th:href="@{/api/post/{id}(id=${posts.id})}"-->
+          <button th:onclick="|location.href='/api/profile'|" class="btn btn-primary">회원 정보 수정</button>
+          <button th:onclick="|location.href='/api/profile/password'|" class="btn btn-primary">비밀번호 수정</button>
+        </div>
+      </div>
+
+      <div class="lines">   </div>
+      <div class="cards">
+        <div class="row-6" th:each="post : ${posts}">
+          <div class="card">
+            <div class="card-body">
+              <h3 class="card-title" th:text="${post.title}"></h3>
+              <p class="card-text" th:text="|Posted on ${#temporals.format(post.createdAt, 'yyyy-MM-dd HH:mm')}|"></p>
+              <p class="card-text" th:text="${post.realname}"></p>
+              <!-- <button th:href="@{/api/post/{id}(id=${posts.id})}" class="btn btn-primary">보러가기</button> -->
+            </div>
+          </div>
+          <br>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+</body>
+</html>
