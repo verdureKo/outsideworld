@@ -1,0 +1,365 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css"
+        integrity="sha512-iecdLmaskl7CVkqkXNQ/ZH/XLlvWZOJyj7Yy7tcenmpD1ypASozpmT/E0iPtmFIB46ZmdtAc9eNBvH0H/ZpiBw=="
+        crossorigin="anonymous" referrerpolicy="no-referrer" />
+  <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.2.3/dist/css/bootstrap.min.css" rel="stylesheet"
+        integrity="sha384-rbsA2VBKQhggwzxH7pPCaAqO46MgnOM80zW1RWuH61DGLwZJEdK2Kadq2F9CUG65" crossorigin="anonymous">
+  <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.2.3/dist/js/bootstrap.bundle.min.js"
+          integrity="sha384-kenU1KFdBIe4zVF0s0G1M5b4hcpxyD9F7jL+jjXkk+Q2h455rYXK/7HAuoJl+0I4" crossorigin="anonymous"></script>
+  <link href="/css/style.css" rel="stylesheet">
+  <title>글 선택 조회</title>
+</head>
+<body>
+<header class="d-flex justify-content-between align-items-middle bg-transparent p-1">
+  <div class="h1 fs-3 px-4 pt-2 fw-bold"><a href="/outsideworld">밖에서 오늘 뭐하지?</a></div>
+  <div class="row">
+    <div class="col-md-12 board">
+      <span class="info-name fw-bold fs-3 ms-3" id="userName"></span>
+      <span class="fw-bold fs-6">님의 접속을 환영합니다</span>
+    </div>
+  </div>
+  <div class="is-login-box p-2" id="is-login-box" style="display: none;">
+    <a href="/post/new-post" class="ms-4 fs-4"><i class="fa-solid fa-pen-to-square fa"></i>글쓰기</a>
+    <a href="/api/mypage"><i class="fa-solid fa-user-pen fa-lg ms-4"></i>정보수정</a>
+    <a type="button" onclick="logout()" class="d-inline"><i class="fa-solid fa-person-walking-arrow-right fa-xl ms-4"></i>로그아웃</a>
+  </div>
+  <div class="not-login-box m-3" id="not-login-box">
+    <a href="/api/user/login"><i class="fa-solid fa-user-check fa-lg ms-4"></i>로그인</a>
+    <a href="/api/user/signup"><i class="fa-solid fa-user-plus fa-lg ms-4"></i>회원가입</a>
+  </div>
+</header>
+<div class="container">
+  <div class="mb-5 fs-2 fw-bold">글 조회</div>
+  <div class="base-box">
+    <!-- 글 번호로 조회 -->
+    <div class="mt-3 mb-5 d-grid gap-2 d-md-flex justify-content-md-start flex-column">
+      <div class="info-box d-flex flex-inline">
+        <img src="https://img4.daumcdn.net/thumb/R658x0.q70/?fname=http://t1.daumcdn.net/news/201604/29/kedtv/20160429080108282cuey.jpg" alt="" class="img-thumbnail">
+        <span class="info-name fw-bold ms-3 fs-3" id="userName-${postId}">username</span>
+      </div>
+      <!-- 팔로우 -->
+      <div class="follow d-flex flex-inline">
+        <div class="userFollow">
+          <button type="button" class="btn btn-dark" style="--bs-btn-padding-y: .25rem; --bs-btn-padding-x: .5rem; --bs-btn-font-size: .75rem;">
+            Follow <span class="badge text-bg-secondary" id="userName-${userId}">5</span>
+          </button>
+        </div>
+        <div class="userUnFollow ms-2">
+          <button type="button" class="btn btn-outline-dark" style="--bs-btn-padding-y: .25rem; --bs-btn-padding-x: .5rem; --bs-btn-font-size: .75rem;">
+            UnFollow <span class="badge text-bg-secondary" id="userName-${userId}"></span>
+          </button>
+        </div>
+      </div>
+    </div>
+    <!-- 글 작성  -->
+    <div class="post-container">
+      <div class="card mb-3 border-0 h-100">
+        <div class="row g-0">
+          <div class="col-md-8">
+            <img src="https://images.unsplash.com/photo-1579353977828-2a4eab540b9a?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxzZWFyY2h8Mnx8c2FtcGxlfGVufDB8fDB8fHww&w=1000&q=80" class="img-fluid" alt="sampleImage">
+          </div>
+          <div class="col-md-4 ps-5">
+            <div class="card-body shadow h-100">
+              <h3 class="card-title title fw-bold">글 제목</h3>
+              <p class="card-text mt-4 written-content content_field round">글 내용</p>
+            </div>
+          </div>
+        </div>
+      </div>
+      <!-- 좋아요 -->
+      <div class="mt-3 mb-5 d-grid gap-2 d-md-flex justify-content-md-end">
+        <div class="postLike">
+          <button type="button" class="btn btn-dark">
+            좋아요 <span class="badge text-bg-secondary" id="userName-${userId}">5</span>
+          </button>
+        </div>
+        <div class="postLikeCancel ms-2">
+          <button type="button" class="btn btn-outline-dark">
+            좋아요 취소 <span class="badge text-bg-secondary" id="userName-${userId}"></span>
+          </button>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <div class="base-box-2">
+    <div class="col-md-12 mb-3">
+      <button class="position-relative fs-4 reply-badge">
+        댓글
+        <h3 class="position-absolute top-0 start-100 translate-middle badge rounded-pill bg-danger fs-6">
+          3
+          <span class="visually-hidden">commentCount</span>
+        </h3>
+      </button>
+      <hr>
+    </div>
+    <!-- 댓글 반복구간 -->
+    <div class="">
+      <div class="comment-base-box" id="comment-base-box-${postId}">
+        <!-- 댓글 데이터를 동적으로 추가 -->
+      </div>
+    </div>
+    <!-- 댓글 반복 끝 -->
+    <!-- 댓글쓰기 -->
+    <div class="col-md-12 my-5">
+      <div class="comment-board mt-2">
+        <textarea class="content form-control col-sm-5" id="comment-content-${postId}" rows="5"></textarea>
+      </div>
+      <a type="button" onclick="createComment(this.id)" class="float-end btn btn-dark mt-2" id="comment-${postId}" value="submit">Submit</a>
+    </div>
+  </div>
+
+</div>
+<footer style="height: 200px; border-top: solid 1px #d9d9d9;" class="footer fw-bold fs-3 d-flex justify-content-center align-items-center mt-5">동행조 화이팅!</footer>
+
+<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+<script>
+    $(document).ready(function() {
+        // 게시글 및 댓글 데이터 로드
+        function loadPostAndCommentData() {
+            // 게시글 데이터를 가져오는 Ajax 요청
+            $.ajax({
+                url: '/api/posts', // 게시글 데이터를 가져올 엔드포인트 URL
+                type: 'GET',
+                success: function(response) {
+                    // 게시글 데이터(response)를 적절한 위치에 삽입
+
+                    // 게시글 정보 삽입
+                    const post = response;
+                    const postTitleElement = document.querySelector('.title');
+                    const postContentElement = document.querySelector('.written-content');
+                    const postImageElement = document.querySelector('.img-fluid');
+
+                    postTitleElement.textContent = post.title;
+                    postContentElement.textContent = post.contents;
+                    postImageElement.setAttribute('src', post.image);
+
+                    // 댓글 데이터 로드 및 삽입
+                    const commentList = post.commentList;
+                    const commentBaseBox = document.getElementById('comment-base-box');
+
+                    commentList.forEach(function(comment) {
+                        // 댓글 요소 생성
+                        const commentBox = document.createElement('div');
+                        commentBox.classList.add('comment-info-box', 'p-3');
+
+                        // 댓글 작성자 정보 삽입
+                        const commentAuthor = document.createElement('span');
+                        commentAuthor.classList.add('info-name', 'fs-6', 'ms-3', 'fw-bold');
+                        commentAuthor.setAttribute('id', 'comment-userName-' + comment.id);
+                        commentAuthor.textContent = comment.username;
+
+                        // 댓글 내용 삽입
+                        const commentContent = document.createElement('div');
+                        commentContent.classList.add('comment-read-content', 'p-3');
+                        commentContent.setAttribute('id', 'comment-box-' + comment.id);
+                        commentContent.textContent = comment.comment;
+
+                        // ...
+
+                        // 댓글 요소를 댓글 반복 구간에 삽입
+                        commentBox.appendChild(commentAuthor);
+                        commentBox.appendChild(commentContent);
+                        // ...
+                        commentBaseBox.appendChild(commentBox);
+                    });
+                },
+                error: function(error) {
+                    console.error('Failed to load post and comment data:', error);
+                }
+            });
+        }
+
+        // 페이지 로드 시 게시글 및 댓글 데이터 로드
+        window.onload = function() {
+            loadPostAndCommentData();
+        };
+
+        function createComment() {
+            // 댓글 내용 가져오기
+            var commentContent = $("#commentContent").val();
+
+            // 댓글 작성 요청 보내기
+            $.ajax({
+                url: '/api/comment/'+postId,
+                type: 'POST',
+                data: {
+                    content: commentContent
+                },
+                success: function(response) {
+                    // 댓글 작성 성공 시 처리할 작업
+                    // ...
+
+                    // 댓글 데이터를 동적으로 추가
+                    var commentHtml = '<div class="row center pt-5">';
+                    commentHtml += '<div class="col-md-12">';
+                    commentHtml += '<div class="comment-info-box d-flex justify-content-between p-3">';
+                    commentHtml += '<div class="d-flex align-items-center center">';
+                    commentHtml += '<div class="info-box d-flex flex-column">';
+                    commentHtml += '<img src="' + response.userImage + '" alt="" class="comment-info-img rounded-circle border">';
+                    commentHtml += '<span class="info-name fs-6 text-wrap">' + response.userName + '</span>';
+                    commentHtml += '</div>';
+                    commentHtml += '<div id="comment-box-' + response.commentId + '" class="comment-read-content text-wrap" rows="5">';
+                    commentHtml += response.content;
+                    commentHtml += '</div>';
+                    commentHtml += '<div id="comment-box-' + response.commentId + '" rows="5">';
+                    commentHtml += '<textarea id="textarea-' + response.commentId + '" class="hidden comment-written-content text-wrap border-0" rows="5" style="width:32rem; background-color: #f8f9fa"></textarea>';
+                    commentHtml += '</div>';
+                    commentHtml += '</div>';
+                    commentHtml += '<div>';
+                    commentHtml += '</div>';
+                    commentHtml += '<div class="d-flex align-items-center">';
+                    commentHtml += '<a onclick="updateComment(' + response.commentId + ',\'textarea-' + response.commentId + '\')" class="hidden ms-4" id="myBtn-' + response.commentId + '"><i class="fa-solid fa-check fa-lg"></i></a>';
+                    commentHtml += '<a onclick="toggleTextarea(\'textarea-' + response.commentId + '\', \'comment-box-' + response.commentId + '\', \'myBtn-' + response.commentId + '\')" class="ms-4" id="comment-' + response.replyId + '"><i class="fa-solid fa-pencil fa-lg"></i></a>';
+                    commentHtml += '<a onclick="deleteComment(' + response.commentId + ')" class="mx-3 ms-4" id="comment-' + response.commentId + '"><i class="fa-regular fa-trash-can fa-lg"></i></a>';
+                    commentHtml += '</div>';
+                    commentHtml += '</div>';
+                    commentHtml += '</div>';
+                    commentHtml += '</div>';
+
+                    $("#commentContainer").append(commentHtml);
+
+                    // 댓글 수 업데이트
+                    var commentCount = parseInt($("#commentCount").text());
+                    $("#commentCount").text(commentCount + 1);
+                },
+                error: function(error) {
+                    // 댓글 작성 실패 시 처리할 작업
+                    alert("댓글 작성에 실패했습니다. 다시 시도해주세요.");
+                    // alert(error.responseJSON.message); // 에러 메시지를 가져와서 출력하는 경우
+                }
+            });
+        }
+
+        function updateComment(commentId, textareaId) {
+            // 수정할 댓글 내용 가져오기
+            var updatedContent = $("#" + textareaId).val();
+
+            // 댓글 수정 요청 보내기
+            $.ajax({
+                url: '/api/comment/' + commentId,
+                type: 'PUT',
+                data: {
+                    content: updatedContent
+                },
+                success: function(response) {
+                    // 댓글 수정 성공 시 처리할 작업
+                    alert("댓글 수정 성공!!");
+                },
+                error: function(error) {
+                    // 댓글 수정 실패 시 처리할 작업
+                    alert("댓글 수정 실패..");
+                }
+            });
+        }
+
+        function deleteComment(commentId) {
+            // 댓글 삭제 요청 보내기
+            $.ajax({
+                url: '/api/comment/' + commentId,
+                type: 'DELETE',
+                success: function(response) {
+                    alert("댓글 삭제 성공!!");
+
+                    // 댓글 삭제
+                    $("#comment-box-" + commentId).remove();
+
+                    // 댓글 수 업데이트
+                    var commentCount = parseInt($("#commentCount").text());
+                    $("#commentCount").text(commentCount - 1);
+                },
+                error: function(error) {
+                    alert("댓글 삭제 실패..");
+                }
+            });
+        }
+        // 댓글 수정 여부 상태를 관리하는 객체
+        const commentEditMode = {};
+
+        // 댓글 좋아요 상태를 관리하는 객체
+        const commentLikeStatus = {};
+
+        $(document).ready(function() {
+            // 댓글 수정 버튼 클릭 시 토글 처리
+            $(".comment-info-box .fa-pencil").on("click", function() {
+                const commentId = $(this).closest(".comment-info-box").attr("id").split("-")[1];
+                toggleCommentEditMode(commentId);
+            });
+
+            // 댓글 좋아요 버튼 클릭 시 토글 처리
+            $(".comment-info-box .fa-star").on("click", function() {
+                const commentId = $(this).closest(".comment-info-box").attr("id").split("-")[1];
+                toggleCommentLike(commentId);
+            });
+
+            // 댓글 삭제 버튼 클릭 시 처리
+            $(".comment-info-box .fa-trash-can").on("click", function() {
+                const commentId = $(this).closest(".comment-info-box").attr("id").split("-")[1];
+                deleteComment(commentId);
+            });
+        });
+
+        function toggleCommentEditMode(commentId) {
+            const textareaId = `textarea-${commentId}`;
+            const commentBoxId = `comment-box-${commentId}`;
+            const editButtonId = `myBtn-${commentId}`;
+
+            const textarea = $(`#${textareaId}`);
+            const commentBox = $(`#${commentBoxId}`);
+            const editButton = $(`#${editButtonId}`);
+
+            if (!commentEditMode[commentId]) {
+                // 편집 모드로 변경
+                commentBox.addClass("hidden");
+                textarea.removeClass("hidden");
+                editButton.removeClass("hidden");
+            } else {
+                // 일반 모드로 변경
+                commentBox.removeClass("hidden");
+                textarea.addClass("hidden");
+                editButton.addClass("hidden");
+            }
+
+            // 댓글 수정 여부 상태 업데이트
+            commentEditMode[commentId] = !commentEditMode[commentId];
+        }
+
+        function toggleCommentLike(commentId) {
+            const likeButton = $(`#comment-${commentId}`);
+            const cancelLikeButton = $(`#comment-${commentId}`);
+
+            if (!commentLikeStatus[commentId]) {
+                // 좋아요 상태로 변경
+                likeButton.addClass("hidden");
+                cancelLikeButton.removeClass("hidden");
+            } else {
+                // 좋아요 취소 상태로 변경
+                likeButton.removeClass("hidden");
+                cancelLikeButton.addClass("hidden");
+            }
+
+            // 댓글 좋아요 상태 업데이트
+            commentLikeStatus[commentId] = !commentLikeStatus[commentId];
+        }
+
+        function deleteComment(commentId) {
+            // 댓글 삭제 요청 보내기
+            // ...
+
+            // 삭제된 댓글 표시 숨기기
+            $(`#comment-base-box-${commentId}`).remove();
+
+            // 댓글 개수 업데이트
+            const commentCount = parseInt($(".reply-badge .badge").text());
+            $(".reply-badge .badge").text(commentCount - 1);
+        }
+
+    });
+</script>
+</body>
+</html>
