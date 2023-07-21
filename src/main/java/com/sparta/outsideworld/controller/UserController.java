@@ -57,9 +57,10 @@ public class UserController {
 
 		String token = kakaoService.kakaoLogin(code);
 
-		Cookie cookie = new Cookie(JwtUtil.AUTHORIZATION_HEADER, token.substring(7));
-		cookie.setPath("/");
-		res.addCookie(cookie);
+		// Cookie cookie = new Cookie(JwtUtil.AUTHORIZATION_HEADER, token.substring(7));
+		// cookie.setPath("/");
+		// res.addCookie(cookie);
+		jwtUtil.addJwtToCookie(token, res);
 		return "redirect:/";
 	}
 
