@@ -63,11 +63,11 @@ public class WebSecurityConfig {
         );
 
 
-//        http.formLogin((formLogin) ->
-//                formLogin
-//                        .loginPage("/api/user/login").permitAll()
-//                        .defaultSuccessUrl("/")
-//        );
+       // http.formLogin((formLogin) ->
+       //         formLogin
+       //                 .loginPage("/api/user/login").permitAll()
+       //                 .defaultSuccessUrl("/")
+       // );
 
         // 필터 관리
         http.addFilterBefore(jwtAuthorizationFilter(), UsernamePasswordAuthenticationFilter.class);
