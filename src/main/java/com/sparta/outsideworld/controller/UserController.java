@@ -4,9 +4,12 @@ import com.fasterxml.jackson.core.JacksonException;
 import com.sparta.outsideworld.dto.ApiResponseDto;
 import com.sparta.outsideworld.dto.LoginRequestDto;
 import com.sparta.outsideworld.dto.SignupRequestDto;
+import com.sparta.outsideworld.entity.UserRoleEnum;
 import com.sparta.outsideworld.jwt.JwtUtil;
+import com.sparta.outsideworld.security.UserDetailsImpl;
 import com.sparta.outsideworld.service.KakaoService;
 import com.sparta.outsideworld.service.UserService;
+import jakarta.servlet.ServletException;
 import jakarta.servlet.http.Cookie;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
@@ -16,10 +19,13 @@ import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.web.authentication.logout.SecurityContextLogoutHandler;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.*;
+
+import java.io.IOException;
 
 @RequestMapping("/api")
 @RequiredArgsConstructor
@@ -84,12 +90,23 @@ public class UserController {
 		return ResponseEntity.ok().body(new ApiResponseDto("로그인에 성공했습니다.", HttpStatus.OK.value()));
 	}
 
-	@PostMapping("/user/logout")
-	public void logout(HttpServletResponse response) {
-		//원래 쿠키의 이름이 userInfo 이었다면, value를 null로 처리.
-		Cookie myCookie = new Cookie("Authorization", null);
-		myCookie.setMaxAge(0); // 쿠키의 expiration 타임을 0으로 하여 없앤다.
-		myCookie.setPath("/"); // 모든 경로에서 삭제 됬음을 알린다.
-		response.addCookie(myCookie);
+	@RequestMapping("/user/logout")
+	public ResponseEntity<ApiResponseDto> logout(HttpServletResponse response, Authentication authResult) throws ServletException, IOException {
+		log.info("로그아웃 시도");
+		String username = ((UserDetailsImpl) authResult.getPrincipal()).getUsername();
+		UserRoleEnum role = ((UserDetailsImpl) authResult.getPrincipal()).getUser().getRole();
+
+		String token = jwtUtil.createToken(username, role);
+		jwtUtil.deleteCookie(token, response);
+		response.sendRedirect("/"); // "/"로 리다이렉트
+
+		return ResponseEntity.status(201).body(new ApiResponseDto("로그아웃 성공", HttpStatus.CREATED.value()));
 	}
+//	public void logout(HttpServletResponse response) {
+//		//원래 쿠키의 이름이 userInfo 이었다면, value를 null로 처리.
+//		Cookie myCookie = new Cookie("Authorization", null);
+//		myCookie.setMaxAge(0); // 쿠키의 expiration 타임을 0으로 하여 없앤다.
+//		myCookie.setPath("/"); // 모든 경로에서 삭제 됬음을 알린다.
+//		response.addCookie(myCookie);
+//	}
 }
