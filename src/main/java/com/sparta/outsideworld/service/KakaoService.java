@@ -71,7 +71,7 @@ public class KakaoService {
 					String encodedPassword = passwordEncoder.encode(password);
 
 					// email: kakao email
-					String username = "카카오 유저_" + kakaoUserInfo.getId();
+					String username = "인카카오 유저_" + kakaoUserInfo.getId();
 					String email = "카카오 유저_" + kakaoUserInfo.getId();
 					String introduction = "카카오 유저_" + "안녕하세요, 반갑습니다!";
 
