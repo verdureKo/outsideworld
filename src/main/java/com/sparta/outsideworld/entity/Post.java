@@ -1,5 +1,6 @@
 package com.sparta.outsideworld.entity;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.sparta.outsideworld.dto.PostRequestDto;
 import jakarta.persistence.*;
 import lombok.Getter;
@@ -31,6 +32,7 @@ public class Post extends TimeStamped{
     @Column(name = "like_count")
     private Long likeCount;
 
+    @JsonIgnore
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "user_id", nullable = false)
     private User user;

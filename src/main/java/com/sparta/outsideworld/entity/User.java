@@ -48,7 +48,7 @@ public class User extends TimeStamped{
     private String oldPassword2;
     //////////////
 
-    @OneToMany(mappedBy = "user", fetch = FetchType.EAGER)
+    @OneToMany(mappedBy = "user", fetch = FetchType.EAGER, cascade = CascadeType.REMOVE)
     private List<Post> postList;
 
     // 관리자 권한 로그인
