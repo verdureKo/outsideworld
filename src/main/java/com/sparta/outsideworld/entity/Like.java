@@ -1,5 +1,6 @@
 package com.sparta.outsideworld.entity;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import jakarta.persistence.*;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
@@ -14,14 +15,17 @@ public class Like {
     private Long id;
 
     // 연관관계 설정
+    @JsonIgnore
     @ManyToOne
     @JoinColumn(name = "user_id")
     private User user;
 
+    @JsonIgnore
     @ManyToOne
     @JoinColumn(name = "post_id")
     private Post post;
 
+    @JsonIgnore
     @ManyToOne
     @JoinColumn(name = "comment_id")
     private Comment comment;

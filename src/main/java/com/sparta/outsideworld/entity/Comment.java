@@ -1,5 +1,6 @@
 package com.sparta.outsideworld.entity;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.sparta.outsideworld.dto.CommentRequestDto;
 import jakarta.persistence.*;
 import lombok.Getter;
@@ -25,10 +26,12 @@ public class Comment extends TimeStamped {
     @Column(name = "like_count")
     private Long likeCount;
 
+    @JsonIgnore
     @ManyToOne
     @JoinColumn(name = "user_id", nullable = false)
     private User user;
 
+    @JsonIgnore
     @ManyToOne
     @JoinColumn(name = "post_id", nullable = false)
     private Post post;
