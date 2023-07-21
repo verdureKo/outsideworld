@@ -1,6 +1,7 @@
 package com.sparta.outsideworld.service;
 
 import java.net.URI;
+import java.util.UUID;
 
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.RequestEntity;
@@ -16,6 +17,8 @@ import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.JsonNode;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.sparta.outsideworld.dto.KakaoUserInfoDto;
+import com.sparta.outsideworld.entity.User;
+import com.sparta.outsideworld.entity.UserRoleEnum;
 import com.sparta.outsideworld.jwt.JwtUtil;
 import com.sparta.outsideworld.repository.UserRepository;
 
@@ -39,8 +42,46 @@ public class KakaoService {
 		// 2. 토큰으로 카카오 API 호출 : "액세스 토큰"으로 "카카오 사용자 정보" 가져오기
 		KakaoUserInfoDto kakaoUserInfo = getKakaoUserInfo(accessToken);
 
-		return null;
+		// 3. 필요시 회원가입
+		User kakaoUser = registerKakaoUserIfNeeded(kakaoUserInfo);
+
+		// 4. JWT 토큰 반환
+		String createTocken = jwtUtil.createToken(kakaoUser.getUsername(), kakaoUser.getRole());
+
+		return createTocken;
 	}
+
+	private User registerKakaoUserIfNeeded(KakaoUserInfoDto kakaoUserInfo) {
+		// DB 에 중복된 Kakao Id 가 있는지 확인
+		Long kakaoId = kakaoUserInfo.getId();
+		User kakaoUser = userRepository.findByKakaoId(kakaoId).orElse(null);
+
+			if (kakaoUser == null) {
+				// 카카오 사용자 email 과 동일한 email을 가진 회원이 있는 지 확인
+				String kakaoEmail = "카카오 유저_" + kakaoUserInfo.getId();
+				User sameEmailUser = userRepository.findByEmail(kakaoEmail).orElse(null);
+
+				if (sameEmailUser != null) {
+					kakaoUser = sameEmailUser;
+					kakaoUser = kakaoUser.kakaoIdUpdate(kakaoId);
+				} else {
+					// 신규 회원가입
+					// password: random UUID
+					String password = UUID.randomUUID().toString();
+					String encodedPassword = passwordEncoder.encode(password);
+
+					// email: kakao email
+					String username = "카카오 유저_" + kakaoUserInfo.getId();
+					String email = "카카오 유저_" + kakaoUserInfo.getId();
+					String introduction = "카카오 유저_" + "안녕하세요, 반갑습니다!";
+
+					kakaoUser = new User(username, encodedPassword, email, kakaoId, introduction, UserRoleEnum.USER);
+				}
+			userRepository.save(kakaoUser);
+		}
+		return kakaoUser;
+	}
+
 
 	private String getToken(String code) throws JsonProcessingException {
 		log.info("인가 코드: "+code);
@@ -125,5 +166,4 @@ public class KakaoService {
 
 
 }
-
 
