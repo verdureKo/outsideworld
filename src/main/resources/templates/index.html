@@ -5,16 +5,18 @@
     <meta charset="UTF-8">
     <link rel="icon" href="data:,">
     <title>밖에서 오늘 뭐하지?</title>
+    <script src="https://code.jquery.com/jquery-3.4.1.js"></script>
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet"
           integrity="sha384-9ndCyUaIbzAi2FUVXJi0CjmCapSmO7SnpJef0486qhLnuZ2cdeRhO02iuK6FUUVM" crossorigin="anonymous">
 
     <style>
         #mypage-btn, #newpost-btn, #welcome {
-            margin-right: 10px;
+            margin-right: 12px;
+            text-decoration-line: none;
         }
 
-        #card {
-            margin-top: 30px;
+        #post-list {
+            margin-top: 50px;
         }
     </style>
 
@@ -22,49 +24,33 @@
 </head>
 
 <body>
-<header class="d-flex justify-content-between align-items-middle bg-transparent p-1">
-    <div class="h1 fs-3 px-4 pt-2 fw-bold"><a href="/outsideworld">밖에서 오늘 뭐하지?</a></div>
-    <div class="row">
-        <div class="col-md-12 board">
-            <span class="info-name fw-bold fs-3 ms-3" id="userName"></span>
-            <span class="fw-bold fs-6">님의 접속을 환영합니다</span>
-        </div>
+<nav class="row navbar bg-body-tertiary">
+    <div class="col-1"></div>
+    <div class="col-5 container">
+        <h3>밖에서 오늘 뭐하지?</h3>
     </div>
 
     <div class="col-5 container justify-content-end">
-        <!-- <a class="navbar-brand" href="#">
-        <img src="/docs/5.3/assets/brand/bootstrap-logo.svg" alt="Bootstrap" width="30" height="24">
-      </a> -->
         <div style="display: none" id ="welcome">
-            <span id = "username"></span> 환영합니다.
+            <span id = "username" th:text="${username}"></span> 님 접속을 환영합니다.
         </div>
-        <a>
-            <button type="submit" class="btn btn-dark" id="newpost-btn" style="display: none">글작성</button>
+        <a href="/post/new-post">
+            <button type="submit" class="btn btn-dark" id="newpost-btn" style="display: none;">글작성</button>
         </a>
-        <a>
-            <button type="submit" class="btn btn-dark" id="mypage-btn" style="display: none">My page</button>
+        <a href="/api/mypage">
+            <button type="submit" class="btn btn-dark" id="mypage-btn">My page</button>
         </a>
         <a href="/api/user/login">
             <button type="submit" class="btn btn-dark" id="login-btn">Login</button>
         </a>
-        <a>
-            <button type="submit" class="btn btn-dark" id="logout-btn" style="display: none">Logout</button>
-        </a>
-
-
-    <div class="is-login-box p-2" id="is-login-box" style="display: none;">
-        <a href="/post/new-post" class="ms-4 fs-4"><i class="fa-solid fa-pen-to-square fa"></i>글쓰기</a>
-        <a href="/api/mypage"><i class="fa-solid fa-user-pen fa-lg ms-4"></i>정보수정</a>
-        <a type="button" onclick="logout()" class="d-inline"><i class="fa-solid fa-person-walking-arrow-right fa-xl ms-4"></i>로그아웃</a>
-
+        <button type="submit" class="btn btn-dark" id="logout-btn" style="display: none" onclick="">Logout</button>
     </div>
-    <div class="not-login-box m-3" id="not-login-box">
-        <a href="/api/user/login"><i class="fa-solid fa-user-check fa-lg ms-4"></i>로그인</a>
-        <a href="/api/user/signup"><i class="fa-solid fa-user-plus fa-lg ms-4"></i>회원가입</a>
-    </div>
-</header>
 
-<div class="container">
+    <div class="col-1"></div>
+
+</nav>
+
+<div class="container" id = "post-list">
     <div class="row row-cols-4">
         <div class="col" href="/post/detail">
             <div class="card h-100 shadow feed border-0">
@@ -110,71 +96,74 @@
                 </div>
             </div>
         </div>
-
-
     </div>
 </div>
+
 <footer style="height: 200px; border-top: solid 1px #d9d9d9;" class="footer fw-bold fs-3 d-flex justify-content-center align-items-center mt-5">동행조 화이팅!</footer>
 
 
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"
             integrity="sha384-geWF76RCwLtnZ8qwWowPQNguL3RmwHVBC9FhGdlKrxdiJJigb/j/68SIy3Te4Bkz"
             crossorigin="anonymous"></script>
-<script>
-    window.onload = function() {
-        var login_btn = document.getElementById("login-btn");
-        var logout_btn = document.getElementById("logout-btn");
-        var mypage_btn = document.getElementById("mypage-btn");
-        var newpost_btn = document.getElementById("newpost-btn");
-        var welcome = document.getElementById("welcome");
+    <script>
+        window.onload = function() {
+            var login_btn = document.getElementById("login-btn");
+            var logout_btn = document.getElementById("logout-btn");
+            var mypage_btn = document.getElementById("mypage-btn");
+            var newpost_btn = document.getElementById("newpost-btn");
+            var welcome = document.getElementById("welcome");
 
-        // "Authorization" 쿠키가 존재하는 경우 로그아웃 버튼을 표시
-        if (checkAuthorizationCookie()) {
-            logout_btn.style.display = "block";
-            mypage_btn.style.display = "block";
-            newpost_btn.style.display = "block";
-            welcome.style.display = "block";
+            // "Authorization" 쿠키가 존재하는 경우 로그아웃 버튼을 표시
+            if (checkAuthorizationCookie()) {
+                logout_btn.style.display = "block";
+                mypage_btn.style.display = "block";
+                newpost_btn.style.display = "block";
+                welcome.style.display = "block";
 
-            login_btn.style.display = "none";
-        }
-
-        function checkAuthorizationCookie() {
-            var cookies = document.cookie.split(";");
-
-            for (var i = 0; i < cookies.length; i++) {
-                var cookie = cookies[i].trim();
-
-                // "Authorization" 쿠키가 존재하는 경우 true 반환
-                if (cookie.startsWith("Authorization")) {
-                    return true;
-                }
+                login_btn.style.display = "none";
             }
-            // "Authorization" 쿠키가 존재하지 않는 경우 false 반환
-            return false;
+
+            function checkAuthorizationCookie() {
+                var cookies = document.cookie.split(";");
+
+                for (var i = 0; i < cookies.length; i++) {
+                    var cookie = cookies[i].trim();
+
+                    // "Authorization" 쿠키가 존재하는 경우 true 반환
+                    if (cookie.startsWith("Authorization")) {
+                        return true;
+                    }
+                }
+                // "Authorization" 쿠키가 존재하지 않는 경우 false 반환
+                return false;
+            }
         }
-    }
-</script>
+
+        let idx = {
+            init: function (){
+                $("#logout-btn").on("click", () => {
+                    this.logout();
+                });
+            },
+
+            logout: function () {
+                $.ajax({
+                    type: "POST",
+                    url: "/api/user/logout",
+                    success: function(data) {
+                        alert("로그아웃 성공")
+                        document.location.reload();
+                    },
+                    error: function() {
+                        alert("로그아웃 중 오류가 발생했습니다.");
+                    }
+                });
+            }
+        }
+        idx.init();
+
+    </script>
 
 </body>
-<script>
-
-    /* ajax 호출 시 default 가 비동기 호출*/
-    /* ajax 통신을 이용해서 json 으로 변경 */
-    /* ajax 가 통신을 성공하고 json 을 리턴해주면 자동으로 자바 오브젝트 생성 */
-    /* 로그아웃 버튼 작동 */
-    $("#logout_btn").click(function() {
-        $.ajax({
-            type: "POST",
-            url: "/api/user/logout.do",
-            success: function(data) {
-                alert("로그아웃 성공");
-                document.location.reload();
-            },
-            error: function() {
-                alert("로그아웃 중 오류가 발생했습니다.");
-            }
-        });
-    });
-</script>
 
 </html>

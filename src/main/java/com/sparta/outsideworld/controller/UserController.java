@@ -16,6 +16,8 @@ import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.core.context.SecurityContextHolder;
+import org.springframework.security.web.authentication.logout.SecurityContextLogoutHandler;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.*;
 
@@ -81,12 +83,12 @@ public class UserController {
 		return ResponseEntity.ok().body(new ApiResponseDto("로그인에 성공했습니다.", HttpStatus.OK.value()));
 	}
 
-	// 비동기방식 로그아웃 메서드
-	@RequestMapping(value = "logout.do", method = RequestMethod.POST)
-	@ResponseBody
-	public void logoutPost(HttpServletRequest request) throws Exception{
-		log.info("비동기 로그아웃 메서드 진입");
-		HttpSession session = request.getSession();
-		session.invalidate();
+	@PostMapping("/user/logout")
+	public void logout(HttpServletResponse response) {
+		//원래 쿠키의 이름이 userInfo 이었다면, value를 null로 처리.
+		Cookie myCookie = new Cookie("Authorization", null);
+		myCookie.setMaxAge(0); // 쿠키의 expiration 타임을 0으로 하여 없앤다.
+		myCookie.setPath("/"); // 모든 경로에서 삭제 됬음을 알린다.
+		response.addCookie(myCookie);
 	}
 }
