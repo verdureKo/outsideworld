@@ -21,8 +21,8 @@ public class HomeController {
 
     // 글상세 페이지 이동
     @GetMapping("/post/detail/{postId}")
-    public String selectPost(@PathVariable String postId, Model model) {
-        model.addAttribute(postId, postId);
+    public String selectPost(@PathVariable Long postId, Model model) {
+        model.addAttribute("postId", postId);
         return "postdetail";
     }
 
@@ -31,6 +31,7 @@ public class HomeController {
     public String newPost(){
         return "newpost";
     }
+
 
     //글 수정 페이지 이동
     @GetMapping("/post/update/{postId}")

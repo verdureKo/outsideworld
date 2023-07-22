@@ -37,12 +37,12 @@
 </header>
 <div class="container">
   <div class="mb-5 fs-2 fw-bold">글 작성</div>
-  <form id="updatePostForm" action="/api/post" method="post">
+
     <div class="row mt-4">
       <div class="col-md-12">
-        <input type="text" id="title" name="title" class="form-control shadow border-0 p-3" placeholder="제목을 입력하세요">
-        <textarea class="form-control col-sm-5 mt-2 shadow border-0 p-3" id = "content" name="content" rows="15" placeholder="내용을 입력하세요"></textarea>
-        <input type="text" class="form-control col-sm-5 mt-2 shadow border-0 p-3" id ="image" name="image" placeholder="이미지 URL을 입력하세요">
+        <input type="text" id="title" class="form-control shadow border-0 p-3" placeholder="제목을 입력하세요">
+        <input class="form-control col-sm-5 mt-2 shadow border-0 p-3" id = "content" rows="15" placeholder="내용을 입력하세요">
+        <input type="text" class="form-control col-sm-5 mt-2 shadow border-0 p-3" id ="image" placeholder="이미지 URL을 입력하세요">
       </div>
     </div>
     <div class="row my-5">
@@ -53,11 +53,12 @@
         </div>
       </div>
     </div>
-  </form>
 </div>
+
 <footer style="height: 200px; border-top: solid 1px #d9d9d9;" class="footer fw-bold fs-3 d-flex justify-content-center align-items-center mt-5">동행조 화이팅!</footer>
 
 <script>
+
 
   let idx = {
     init: function (){
@@ -72,27 +73,23 @@
         contents : $('#content').val(),
         image : $('#image').val()
       };
+      console.log(data)
 
-      $.ajax({
-        type: "POST",
-        url:"/api/post",
-        data: JSON.stringify(data), // http body data
-        contentType:"application/json; charset=UTF-8",
-        dataType:"json"
-      }).done(function(res){
-        console.log(res)
-        console.log(res.status)
-        if (res.status === 201) {
-          alert("글 작성 완료")
-          location.href = "/"
-        } else if (res.status === 400) {
-          alert("글 작성 실패")
-        }
-      }).fail(function (request, status, error){
-        console.log(status)
-        console.log(error)
-        alert("글 작성 실패");
-      }); //ajax 통신을 이용해서 파라미터를 json으로 변경하여 insert 요청
+      fetch(`/api/post`, {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json"
+        },
+        body: JSON.stringify(data)
+      })
+              .then(response => response.json())
+              .then(data => {
+                alert("글 작성 성공");
+                location.href = "/"
+              })
+              .catch(error => {
+                console.error("댓글 작성 실패:", error);
+              }); //ajax 통신을 이용해서 파라미터를 json으로 변경하여 insert 요청
     }
   }
   idx.init();
