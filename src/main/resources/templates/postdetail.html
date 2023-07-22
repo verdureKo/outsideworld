@@ -33,10 +33,8 @@
 
   <div class="col-5 container justify-content-end">
 
-    <a href="/">
-      <button type="submit" class="btn btn-dark" id="update-btn" onclick="updatePost()">수정</button>
-    </a>
-      <button type="submit" class="btn btn-dark" id="delete-btn" onclick="deletePost()">삭제</button>
+    <button type="submit" class="btn btn-dark" id="update-btn" onclick="updatePost()">수정</button>
+    <button type="submit" class="btn btn-dark" id="delete-btn" onclick="deletePost()">삭제</button>
     <a href="/">
       <button type="submit" class="btn btn-dark" id="home-btn">home</button>
     </a>
@@ -152,14 +150,17 @@
 <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
 <script th:inline="javascript">
   let post_id = [[${postId}]];
+  let loginUserName = [[${username}]];
+  let loginUserRole = [[${userRole}]];
   console.log(post_id);
+
+  // 선택 게시글 조회
   $(document).ready(function() {
     loadPostData()
   });
     function loadPostData() {
-      // 게시글 데이터를 가져오는 Ajax 요청
       fetch('/api/post/'+post_id, {
-        type: 'GET',
+        method: 'GET',
         headers: {'Content-Type': 'application/json'}
       })
               .then(response => response.json())
@@ -240,9 +241,36 @@
               })
     }
 
-    //게시글 수정
+  //게시글 수정
   function updatePost() {
+      const userData = document.getElementById('userName').innerText;
 
+      if (userData === loginUserName|| loginUserRole === "ADMIN") {
+        redirectToPage()
+      } else {
+        alert("자신이 작성한 게시글이 아닙니다.")
+        location.href = '/post/detail/'+post_id
+      }
+  }
+
+  //수정 페이지로 이동
+  function redirectToPage() {
+
+    fetch(`/post/update/`+post_id, {
+      method: 'GET'
+    })
+            .then(response => {
+              if (response.status === 200) {
+                alert('페이지로 이동합니다.');
+                window.location.href = `/post/update/${post_id}`;
+              } else {
+                alert('페이지 이동에 실패하였습니다.');
+              }
+            })
+            .catch(error => {
+              console.error('Error:', error);
+              alert('오류가 발생하였습니다.');
+            });
   }
 
   //게시글 삭제
