@@ -336,7 +336,7 @@
                                         <div class="col-7" style="border-bottom: solid gray 1px">${comment}</div>
                                         <div class="col-2" style="border-bottom: solid gray 1px; text-align: right">${userName}</div>
                                         <div class="col-1" style="border-bottom: solid gray 1px">
-                                            <button type="button" class="btn" id="" onclick="" style="height: 35px; width: 30px; float: left" >
+                                            <button type="button" class="btn" id="" onclick="commentLike(${commentId})" style="height: 35px; width: 30px; float: left" >
                                                   <img src ="/images/img_1.png" alt="" height="35" width="20" style="padding-bottom: 10px; margin-right: 20px">
                                             </button>
                                             <div style="margin-left: 40px">
@@ -407,6 +407,55 @@
       console.log(error)
       alert("에러가 발생했습니다.");
     });
+  }
+
+  // 댓글 좋아요
+  // 함수를 두개 만들어서 서로 호출하는 방식
+  function commentLike(comment_id) {
+    $.ajax({
+      type: "POST",
+      url:'/api/post/'+post_id+'/comment/'+comment_id+'/like',
+      contentType:"application/json; charset=urf-8",
+      dataType:"json"
+    }).done(function(res){
+      console.log(res)
+      console.log(res.status)
+      if (res.status === 200) {
+        alert("댓글 좋아요를 눌렀습니다.")
+        location.href = '/post/detail/'+post_id
+      } else if (res.status === 400) {
+        commentUnlike(comment_id)
+      }
+    }).fail(function (request, status, error){
+      console.log(status)
+      console.log(error)
+      alert("에러가 발생했습니다.");
+    });
+
+  }
+
+  // 댓글 좋아요 취소
+  function commentUnlike(comment_id) {
+    $.ajax({
+      type: "DELETE",
+      url:'/api/post/'+post_id+'/comment/'+comment_id+'/like',
+      contentType:"application/json; charset=urf-8",
+      dataType:"json"
+    }).done(function(res){
+      console.log(res)
+      console.log(res.status)
+      if (res.status === 200) {
+        alert("댓글 좋아요를 취소했습니다.")
+        location.href = '/post/detail/'+post_id
+      } else if (res.status === 400) {
+        commentLike(comment_id)
+      }
+    }).fail(function (request, status, error){
+      console.log(status)
+      console.log(error)
+      alert("에러가 발생했습니다.");
+    });
+
   }
 
 
