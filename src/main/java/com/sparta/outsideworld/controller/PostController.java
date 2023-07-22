@@ -7,14 +7,17 @@ import com.sparta.outsideworld.security.UserDetailsImpl;
 import com.sparta.outsideworld.service.LikeService;
 import com.sparta.outsideworld.service.PostService;
 import lombok.RequiredArgsConstructor;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
+import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
 
 @RestController
+@Slf4j
 @RequiredArgsConstructor
 @RequestMapping("/api")
 public class PostController {
@@ -34,22 +37,28 @@ public class PostController {
         return postService.getPost(postId);
     }
 
-
     // 게시글 등록 API
     @PostMapping("/post")
-    public ResponseEntity<ApiResponseDto> createPost(PostRequestDto postRequestDto,
-                                      @AuthenticationPrincipal UserDetailsImpl userDetails){
+    @ResponseBody
+    public ResponseEntity<ApiResponseDto> createPost(@RequestBody PostRequestDto postRequestDto,
+                                                     @AuthenticationPrincipal UserDetailsImpl userDetails){
+        log.info("title : " + postRequestDto.getTitle());
+        log.info("contents : " + postRequestDto.getContents());
+
         postService.createPost(postRequestDto, userDetails.getUser());
         return ResponseEntity.ok().body(new ApiResponseDto("글 작성에 성공했습니다.", HttpStatus.CREATED.value()));
     }
-
-
     // 게시글 수정 API
     @PutMapping("/post/{postId}")
-    public PostResponseDto updatePost(@PathVariable Long postId,
+    public ResponseEntity<ApiResponseDto> updatePost(@PathVariable Long postId,
                                      @RequestBody PostRequestDto postRequestDto,
                                      @AuthenticationPrincipal UserDetailsImpl userDetails){
-        return postService.updatePost(postId, postRequestDto, userDetails.getUser());
+        try {
+            postService.updatePost(postId, postRequestDto, userDetails.getUser());
+        } catch (IllegalArgumentException e) {
+            return  ResponseEntity.ok().body(new ApiResponseDto("글 수정에 실패했습니다.", HttpStatus.BAD_REQUEST.value()));
+        }
+        return  ResponseEntity.ok().body(new ApiResponseDto("글 수정에 성공했습니다.", HttpStatus.OK.value()));
     }
 
 

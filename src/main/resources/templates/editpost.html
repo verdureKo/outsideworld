@@ -3,6 +3,8 @@
 <head>
     <meta charset="UTF-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <link rel="icon" href="data:,">
+    <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css"
           integrity="sha512-iecdLmaskl7CVkqkXNQ/ZH/XLlvWZOJyj7Yy7tcenmpD1ypASozpmT/E0iPtmFIB46ZmdtAc9eNBvH0H/ZpiBw=="
@@ -14,27 +16,20 @@
     <link href="/css/style.css" rel="stylesheet">
     <title>글 수정</title>
 </head>
-<header class="d-flex justify-content-between align-items-middle bg-transparent p-1">
-    <div class="h1 fs-3 px-4 pt-2 fw-bold"><a href="/outsideworld">밖에서 오늘 뭐하지?</a></div>
-    <div class="row">
-        <div class="col-md-12 board">
-            <span class="info-name fw-bold fs-3 ms-3" id="userName"></span>
-            <span class="fw-bold fs-6">님의 접속을 환영합니다</span>
-        </div>
+<nav class="row navbar bg-body-tertiary">
+    <div class="col-1"></div>
+    <div class="col-5 container">
+        <h3>밖에서 오늘 뭐하지?</h3>
     </div>
-    <div class="is-login-box p-2" id="is-login-box" style="display: none;">
-        <a href="/post/new-post" class="ms-4 fs-4"><i class="fa-solid fa-pen-to-square fa"></i>글쓰기</a>
-        <a href="/api/mypage"><i class="fa-solid fa-user-pen fa-lg ms-4"></i>정보수정</a>
-        <a type="button" onclick="logout()" class="d-inline"><i class="fa-solid fa-person-walking-arrow-right fa-xl ms-4"></i>로그아웃</a>
+
+    <div class="col-5 container justify-content-end">
+        <button type="submit" class="btn btn-dark" id="home-btn" onclick="returnPage()">돌아가기</button>
     </div>
-    <div class="not-login-box m-3" id="not-login-box">
-        <a href="/api/user/login"><i class="fa-solid fa-user-check fa-lg ms-4"></i>로그인</a>
-        <a href="/api/user/signup"><i class="fa-solid fa-user-plus fa-lg ms-4"></i>회원가입</a>
-    </div>
-</header>
-<div class="container">
-    <div class="mb-5 fs-2 fw-bold">글 수정</div>
-    <form id="updatePostForm" action="/api/post" method="post">
+    <div class="col-1"></div>
+</nav>
+<div class="mb-5 fs-2 fw-bold" style="margin-left: 100px">게시글 수정</div>
+<div class="container" id ="edit-post-box">
+    <div id="updatePostForm">
         <div class="row mt-4">
             <div class="col-md-12">
                 <input type="text" name="title" class="form-control shadow border-0 p-3" placeholder="제목을 입력하세요">
@@ -45,14 +40,92 @@
         <div class="row my-5">
             <div class="col-md-12 d-flex justify-content-end">
                 <div class="align-items-center d-flex">
-                    <button onclick="updatePost()" class="btn btn-dark" value="updatePost">Submit</button>
-                    <button onclick="deletePost()" class="btn btn-outline-dark ms-2" value="deletePost">Delete</button>
+                    <button onclick="editPost()" class="btn btn-dark" value="updatePost">Submit</button>
                 </div>
             </div>
         </div>
-    </form>
+    </div>
 </div>
 <footer style="height: 200px; border-top: solid 1px #d9d9d9;" class="footer fw-bold fs-3 d-flex justify-content-center align-items-center mt-5">동행조 화이팅!</footer>
 
+<script>
+    let post_id = [[${postId}]];
+    function returnPage() {
+        window.location.href = "/post/detail/"+post_id
+    }
+
+    // 기존 데이터 가져오기
+    $(document).ready(function() {
+        loadData()
+    });
+    function loadData() {
+    fetch('/api/post/'+post_id, {
+        method: 'GET',
+        headers: {'Content-Type': 'application/json'}
+    })
+        .then(response => response.json())
+        .then(data => {
+            $('#edit-post-box').empty()
+            console.log(data);
+            let title = data.title;
+            let contents = data.contents;
+            let postImage = data.image;
+
+            let temp_html = `
+                                  <div id="updatePostForm">
+                                    <div class="row mt-4">
+                                        <div class="col-md-12">
+                                            <input type="text" name="title" class="form-control shadow border-0 p-3" placeholder="제목을 입력하세요" value="${title}" id = "edit-title">
+                                            <textarea class="form-control col-sm-5 mt-2 shadow border-0 p-3" name="content" rows="15" placeholder="내용을 입력하세요" id = "edit-contents">${contents}</textarea>
+                                            <input class="form-control col-sm-5 mt-2 shadow border-0 p-3" name="image" placeholder="이미지 URL을 입력하세요" value="${postImage}" id="edit-image">
+                                        </div>
+                                    </div>
+                                    <div class="row my-5">
+                                        <div class="col-md-12 d-flex justify-content-end">
+                                            <div class="align-items-center d-flex">
+                                                <button onclick="editPost()" class="btn btn-dark" value="updatePost">Submit</button>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>`
+
+            $('#edit-post-box').append(temp_html);
+        })
+        .catch(error => {
+            console.error('Error:', error);
+            alert('데이터를 가져오는데 실패하였습니다.');
+        });
+    }
+
+    //게시글 수정
+    function editPost() {
+        let data = {
+            title : $('#edit-title').val(),
+            contents : $('#edit-contents').val(),
+            image : $('#edit-image').val()
+        }
+        console.log(data)
+        $.ajax({
+            type: "PUT",
+            url:'/api/post/'+post_id,
+            data: JSON.stringify(data),
+            contentType:"application/json; charset=urf-8",
+            dataType:"json"
+        }).done(function(res){
+            console.log(res)
+            console.log(res.status)
+            if (res.status === 200) {
+                alert("성공적으로 게시글을 수정했습니다.")
+                location.href = '/post/detail/'+post_id
+            } else if (res.status === 400) {
+                alert("게시글 수정에 실패했습니다.")
+            }
+        }).fail(function (request, status, error){
+            console.log(status)
+            console.log(error)
+            alert("에러가 발생했습니다.");
+        });
+    }
+</script>
 </body>
 </html>

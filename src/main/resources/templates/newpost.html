@@ -3,6 +3,7 @@
 <head>
   <meta charset="UTF-8">
   <link rel="icon" href="data:,">
+
   <script src="https://code.jquery.com/jquery-3.7.0.min.js"
           integrity="sha256-2Pmvv0kuTBOenSvLm6bvfBSSHrUJ+3A7x6P5Ebd07/g=" crossorigin="anonymous"></script>
   <script src="https://cdn.jsdelivr.net/npm/js-cookie@3.0.5/dist/js.cookie.min.js"></script>
@@ -14,35 +15,31 @@
           crossorigin="anonymous">
   </script>
   <script src="https://code.jquery.com/jquery-3.4.1.js"></script>
+  <link href = "/css/style.css" rel="stylesheet">
   <title>글 작성</title>
 
 </head>
-<header class="d-flex justify-content-between align-items-middle bg-transparent p-1">
-  <div class="h1 fs-3 px-4 pt-2 fw-bold"><a href="/outsideworld">밖에서 오늘 뭐하지?</a></div>
-  <div class="row">
-    <div class="col-md-12 board">
-      <span class="info-name fw-bold fs-3 ms-3" id="userName"></span>
-      <span class="fw-bold fs-6">님의 접속을 환영합니다</span>
-    </div>
+<nav class="row navbar bg-body-tertiary">
+  <div class="col-1"></div>
+  <div class="col-5 container">
+    <h3>밖에서 오늘 뭐하지?</h3>
   </div>
-  <div class="is-login-box p-2" id="is-login-box" style="display: none;">
-    <a href="/post/new-post" class="ms-4 fs-4"><i class="fa-solid fa-pen-to-square fa"></i>글쓰기</a>
-    <a href="/api/mypage"><i class="fa-solid fa-user-pen fa-lg ms-4"></i>정보수정</a>
-    <a type="button" onclick="logout()" class="d-inline"><i class="fa-solid fa-person-walking-arrow-right fa-xl ms-4"></i>로그아웃</a>
+
+  <div class="col-5 container justify-content-end">
+    <a href="/">
+      <button type="submit" class="btn btn-dark" id="home-btn">Home</button>
+    </a>
   </div>
-  <div class="not-login-box m-3" id="not-login-box">
-    <a href="/api/user/login"><i class="fa-solid fa-user-check fa-lg ms-4"></i>로그인</a>
-    <a href="/api/user/signup"><i class="fa-solid fa-user-plus fa-lg ms-4"></i>회원가입</a>
-  </div>
-</header>
+  <div class="col-1"></div>
+</nav>
 <div class="container">
   <div class="mb-5 fs-2 fw-bold">글 작성</div>
-  <form id="updatePostForm" action="/api/post" method="post">
+
     <div class="row mt-4">
       <div class="col-md-12">
-        <input type="text" id="title" name="title" class="form-control shadow border-0 p-3" placeholder="제목을 입력하세요">
-        <textarea class="form-control col-sm-5 mt-2 shadow border-0 p-3" id = "content" name="content" rows="15" placeholder="내용을 입력하세요"></textarea>
-        <input type="text" class="form-control col-sm-5 mt-2 shadow border-0 p-3" id ="image" name="image" placeholder="이미지 URL을 입력하세요">
+        <input type="text" id="title" class="form-control shadow border-0 p-3" placeholder="제목을 입력하세요">
+        <textarea class="form-control col-sm-5 mt-2 shadow border-0 p-3" id = "content" rows="15" placeholder="내용을 입력하세요"></textarea>
+        <input type="text" class="form-control col-sm-5 mt-2 shadow border-0 p-3" id ="image" placeholder="이미지 URL을 입력하세요">
       </div>
     </div>
     <div class="row my-5">
@@ -53,11 +50,12 @@
         </div>
       </div>
     </div>
-  </form>
 </div>
+
 <footer style="height: 200px; border-top: solid 1px #d9d9d9;" class="footer fw-bold fs-3 d-flex justify-content-center align-items-center mt-5">동행조 화이팅!</footer>
 
 <script>
+
 
   let idx = {
     init: function (){
@@ -72,27 +70,23 @@
         contents : $('#content').val(),
         image : $('#image').val()
       };
+      console.log(data)
 
-      $.ajax({
-        type: "POST",
-        url:"/api/post",
-        data: JSON.stringify(data), // http body data
-        contentType:"application/json; charset=UTF-8",
-        dataType:"json"
-      }).done(function(res){
-        console.log(res)
-        console.log(res.status)
-        if (res.status === 201) {
-          alert("글 작성 완료")
-          location.href = "/"
-        } else if (res.status === 400) {
-          alert("글 작성 실패")
-        }
-      }).fail(function (request, status, error){
-        console.log(status)
-        console.log(error)
-        alert("글 작성 실패");
-      }); //ajax 통신을 이용해서 파라미터를 json으로 변경하여 insert 요청
+      fetch(`/api/post`, {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json"
+        },
+        body: JSON.stringify(data)
+      })
+              .then(response => response.json())
+              .then(data => {
+                alert("글 작성 성공");
+                location.href = "/"
+              })
+              .catch(error => {
+                console.error("댓글 작성 실패:", error);
+              }); //ajax 통신을 이용해서 파라미터를 json으로 변경하여 insert 요청
     }
   }
   idx.init();

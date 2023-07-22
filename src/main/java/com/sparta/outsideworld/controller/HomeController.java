@@ -21,8 +21,12 @@ public class HomeController {
 
     // 글상세 페이지 이동
     @GetMapping("/post/detail/{postId}")
-    public String selectPost(@PathVariable String postId, Model model) {
-        model.addAttribute(postId, postId);
+    public String selectPost(@PathVariable Long postId, Model model, @AuthenticationPrincipal UserDetailsImpl userDetails) {
+        model.addAttribute("postId", postId);
+        if(userDetails != null) {
+            model.addAttribute("username", userDetails.getUsername());
+            model.addAttribute("userRole", userDetails.getUser().getRole());
+        }
         return "postdetail";
     }
 
@@ -32,10 +36,11 @@ public class HomeController {
         return "newpost";
     }
 
+
     //글 수정 페이지 이동
     @GetMapping("/post/update/{postId}")
-    public String updatePost(@PathVariable String postId, Model model) {
-        model.addAttribute(postId, postId);
+    public String updatePost(@PathVariable Long postId, Model model) {
+        model.addAttribute("postId", postId);
         return "editpost";
     }
 

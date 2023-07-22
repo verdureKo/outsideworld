@@ -8,6 +8,7 @@ import com.sparta.outsideworld.service.CommentService;
 import com.sparta.outsideworld.service.LikeService;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
+import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.web.bind.annotation.*;
@@ -20,22 +21,42 @@ public class CommentController {
     private final CommentService commentService;
     private final LikeService likeService;
 
-    @PostMapping("/comment/{postId}")
-    public CommentResponseDto addComment(@PathVariable Long postId, @RequestBody CommentRequestDto requestDto,
+    @PostMapping("/post/{postId}/comment")
+    public ResponseEntity<ApiResponseDto> addComment(@PathVariable Long postId, @RequestBody CommentRequestDto requestDto,
                                          @AuthenticationPrincipal UserDetailsImpl userDetails){
-        return commentService.addComment(postId, requestDto, userDetails.getUser());
+        try {
+            commentService.addComment(postId, requestDto, userDetails.getUser());
+        } catch (NullPointerException e) {
+            throw new RuntimeException(e);
+        }
+
+        return ResponseEntity.ok().body(new ApiResponseDto("댓글 작성에 성공했습니다.", HttpStatus.CREATED.value()));
     }
 
     @PutMapping("/comment/{commentId}")
-    public CommentResponseDto updateComment(@PathVariable Long commentId, @RequestBody CommentRequestDto requestDto,
+    public ResponseEntity<ApiResponseDto> updateComment(@PathVariable Long commentId, @RequestBody CommentRequestDto requestDto,
                                             @AuthenticationPrincipal UserDetailsImpl userDetails){
-        return commentService.updateComment(commentId, requestDto, userDetails.getUser());
+        log.info(requestDto.getComment());
+        try {
+            commentService.updateComment(commentId, requestDto, userDetails.getUser());
+        } catch (IllegalArgumentException e) {
+            return ResponseEntity.ok().body(new ApiResponseDto("댓글 수정에 실패했습니다", HttpStatus.BAD_REQUEST.value()));
+        }
+
+        return ResponseEntity.ok().body(new ApiResponseDto("댓글을 수정했습니다.", HttpStatus.OK.value()));
     }
 
     @DeleteMapping("/comment/{commentId}")
     public ResponseEntity<ApiResponseDto> deleteComment(@PathVariable Long commentId,
                                                         @AuthenticationPrincipal UserDetailsImpl userDetails){
-        return commentService.deleteComment(commentId, userDetails.getUser());
+        ResponseEntity<ApiResponseDto> response;
+        try {
+            response = commentService.deleteComment(commentId, userDetails.getUser());
+        } catch (IllegalArgumentException e) {
+            return ResponseEntity.ok().body(new ApiResponseDto("댓글 삭제에 실패했습니다", HttpStatus.BAD_REQUEST.value()));
+        }
+
+        return response;
     }
 
     // 댓글 좋아요 API

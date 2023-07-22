@@ -102,11 +102,4 @@ public class UserController {
 
 		return ResponseEntity.status(201).body(new ApiResponseDto("로그아웃 성공", HttpStatus.CREATED.value()));
 	}
-//	public void logout(HttpServletResponse response) {
-//		//원래 쿠키의 이름이 userInfo 이었다면, value를 null로 처리.
-//		Cookie myCookie = new Cookie("Authorization", null);
-//		myCookie.setMaxAge(0); // 쿠키의 expiration 타임을 0으로 하여 없앤다.
-//		myCookie.setPath("/"); // 모든 경로에서 삭제 됬음을 알린다.
-//		response.addCookie(myCookie);
-//	}
 }

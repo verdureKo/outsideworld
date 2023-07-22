@@ -27,7 +27,7 @@ public class CommentService {
     private final MessageSource messageSource;
 
     @Transactional
-    public CommentResponseDto addComment(Long postId, CommentRequestDto requestDto, User user) {
+    public void addComment(Long postId, CommentRequestDto requestDto, User user) {
         Post post = postRepository.findById(postId).orElseThrow(
                 () -> new NullPointerException(messageSource.getMessage(
                         "not.exist.post",
@@ -36,13 +36,12 @@ public class CommentService {
                         Locale.getDefault()
                 ))
         );
-        Comment comment = commentRepository.save(new Comment(requestDto, user, post, 0L));
 
-        return new CommentResponseDto(comment);
+        Comment comment = commentRepository.save(new Comment(requestDto, user, post, 0L));
     }
 
     @Transactional
-    public CommentResponseDto updateComment(Long commentId, CommentRequestDto requestDto, User user) {
+    public void updateComment(Long commentId, CommentRequestDto requestDto, User user) {
         Comment comment = findComment(commentId);
         if(!confirmUser(comment, user)){
             throw new IllegalArgumentException(messageSource.getMessage(
@@ -53,7 +52,6 @@ public class CommentService {
             ));
         }
         comment.update(requestDto);
-        return new CommentResponseDto(comment);
     }
 
     @Transactional
