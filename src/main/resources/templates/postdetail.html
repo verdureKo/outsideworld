@@ -127,6 +127,13 @@
         </div>
         <div style="display: none" id="comment-id">${commentId}</div>
       </div>
+      <div class="col-md-12" id="edit-box" style="">
+        <div class="comment-board mt-2">
+          <textarea class="content form-control col-sm-5" rows="1" id="input-edit-comment"></textarea>
+        </div>
+        <button type="submit" class="btn btn-dark" id="comment-edit-btn" onclick="" style="width: 55px; font-size: 12px;">확 인</button>
+        <button type="submit" class="btn btn-dark" id="comment-edit-cancel-btn" onclick="" style="width: 55px; font-size: 12px;">취 소</button>
+      </div>
     </div>
     <!-- 댓글 반복 끝 -->
     <!-- 댓글쓰기 -->
@@ -344,8 +351,15 @@
                                             </div>
                                           </div>
                                         <div class="col-2" style="border-bottom: solid gray 1px">
-                                          <button type="submit" class="btn btn-dark" id="comment-update-btn" onclick="" style="width: 55px; font-size: 12px">수 정</button>
+                                          <button type="submit" class="btn btn-dark" id="comment-update-btn" onclick="updateComment()" style="width: 55px; font-size: 12px">수 정</button>
                                           <button type="submit" class="btn btn-dark" id="comment-delete-btn" onclick="deleteComment(${commentId})" style="width: 55px; font-size: 12px">삭 제</button>
+                                        </div>
+                                        <div class="col-md-12" id="edit-box" style="display: none">
+                                          <div class="comment-board mt-2">
+                                            <textarea class="content form-control col-sm-5" rows="1" id="input-edit-comment"></textarea>
+                                          </div>
+                                          <button type="submit" class="btn btn-dark" id="comment-edit-btn" onclick="editComment(${commentId})" style="width: 55px; font-size: 12px;">확 인</button>
+                                          <button type="submit" class="btn btn-dark" id="comment-edit-cancel-btn" onclick="cancelEditBtn()" style="width: 55px; font-size: 12px;">취 소</button>
                                         </div>
                                         `;
 
@@ -385,6 +399,40 @@
             });
   }
   // 댓글 수정
+  function updateComment() {
+      document.getElementById('edit-box').style.display = "block";
+  }
+
+  function cancelEditBtn() {
+    document.getElementById('edit-box').style.display = "none";
+  }
+
+  function editComment(comment_id) {
+      let data = {
+        comment : $('#input-edit-comment').val()
+      }
+      console.log(data)
+    $.ajax({
+      type: "PUT",
+      url:'/api/comment/'+comment_id,
+      data: JSON.stringify(data),
+      contentType:"application/json; charset=urf-8",
+      dataType:"json"
+    }).done(function(res){
+      console.log(res)
+      console.log(res.status)
+      if (res.status === 200) {
+        alert("성공적으로 댓글을 수정했습니다.")
+        location.href = '/post/detail/'+post_id
+      } else if (res.status === 400) {
+        alert("게시글 수정에 실패했습니다. 본인이 작성한 댓글인지 확인해주세요.")
+      }
+    }).fail(function (request, status, error){
+      console.log(status)
+      console.log(error)
+      alert("에러가 발생했습니다.");
+    });
+  }
 
   // 댓글 삭제
   function deleteComment(comment_id) {

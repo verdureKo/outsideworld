@@ -34,9 +34,16 @@ public class CommentController {
     }
 
     @PutMapping("/comment/{commentId}")
-    public CommentResponseDto updateComment(@PathVariable Long commentId, @RequestBody CommentRequestDto requestDto,
+    public ResponseEntity<ApiResponseDto> updateComment(@PathVariable Long commentId, @RequestBody CommentRequestDto requestDto,
                                             @AuthenticationPrincipal UserDetailsImpl userDetails){
-        return commentService.updateComment(commentId, requestDto, userDetails.getUser());
+        log.info(requestDto.getComment());
+        try {
+            commentService.updateComment(commentId, requestDto, userDetails.getUser());
+        } catch (IllegalArgumentException e) {
+            return ResponseEntity.ok().body(new ApiResponseDto("댓글 수정에 실패했습니다", HttpStatus.BAD_REQUEST.value()));
+        }
+
+        return ResponseEntity.ok().body(new ApiResponseDto("댓글을 수정했습니다.", HttpStatus.OK.value()));
     }
 
     @DeleteMapping("/comment/{commentId}")

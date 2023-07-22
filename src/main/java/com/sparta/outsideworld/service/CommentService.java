@@ -41,7 +41,7 @@ public class CommentService {
     }
 
     @Transactional
-    public CommentResponseDto updateComment(Long commentId, CommentRequestDto requestDto, User user) {
+    public void updateComment(Long commentId, CommentRequestDto requestDto, User user) {
         Comment comment = findComment(commentId);
         if(!confirmUser(comment, user)){
             throw new IllegalArgumentException(messageSource.getMessage(
@@ -52,7 +52,6 @@ public class CommentService {
             ));
         }
         comment.update(requestDto);
-        return new CommentResponseDto(comment);
     }
 
     @Transactional
