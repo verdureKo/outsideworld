@@ -147,8 +147,8 @@
                                                 <input type="text" class="form-control" id="edit-introduction-${userId}" placeholder="수정할 Introduction을 입력해주세요." name = introduction required/>
                                             </div>
                                             <div style="float: right; margin-top: 5px">
-                                                <button type="submit" class="btn btn-dark" id="edit-user-role-admin-btn">ADMIN으로 바꾸기</button>
-                                                <button type="submit" class="btn btn-dark" id="edit-user-role-user-btn">USER로 바꾸기</button>
+                                                <button type="submit" class="btn btn-dark" id="edit-user-role-admin-btn" onclick="userRoleCheckUSER('${userRole}', ${userId})">ADMIN으로 바꾸기</button>
+                                                <button type="submit" class="btn btn-dark" id="edit-user-role-user-btn" onclick="userRoleCheckADMIN('${userRole}', ${userId})">USER로 바꾸기</button>
                                                 <button type="submit" class="btn btn-dark" id="edit-submit-btn" onclick="editUserInfo(${userId})">Submit</button>
                                             </div>
                                         </div>`
@@ -185,7 +185,68 @@
             alert("에러가 발생했습니다.");
         });
     }
+
     // 유저의 role 바꾸기
+    // USER => ADMIN
+    function userRoleCheckUSER(role, user_id) {  // 유저 정보 조회
+        console.log(role)
+        if (role === "ADMIN") {
+            alert("이미 해당 유저는 ADMIN role입니다.")
+        } else {
+            userToAdmin(user_id)
+        }
+    }
+    function userToAdmin(user_id) {
+        $.ajax({
+            type: "PUT",
+            url:'/api/admin/admin-role/'+user_id,
+            dataType:"json"
+        }).done(function(res){
+            console.log(res)
+            console.log(res.status)
+            if (res.status === 200) {
+                alert("성공적으로 유저 정보를 수정했습니다.")
+                location.href = '/admin'
+            } else {
+                alert("유저 정보 수정에 실패했습니다.")
+            }
+        }).fail(function (request, status, error){
+            console.log(status)
+            console.log(error)
+            alert("에러가 발생했습니다.");
+        });
+    }
+
+    //ADMIN => USER
+    function userRoleCheckADMIN(role, user_id) {  // 유저 정보 조회
+        console.log(role)
+        if (role === "USER") {
+            alert("이미 해당 유저는 USER role입니다.")
+        } else {
+            adminToUser(user_id)
+        }
+    }
+
+    function adminToUser(user_id) {
+        $.ajax({
+            type: "PUT",
+            url:'/api/admin/user-role/'+user_id,
+            dataType:"json"
+        }).done(function(res){
+            console.log(res)
+            console.log(res.status)
+            if (res.status === 200) {
+                alert("성공적으로 유저 정보를 수정했습니다.")
+                location.href = '/admin'
+            } else {
+                alert("유저 정보 수정에 실패했습니다.")
+            }
+        }).fail(function (request, status, error){
+            console.log(status)
+            console.log(error)
+            alert("에러가 발생했습니다.");
+        });
+    }
 
     // 유저 삭제
     function deleteUser(user_id) {

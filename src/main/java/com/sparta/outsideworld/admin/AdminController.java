@@ -41,15 +41,18 @@ public class AdminController {
     // 유저 권한 User 로 변경
     @Secured("ROLE_ADMIN")
     @PutMapping("/user-role/{userid}")
-    public void updateUserRole(@PathVariable Long userid) {
+    public ResponseEntity<ApiResponseDto> updateUserRole(@PathVariable Long userid) {
         adminService.updateUserRole(userid);
+        return ResponseEntity.ok().body(new ApiResponseDto("유저 정보 수정에 성공했습니다.", HttpStatus.OK.value()));
+
     }
 
     // 유저 권한 Admin 으로 변경
     @Secured("ROLE_ADMIN")
     @PutMapping("/admin-role/{userid}")
-    public void updateAdminRole(@PathVariable Long userid) {
+    public  ResponseEntity<ApiResponseDto> updateAdminRole(@PathVariable Long userid) {
         adminService.updateAdminRole(userid);
+        return ResponseEntity.ok().body(new ApiResponseDto("유저 정보 수정에 성공했습니다.", HttpStatus.OK.value()));
     }
 
     // 게시글 수정

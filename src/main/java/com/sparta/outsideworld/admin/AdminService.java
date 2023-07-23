@@ -9,12 +9,14 @@ import com.sparta.outsideworld.repository.CommentRepository;
 import com.sparta.outsideworld.repository.PostRepository;
 import com.sparta.outsideworld.repository.UserRepository;
 import lombok.RequiredArgsConstructor;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
 import java.util.Optional;
 
 @Service
+@Slf4j
 @RequiredArgsConstructor
 public class AdminService {
 
@@ -47,6 +49,7 @@ public class AdminService {
                 () -> new NullPointerException("해당 유저가 존재하지 않습니다.")
         );
         user.setRole(UserRoleEnum.USER);
+        log.info("##############################################################user role => " + user.getRole());
         userRepository.save(user);
     }
 
