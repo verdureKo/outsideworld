@@ -28,12 +28,13 @@
     #inputUsername,
     #inputEmail,
     #inputIntroduction,
-    #inputAdminToken {
+    #inputAdminToken,
+    #profile-image {
       height: 50px;
-      margin-bottom: 10px;
+      margin-bottom: 15px;
     }
 
-    #username {
+    #profile-image {
       margin-top: 100px;
     }
 
@@ -91,11 +92,10 @@
 
 
 <form class="container justify-content-end" style="width: 450px;">
-
-  <div class="form-group">
-    <label for="inputUsername" class="col-sm-2 control-label">Profile-image</label>
+  <div class="form-group" id="profile-image">
+    <label for="inputUsername" class="col-sm-2 control-label">ProfileImageURL</label>
     <div class="col-sm-10">
-      <input type="file" class="form-control" id="inputImage" placeholder="image" name = "image" accept=".jpg,.jpeg,.bmp,.png,.gif" required/>
+      <input type="text" class="form-control" id="inputProfileImage" placeholder="Image URL" name = "image" value="/images/img_2.png" required/>
     </div>
   </div>
 
@@ -158,7 +158,9 @@
         password : $('#inputPassword').val(),
         email : $('#inputEmail').val(),
         introduction :$('#inputIntroduction').val(),
-        adminToken : $('#inputAdminToken').val()
+        adminToken : $('#inputAdminToken').val(),
+        image : $('#inputProfileImage').val()
+
       };
       // console.log(data);
 
