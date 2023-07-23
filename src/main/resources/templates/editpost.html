@@ -116,7 +116,8 @@
             console.log(res.status)
             if (res.status === 200) {
                 alert("성공적으로 게시글을 수정했습니다.")
-                location.href = '/post/detail/'+post_id
+                // location.href = '/post/detail/'+post_id
+                history.go(-1);
             } else if (res.status === 400) {
                 alert("게시글 수정에 실패했습니다.")
             }

@@ -377,8 +377,8 @@
                                                 <ol style="font-size: 20px">좋아요 개수 : ${likeCount}</ol>
                                             </div>
                                             <div class="col-2" style="border-bottom: solid gray 1px; padding-top: 5%">
-                                                <p><button type="submit" class="btn btn-dark" id="post-edit-btn">게시글 수정</button></p>
-                                                <p><button type="submit" class="btn btn-dark" id="post-delete-btn">게시글 삭제</button></p>
+                                                <p><button type="submit" class="btn btn-dark" id="post-edit-btn" onclick="toEditPost(${postId})">게시글 수정</button></p>
+                                                <p><button type="submit" class="btn btn-dark" id="post-delete-btn" onclick="postDelete(${postId})">게시글 삭제</button></p>
                                             </div>
                                         </div>`
 
@@ -418,6 +418,34 @@
                     }
                 }
             })
+    }
+
+    //게시글 수정 => 수정페이지로 이동
+    function toEditPost(post_id) {
+        alert("수정 페이지로 이동합니다.")
+        window.location.href = `/post/update/${post_id}`;
+    }
+
+    //게시글 삭제
+    function postDelete(post_id) {
+        $.ajax({
+            type: "DELETE",
+            url:'/api/post/'+post_id,
+            dataType:"json"
+        }).done(function(res){
+            console.log(res)
+            console.log(res.status)
+            if (res.status === 200) {
+                alert("성공적으로 게시글을 삭제했습니다.")
+                location.href = '/admin'
+            } else if (res.status === 400) {
+                alert("게시글 삭제에 실패했습니다.")
+            }
+        }).fail(function (request, status, error){
+            console.log(status)
+            console.log(error)
+            alert("에러가 발생했습니다.");
+        });
     }
 </script>
 </body>
