@@ -33,8 +33,9 @@ public class AdminController {
     // 유저 프로필 수정
     @Secured("ROLE_ADMIN")
     @PutMapping("/profile/{userid}")
-    public void updateUserProfile(@PathVariable Long userid, @RequestBody ProfileRequestDto profileRequestDto) {
+    public ResponseEntity<ApiResponseDto> updateUserProfile(@PathVariable Long userid, @RequestBody ProfileRequestDto profileRequestDto) {
         adminService.updateUserProfile(userid, profileRequestDto);
+        return ResponseEntity.ok().body(new ApiResponseDto("유저 정보 수정에 성공했습니다.", HttpStatus.OK.value()));
     }
 
     // 유저 권한 User 로 변경

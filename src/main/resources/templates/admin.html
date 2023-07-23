@@ -88,11 +88,11 @@
         }
     }
 
-    function openEditBox() {
-        if( document.getElementById('edit-box').style.display === 'block'){
-            document.getElementById('edit-box').style.display = 'none'
+    function openEditBox(user_Id) {
+        if( document.getElementById('edit-box-'+user_Id).style.display === 'block'){
+            document.getElementById('edit-box-'+user_Id).style.display = 'none'
         } else {
-            document.getElementById('edit-box').style.display = 'block'
+            document.getElementById('edit-box-'+user_Id).style.display = 'block'
         }
     }
 
@@ -135,21 +135,21 @@
                                                 <ol style="font-size: 20px">introduction : ${introduction}</ol>
                                             </div>
                                             <div class="col-2" style="border-bottom: solid gray 1px; padding-top: 5%" >
-                                                <button type="submit" class="btn btn-dark" id="user-edit-btn" onclick="openEditBox()">유저 프로필 수정</button>
+                                                <button type="submit" class="btn btn-dark" id="user-edit-btn" onclick="openEditBox(${userId})">유저 프로필 수정</button>
                                                 <button type="submit" class="btn btn-dark" id="user-delete-btn" style="margin-top: 10px" onclick="deleteUser(${userId})">유저 삭제</button>
                                             </div>
                                         </div>
-                                        <div id = "edit-box" style="margin-top: 10px; display: none">
+                                        <div id = "edit-box-${userId}" style="margin-top: 10px; display: none">
                                             <div>
-                                                <input type="email" class="form-control" id="edit-email" placeholder="수정할 Email을 입력해주세요." name = email required/>
+                                                <input type="email" class="form-control" id="edit-email-${userId}" placeholder="수정할 Email을 입력해주세요." name = email required/>
                                             </div>
                                             <div style="margin-top: 10px">
-                                                <input type="text" class="form-control" id="edit-introduction" placeholder="수정할 Introduction을 입력해주세요." name = introduction required/>
+                                                <input type="text" class="form-control" id="edit-introduction-${userId}" placeholder="수정할 Introduction을 입력해주세요." name = introduction required/>
                                             </div>
                                             <div style="float: right; margin-top: 5px">
                                                 <button type="submit" class="btn btn-dark" id="edit-user-role-admin-btn">ADMIN으로 바꾸기</button>
                                                 <button type="submit" class="btn btn-dark" id="edit-user-role-user-btn">USER로 바꾸기</button>
-                                                <button type="submit" class="btn btn-dark" id="edit-submit-btn">Submit</button>
+                                                <button type="submit" class="btn btn-dark" id="edit-submit-btn" onclick="editUserInfo(${userId})">Submit</button>
                                             </div>
                                         </div>`
                     $('#user-box').append(temp_html)
@@ -157,7 +157,34 @@
             })
     }
     // 유저 데이터 수정
-
+    function editUserInfo(user_id) {
+        let data = {
+            email : $('#edit-email-'+user_id).val(),
+            introduction : $('#edit-introduction-'+user_id).val()
+        }
+        console.log(data.email)
+        console.log(data.introduction)
+        $.ajax({
+            type: "PUT",
+            url:'/api/admin/profile/'+user_id,
+            data: JSON.stringify(data),
+            contentType:"application/json; charset=urf-8",
+            dataType:"json"
+        }).done(function(res){
+            console.log(res)
+            console.log(res.status)
+            if (res.status === 200) {
+                alert("성공적으로 유저 정보를 수정했습니다.")
+                location.href = '/admin'
+            } else {
+                alert("유저 정보 수정에 실패했습니다.")
+            }
+        }).fail(function (request, status, error){
+            console.log(status)
+            console.log(error)
+            alert("에러가 발생했습니다.");
+        });
+    }
     // 유저의 role 바꾸기
 
     // 유저 삭제

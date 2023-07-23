@@ -9,6 +9,5 @@ public class ProfileRequestDto {
     private String email;
     @NotBlank(message = "필수 입력 값입니다.")
     private String introduction;
-    @NotBlank(message = "필수 입력 값입니다.")
     private String image;
 }
