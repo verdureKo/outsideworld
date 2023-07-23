@@ -476,7 +476,7 @@
         alert("성공적으로 댓글을 삭제했습니다.")
         location.href = '/post/detail/'+post_id
       } else if (res.status === 400) {
-        alert("게시글 삭제에 실패했습니다. 본인이 작성한 댓글인지 확인해주세요.")
+        alert("댓글 삭제에 실패했습니다. 본인이 작성한 댓글인지 확인해주세요.")
       }
     }).fail(function (request, status, error){
       console.log(status)

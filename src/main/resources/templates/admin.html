@@ -104,11 +104,11 @@
                             <button type="submit" class="btn btn-dark" id="comment-delete-btn" onclick="deleteComment()" style="width: 55px; font-size: 12px">삭 제</button>
                         </div>
                     </div>
-                    <div class="col-md-12" id="comment-edit-box" style="">
-                        <div class="comment-board mt-2">
+                    <div class="col-md-12 " id="comment-edit-box" style="">
+                        <div class="comment-board mt-2" style="width: 80%; float: left">
                             <input class="content form-control col-sm-5" id="input-edit-comment">
                         </div>
-                        <div style="float: right; margin-top: 5px">
+                        <div style="float: right; margin-top: 5px; padding-right: 100px">
                             <button type="submit" class="btn btn-dark" id="comment-edit-btn" onclick="" style="width: 55px; font-size: 12px;">확 인</button>
                             <button type="submit" class="btn btn-dark" id="comment-edit-cancel-btn" onclick="" style="width: 55px; font-size: 12px;">취 소</button>
                         </div>
@@ -404,16 +404,17 @@
                                                 <button type="button" class="btn btn-dark" onclick="deleteComment(${commentId})" style="width: 55px; font-size: 12px">삭제</button>
                                               </div>
                                             </div>
-                                            <div class="col-md-12 comment-edit-box" id="comment-edit-box-${commentId}" style="display: none">
-                                              <div class="comment-board mt-2">
+                                            <div class="col-md-12 comment-edit-box" id="comment-edit-box-${commentId}" style="display: none;">
+                                              <div class="comment-board mt-2" style="width: 80%; float: left">
                                                 <input class="content form-control col-sm-5" id="input-edit-comment-${commentId}">
                                               </div>
-                                              <div style="float: right; margin-top: 5px">
-                                                <button type="button" class="btn btn-dark" onclick="confirmUpdateComment(${commentId})" style="width: 55px; font-size: 12px;">확인</button>
-                                                <button type="button" class="btn btn-dark" onclick="cancelUpdateComment(${commentId})" style="width: 55px; font-size: 12px;">취소</button>
+                                              <div style="float: right; margin-top: 5px; padding-right: 100px">
+                                                <button type="button" class="btn btn-dark" onclick="editComment(${commentId})" style="width: 55px; font-size: 12px;">확인</button>
+                                                <button type="button" class="btn btn-dark" onclick="cancelEditBtn(${commentId})" style="width: 55px; font-size: 12px;">취소</button>
                                               </div>
                                             </div>
                                           </div>`
+
                         $('#post-box').append(temp_html2);
                     }
                 }
@@ -440,6 +441,68 @@
                 location.href = '/admin'
             } else if (res.status === 400) {
                 alert("게시글 삭제에 실패했습니다.")
+            }
+        }).fail(function (request, status, error){
+            console.log(status)
+            console.log(error)
+            alert("에러가 발생했습니다.");
+        });
+    }
+
+    // 댓글 수정
+    function updateComment(comment_id) {
+        document.getElementById('comment-base-box-'+comment_id).style.marginBottom = "100px"
+        document.getElementById('comment-edit-box-'+comment_id).style.display = "block";
+    }
+
+    function cancelEditBtn(comment_id) {
+        document.getElementById('comment-edit-box-'+comment_id).style.display = "none";
+        document.getElementById('comment-base-box-'+comment_id).style.marginBottom = "0px"
+    }
+
+    function editComment(comment_id) {
+        let data = {
+            comment : $('#input-edit-comment-'+comment_id).val()
+        }
+        console.log(data)
+        $.ajax({
+            type: "PUT",
+            url:'/api/comment/'+comment_id,
+            data: JSON.stringify(data),
+            contentType:"application/json; charset=urf-8",
+            dataType:"json"
+        }).done(function(res){
+            console.log(res)
+            console.log(res.status)
+            if (res.status === 200) {
+                alert("성공적으로 댓글을 수정했습니다.")
+                location.href = '/admin'
+            } else if (res.status === 400) {
+                alert("댓글 수정에 실패했습니다.")
+            }
+        }).fail(function (request, status, error){
+            console.log(status)
+            console.log(error)
+            alert("에러가 발생했습니다.");
+        });
+    }
+
+
+    // 댓글 삭제
+    function deleteComment(comment_id) {
+        console.log(comment_id)
+        $.ajax({
+            type: "DELETE",
+            url:'/api/comment/'+comment_id,
+            dataType:"json"
+        }).done(function(res){
+            console.log(res)
+            console.log(res.status)
+            if (res.status === 200) {
+                alert("성공적으로 댓글을 삭제했습니다.")
+                location.href = '/admin'
+            } else if (res.status === 400) {
+                alert("댓글 삭제에 실패했습니다.")
             }
         }).fail(function (request, status, error){
             console.log(status)
