@@ -3,29 +3,36 @@
 <head>
     <meta charset="UTF-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
-    <link rel="icon" href="data:,">
-    <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css"
-          integrity="sha512-iecdLmaskl7CVkqkXNQ/ZH/XLlvWZOJyj7Yy7tcenmpD1ypASozpmT/E0iPtmFIB46ZmdtAc9eNBvH0H/ZpiBw=="
-          crossorigin="anonymous" referrerpolicy="no-referrer" />
+    <script src="https://code.jquery.com/jquery-3.7.0.min.js"
+            integrity="sha256-2Pmvv0kuTBOenSvLm6bvfBSSHrUJ+3A7x6P5Ebd07/g=" crossorigin="anonymous"></script>
+    <script src="https://cdn.jsdelivr.net/npm/js-cookie@3.0.5/dist/js.cookie.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/sweetalert2@10"></script>
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.2.3/dist/css/bootstrap.min.css" rel="stylesheet"
           integrity="sha384-rbsA2VBKQhggwzxH7pPCaAqO46MgnOM80zW1RWuH61DGLwZJEdK2Kadq2F9CUG65" crossorigin="anonymous">
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.2.3/dist/js/bootstrap.bundle.min.js"
             integrity="sha384-kenU1KFdBIe4zVF0s0G1M5b4hcpxyD9F7jL+jjXkk+Q2h455rYXK/7HAuoJl+0I4" crossorigin="anonymous"></script>
     <link href="/css/style.css" rel="stylesheet">
-    <title>글 수정</title>
+    <title>오늘 밖에서 뭐하지? | 글수정</title>
 </head>
-<nav class="row navbar bg-body-tertiary">
-    <div class="col-1"></div>
-    <div class="col-5 container">
-        <h3>밖에서 오늘 뭐하지?</h3>
+<body>
+<!-- 네비게이션 바 start -->
+<nav class="navbar bg-light mb-5">
+    <div class="container-fluid d-flex mx-3">
+        <a class="navbar-brand" href="/">
+            <div class="fs-4 fw-bold">밖에서 오늘 뭐하지?</div>
+        </a>
+        <div class="d-flex justify-content-end">
+            <a href="/post/new-post"><button type="submit" class="btn btn-dark none" id="newpost-btn">글작성</button></a>
+            <button type="submit" class="btn btn-dark ms-2 none" id="update-btn" onclick="updatePost()">수정</button>
+            <button type="submit" class="btn btn-dark ms-2 none" id="delete-btn" onclick="deletePost()">삭제</button>
+            <a href="/"><button type="submit" class="btn btn-dark ms-2 none" id="home-btn">Home</button></a>
+            <a href="/api/mypage"><button type="submit" class="btn btn-dark ms-2" id="myPage-btn">My page</button></a>
+            <a href="/api/user/login"><button type="submit" class="btn btn-dark ms-2 none" id="login-btn">Login</button></a>
+            <a href="/"><button type="submit" class="btn btn-dark ms-2" id="logout-btn">Logout</button></a>
+            <a href="/api/user/signup"><button type="submit" class="btn btn-dark ms-2 none" id="signup-btn">SignUp</button></a>
+        </div>
     </div>
-
-    <div class="col-5 container justify-content-end">
-        <button type="submit" class="btn btn-dark" id="home-btn" onclick="returnPage()">돌아가기</button>
-    </div>
-    <div class="col-1"></div>
 </nav>
 <div class="mb-5 fs-2 fw-bold" style="margin-left: 100px">게시글 수정</div>
 <div class="container" id ="edit-post-box">
@@ -34,7 +41,7 @@
             <div class="col-md-12">
                 <input type="text" name="title" class="form-control shadow border-0 p-3" placeholder="제목을 입력하세요">
                 <textarea class="form-control col-sm-5 mt-2 shadow border-0 p-3" name="content" rows="15" placeholder="내용을 입력하세요"></textarea>
-                <input class="form-control col-sm-5 mt-2 shadow border-0 p-3" name="image" placeholder="이미지 URL을 입력하세요"></input>
+                <input class="form-control col-sm-5 mt-2 shadow border-0 p-3" name="image" placeholder="이미지 URL을 입력하세요" />
             </div>
         </div>
         <div class="row my-5">
@@ -46,8 +53,7 @@
         </div>
     </div>
 </div>
-<footer style="height: 200px; border-top: solid 1px #d9d9d9;" class="footer fw-bold fs-3 d-flex justify-content-center align-items-center mt-5">동행조 화이팅!</footer>
-
+<footer style="height: 200px; border-top: solid 1px #d9d9d9;" class="container-fluid footer fw-bold fs-3 justify-content-center d-flex p-5">동행조 화이팅!</footer>
 <script>
     let post_id = [[${postId}]];
     function returnPage() {
@@ -116,8 +122,7 @@
             console.log(res.status)
             if (res.status === 200) {
                 alert("성공적으로 게시글을 수정했습니다.")
-                // location.href = '/post/detail/'+post_id
-                history.go(-1);
+                location.href = '/post/detail/'+post_id
             } else if (res.status === 400) {
                 alert("게시글 수정에 실패했습니다.")
             }

@@ -15,34 +15,31 @@
             integrity="sha384-kenU1KFdBIe4zVF0s0G1M5b4hcpxyD9F7jL+jjXkk+Q2h455rYXK/7HAuoJl+0I4" crossorigin="anonymous"></script>
     <link href="/css/style.css" rel="stylesheet">
     <title>관리자 페이지</title>
-
-
 </head>
 <body>
-  <nav class="row navbar bg-body-tertiary">
-    <div class="col-1"></div>
-    <div class="col-5 container">
-      <h3>밖에서 오늘 뭐하지?</h3>
+<!-- 네비게이션 바 start -->
+<nav class="navbar bg-light mb-5">
+    <div class="container-fluid d-flex mx-3">
+        <a class="navbar-brand" href="/">
+            <div class="fs-4 fw-bold">밖에서 오늘 뭐하지?</div>
+        </a>
+        <div class="d-flex justify-content-end">
+            <a href="/post/new-post"><button type="submit" class="btn btn-dark" id="newpost-btn">글작성</button></a>
+            <button type="submit" class="btn btn-dark ms-2 none" id="update-btn" onclick="updatePost()">수정</button>
+            <button type="submit" class="btn btn-dark ms-2 none" id="delete-btn" onclick="deletePost()">삭제</button>
+            <a href="/"><button type="submit" class="btn btn-dark ms-2" id="home-btn">Home</button></a>
+            <a href="/api/mypage"><button type="submit" class="btn btn-dark ms-2 none" id="myPage-btn">My page</button></a>
+            <a href="/api/user/login"><button type="submit" class="btn btn-dark ms-2 none" id="login-btn">Login</button></a>
+            <a href="/"><button type="submit" class="btn btn-dark ms-2" id="logout-btn">Logout</button></a>
+            <a href="/api/user/signup"><button type="submit" class="btn btn-dark ms-2 none" id="signup-btn">SignUp</button></a>
+            <button type="submit" class="btn btn-warning ms-2" id="userInfo-btn" onclick="userInfo()">전체 유저 조회</button>
+            <button type="submit" class="btn btn-warning ms-2" id="all-post-btn" onclick="postInfo()">전체 게시글 조회</button>
+        </div>
     </div>
-
-    <div class="col-5 container justify-content-end">
-      <a href="/">
-        <button type="submit" class="btn btn-dark" id="home-btn">home</button>
-      </a>
-    </div>
-    <div class="col-1"></div>
-  </nav>
-
+</nav>
 <div class = "row">
     <div class="col-1"></div>
-    <div class="col-11">
-        <button type="submit" class="btn btn-dark" id="userInfo-btn" onclick="userInfo()">전체 유저 조회</button>
-        <button type="submit" class="btn btn-dark" id="all-post-btn" onclick="postInfo()">전체 게시글 조회</button>
-    </div>
-</div>
-<div class = "row">
-    <div class="col-1"></div>
-    <div class="col-10" id="user-box" style="border: solid gray 1px; margin-top: 30px; border-radius: 10px; padding: 0px 30px 30px 30px; display: none">
+    <div class="col-10 none" id="user-box">
         <div>
             <div class="row">
                 <div class="col-2" style="border-bottom: solid gray 1px">
@@ -54,9 +51,9 @@
                     <ol style="font-size: 20px">email : ${email}</ol>
                     <ol style="font-size: 20px">introduction : ${introduction}</ol>
                 </div>
-                <div class="col-2" style="border-bottom: solid gray 1px; padding-top: 5%">
+                <div class="col-2">
                     <button type="submit" class="btn btn-dark" id="user-edit-btn" onclick="openEditBox()">유저 프로필 수정</button>
-                    <button type="submit" class="btn btn-dark" id="user-delete-btn" style="margin-top: 10px">유저 삭제</button>
+                    <button type="submit" class="btn btn-dark m-0" id="user-delete-btn">유저 삭제</button>
                 </div>
             </div>
             <div id = "edit-box" style="margin-top: 10px; display: none">
@@ -86,7 +83,7 @@
                     <ol style="font-size: 20px">title : ${title}</ol>
                     <ol style="font-size: 20px">content : ${content}</ol>
                 </div>
-                <div class="col-2" style="border-bottom: solid gray 1px; padding-top: 5%">
+                <div class="d-grid gap-2 d-md-block">
                     <p><button type="submit" class="btn btn-dark" id="post-edit-btn">게시글 수정</button></p>
                     <p><button type="submit" class="btn btn-dark" id="post-delete-btn">게시글 삭제</button></p>
                 </div>
@@ -99,7 +96,7 @@
                         <div class="col-2" style="border-bottom: solid gray 1px;">
                                좋아요 개수 : ${likeCount}
                         </div>
-                        <div class="col-2" style="border-bottom: solid gray 1px; padding-bottom: 5px">
+                        <div class="d-grid gap-2 d-md-block">
                             <button type="submit" class="btn btn-dark" id="comment-update-btn" onclick="" style="width: 55px; font-size: 12px">수 정</button>
                             <button type="submit" class="btn btn-dark" id="comment-delete-btn" onclick="deleteComment()" style="width: 55px; font-size: 12px">삭 제</button>
                         </div>
@@ -108,7 +105,7 @@
                         <div class="comment-board mt-2" style="width: 80%; float: left">
                             <input class="content form-control col-sm-5" id="input-edit-comment">
                         </div>
-                        <div style="float: right; margin-top: 5px; padding-right: 100px">
+                        <div class="d-grid gap-2 d-md-block">
                             <button type="submit" class="btn btn-dark" id="comment-edit-btn" onclick="" style="width: 55px; font-size: 12px;">확 인</button>
                             <button type="submit" class="btn btn-dark" id="comment-edit-cancel-btn" onclick="" style="width: 55px; font-size: 12px;">취 소</button>
                         </div>
@@ -190,7 +187,7 @@
                                             </div>
                                             <div class="col-2" style="border-bottom: solid gray 1px; padding-top: 5%" >
                                                 <button type="submit" class="btn btn-dark" id="user-edit-btn" onclick="openEditBox(${userId})">유저 프로필 수정</button>
-                                                <button type="submit" class="btn btn-dark" id="user-delete-btn" style="margin-top: 10px" onclick="deleteUser(${userId})">유저 삭제</button>
+                                                <button type="submit" class="btn btn-dark" id="user-delete-btn" onclick="deleteUser(${userId})">유저 삭제</button>
                                             </div>
                                         </div>
                                         <div id = "edit-box-${userId}" style="margin-top: 10px; display: none">
