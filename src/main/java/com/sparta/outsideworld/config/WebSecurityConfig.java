@@ -59,9 +59,10 @@ public class WebSecurityConfig {
         http.authorizeHttpRequests((authorizeHttpRequests) ->
                 authorizeHttpRequests
                         .requestMatchers(PathRequest.toStaticResources().atCommonLocations()).permitAll()
-                        .requestMatchers("/api/user/**", "/", "/images/**").permitAll()
+                        .requestMatchers("/api/user/**", "/", "/images/**", "/static/images/**").permitAll()
                         .requestMatchers("/api/post/**", "/api/posts").permitAll()
                         .requestMatchers("/post/**").permitAll()
+                        .requestMatchers("/admin/**").hasRole("ADMIN")
                         .anyRequest().authenticated()
         );
 

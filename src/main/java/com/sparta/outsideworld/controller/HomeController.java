@@ -55,5 +55,11 @@ public class HomeController {
     public String logoutUser(){
         return "index";
     }
+
+    //관리자 페이지로 이동
+    @GetMapping("/admin")
+    public String backOffice() {
+        return "admin";
+    }
 }
 

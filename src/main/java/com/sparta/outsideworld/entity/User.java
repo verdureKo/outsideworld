@@ -51,6 +51,9 @@ public class User extends TimeStamped{
     @OneToMany(mappedBy = "user", fetch = FetchType.EAGER, cascade = CascadeType.REMOVE)
     private List<Post> postList;
 
+    @OneToMany(mappedBy = "user", fetch = FetchType.EAGER, cascade = CascadeType.REMOVE)
+    private List<Like> likes;
+
     // 관리자 권한 로그인
     // @ColumnDefault("user")
     // DB 엔 UserRoleEnum 이 없기 때문에 Annotation 을 통해 String 임을 밝힌다

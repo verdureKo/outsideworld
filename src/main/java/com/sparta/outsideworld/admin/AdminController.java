@@ -4,6 +4,8 @@ import com.sparta.outsideworld.dto.*;
 import com.sparta.outsideworld.entity.Post;
 import com.sparta.outsideworld.entity.User;
 import lombok.RequiredArgsConstructor;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
 import org.springframework.security.access.annotation.Secured;
 import org.springframework.web.bind.annotation.*;
 
@@ -66,8 +68,9 @@ public class AdminController {
     // 유저 삭제
     @Secured("ROLE_ADMIN")
     @DeleteMapping("/user-delete/{userid}")
-    public void deleteUser(@PathVariable Long userid) {
+    public ResponseEntity<ApiResponseDto> deleteUser(@PathVariable Long userid) {
         adminService.deleteUser(userid);
+        return ResponseEntity.ok().body(new ApiResponseDto("유저 삭제에 성공했습니다.", HttpStatus.OK.value()));
     }
 
     // 게시글 삭제
