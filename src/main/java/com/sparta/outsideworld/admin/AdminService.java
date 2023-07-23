@@ -12,6 +12,7 @@ import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
 
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
 
@@ -30,7 +31,16 @@ public class AdminService {
     }
 
     // 전체 게시글 조회
-    public List<Post> getPostList() { return postRepository.findAll(); }
+    public List<PostResponseDto> getPostList() {
+        List<Post> posts = postRepository.findAllByOrderByCreatedAtDesc();
+        List<PostResponseDto> postResponseDto = new ArrayList<>();
+
+        for(Post post : posts){
+            postResponseDto.add(new PostResponseDto(post));
+        }
+
+        return postResponseDto;
+    }
 
     // 유저 프로필 수정
     public void updateUserProfile(Long userid, ProfileRequestDto profileRequestDto) {
@@ -49,7 +59,7 @@ public class AdminService {
                 () -> new NullPointerException("해당 유저가 존재하지 않습니다.")
         );
         user.setRole(UserRoleEnum.USER);
-        log.info("##############################################################user role => " + user.getRole());
+        log.info("user role => " + user.getRole());
         userRepository.save(user);
     }
 

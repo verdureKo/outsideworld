@@ -28,7 +28,7 @@ public class AdminController {
     // 전체 게시글 조회
     @Secured("ROLE_ADMIN")
     @GetMapping("/post-list")
-    public List<Post> getPostList() { return adminService.getPostList(); }
+    public List<PostResponseDto> getPostList() { return adminService.getPostList(); }
 
     // 유저 프로필 수정
     @Secured("ROLE_ADMIN")
