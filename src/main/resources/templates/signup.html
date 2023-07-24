@@ -15,7 +15,7 @@
           crossorigin="anonymous">
   </script>
   <title>밖에서 오늘 뭐하지?</title>
-
+  <link href="/css/style.css" rel="stylesheet">
   <style>
     #btn-save {
       width: 360px;
@@ -66,31 +66,20 @@
     }
   </script>
 </head>
-
 <body>
-<nav class="row navbar bg-body-tertiary">
-  <div class="col-1"></div>
-  <div class="col-5 container">
-    <h3>밖에서 오늘 뭐하지?</h3>
-  </div>
-
-  <div class="col-5 container justify-content-end">
-    <!-- <a class="navbar-brand" href="#">
-    <img src="/docs/5.3/assets/brand/bootstrap-logo.svg" alt="Bootstrap" width="30" height="24">
-  </a> -->
-    <a href = "/">
-      <button type="submit" class="btn btn-dark">Home</button>
+<!-- 네비게이션 바 start -->
+<nav class="navbar bg-light mb-5">
+  <div class="container-fluid d-flex mx-3">
+    <a class="navbar-brand" href="/">
+      <div class="fs-4 fw-bold">밖에서 오늘 뭐하지?</div>
     </a>
-    <a href = "/api/user/login">
-      <button id = "login-btn" type="submit" class="btn btn-dark">Login</button>
-    </a>
+    <div class="d-flex justify-content-end">
+      <a href="/"><button type="submit" class="btn btn-dark ms-2" id="home-btn">Home</button></a>
+      <a href="/api/user/login"><button type="submit" class="btn btn-dark ms-2 none" id="login-btn">Login</button></a>
+      <a href="/api/user/signup"><button type="submit" class="btn btn-dark ms-2 none" id="signup-btn">SignUp</button></a>
+    </div>
   </div>
-
-  <div class="col-1"></div>
-
 </nav>
-
-
 <form class="container justify-content-end" style="width: 450px;">
   <div class="form-group" id="profile-image">
     <label for="inputUsername" class="col-sm-2 control-label">ProfileImageURL</label>
@@ -138,11 +127,10 @@
   </div>
 
 </form>
-<div id = "button">
+<div id = "button"  class="mb-5">
   <button class="btn btn-dark" id="btn-save"><strong>Submit</strong></button>
 </div>
-
-<footer style="height: 200px; border-top: solid 1px #d9d9d9;" class="footer fw-bold fs-3 d-flex justify-content-center align-items-center mt-5">동행조 화이팅!</footer>
+<footer style="height: 200px; border-top: solid 1px #d9d9d9;" class="container-fluid footer fw-bold fs-3 justify-content-center d-flex p-5">동행조 화이팅!</footer>
 <script>
   let index = {
     init: function (){
