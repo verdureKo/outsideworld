@@ -1,3 +1,18 @@
+create table likes
+(
+    id         bigint auto_increment
+        primary key,
+    comment_id bigint null,
+    post_id    bigint null,
+    user_id    bigint null,
+    constraint FKe4guax66lb963pf27kvm7ikik
+        foreign key (comment_id) references comments (id),
+    constraint FKnvx9seeqqyy71bij291pwiwrg
+        foreign key (user_id) references users (id),
+    constraint FKry8tnr4x2vwemv2bb0h5hyl0x
+        foreign key (post_id) references posts (id)
+);
+
 INSERT INTO outsideworld.likes (id, comment_id, post_id, user_id) VALUES (1, null, 1, 5);
 INSERT INTO outsideworld.likes (id, comment_id, post_id, user_id) VALUES (2, null, 4, 5);
 INSERT INTO outsideworld.likes (id, comment_id, post_id, user_id) VALUES (3, null, 6, 5);
