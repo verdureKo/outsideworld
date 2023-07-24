@@ -36,6 +36,7 @@
             <a href="/api/user/login"><button type="submit" class="btn btn-dark ms-2" id="login-btn">Login</button></a>
             <a href="/"><button type="submit" class="btn btn-dark ms-2" id="logout-btn">Logout</button></a>
             <a href="/api/user/signup"><button type="submit" class="btn btn-dark ms-2" id="signup-btn">SignUp</button></a>
+            <a href="/admin"><button type="submit" class="btn btn-warning ms-2" id="admin-btn">Admin</button></a>
         </div>
     </div>
 </nav>
@@ -146,7 +147,7 @@
                                                 <img src="${image}" class="card-img-top" alt="sampleImage" style="height: 250px; width: 305px">
                                                 <div class="card-body">
                                                     <h5 class="card-title fw-bold">${title}</h5>
-                                                    <p class="card-text">${contents}</p>
+                                                    <p class="card-text text-truncate">${contents}</p>
                                                     <p class="card-text fw-bold">${userName}</p>
                                                     <p class="card-text text-muted">${modifiedAt}</p>
                                                 </div>
