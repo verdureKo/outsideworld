@@ -4,96 +4,55 @@
   <meta charset="UTF-8">
   <meta http-equiv="X-UA-Compatible" content="IE=edge">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>오늘 밖에서 뭐하지? | 글 상세</title>
   <script src="https://code.jquery.com/jquery-3.7.0.min.js"
           integrity="sha256-2Pmvv0kuTBOenSvLm6bvfBSSHrUJ+3A7x6P5Ebd07/g=" crossorigin="anonymous"></script>
   <script src="https://cdn.jsdelivr.net/npm/js-cookie@3.0.5/dist/js.cookie.min.js"></script>
   <script src="https://cdn.jsdelivr.net/npm/sweetalert2@10"></script>
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" integrity="sha512-iecdLmaskl7CVkqkXNQ/ZH/XLlvWZOJyj7Yy7tcenmpD1ypASozpmT/E0iPtmFIB46ZmdtAc9eNBvH0H/ZpiBw==" crossorigin="anonymous" referrerpolicy="no-referrer" />
   <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.2.3/dist/css/bootstrap.min.css" rel="stylesheet"
         integrity="sha384-rbsA2VBKQhggwzxH7pPCaAqO46MgnOM80zW1RWuH61DGLwZJEdK2Kadq2F9CUG65" crossorigin="anonymous">
   <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.2.3/dist/js/bootstrap.bundle.min.js"
           integrity="sha384-kenU1KFdBIe4zVF0s0G1M5b4hcpxyD9F7jL+jjXkk+Q2h455rYXK/7HAuoJl+0I4" crossorigin="anonymous"></script>
   <link href="/css/style.css" rel="stylesheet">
-  <title>오늘 밖에서 뭐하지? | 글 상세</title>
-</head>
-<body>
-<!-- 네비게이션 바 start -->
-<nav class="navbar bg-light mb-5">
-  <div class="container-fluid d-flex mx-3">
-    <a class="navbar-brand" href="/">
-    <div class="fs-4 fw-bold">밖에서 오늘 뭐하지?</div>
-    </a>
-    <div class="justify-content-end">
-      <button type="submit" class="btn btn-dark" id="update-btn" onclick="updatePost()">수정</button>
-      <button type="submit" class="btn btn-dark" id="delete-btn" onclick="deletePost()">삭제</button>
-      <a href="/"><button type="submit" class="btn btn-dark" id="home-btn">home</button></a>
-    </div>
-  </div>
-</nav>
-<!-- 게시 글 start -->
-<div class="container" id = "post-detail">
-<!-- post 동적 데이터 삽입 -->
-</div>
-<!-- 댓글 머리글 start -->
-<div class="container my-3" id = "comment-count">
-  <button type="button" class="btn bg-transparent position-relative fs-4 fw-bold">
-    댓글
-<!--    <span class="position-absolute top-0 start-100 translate-middle badge rounded-pill bg-danger">-->
-<!--      99+-->
-<!--      <span class="visually-hidden">댓글 수</span>-->
-<!--    </span>-->
-  </button>
-  <hr class="border border-3">
-</div>
-<!-- 댓글 목록 start -->
-<div class="container" id = "comment-list">
-<!-- comment 동적 데이터 삽입 -->
-</div>
-<!-- 댓글 작성 start -->
-<div class="container my-5">
-  <textarea class="container rounded p-2 border border-0 shadow" rows="3" id="input-comment"></textarea>
-  <button type="button" class="float-end btn btn-dark mt-2 mb-5" onclick="newComment()">Submit</button>
-</div>
-<!-- footer -->
-<footer style="height: 200px; border-top: solid 1px #d9d9d9;" class="container-fluid footer fw-bold fs-3 justify-content-center d-flex p-5">동행조 화이팅!</footer>
-<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
-<script th:inline="javascript">
-  let post_id = [[${postId}]];
-  let loginUserName = [[${username}]];
-  let loginUserRole = [[${userRole}]];
-  console.log(post_id);
+  <script th:inline="javascript">
+      let post_id = [[${postId}]];
+      let loginUserName = [[${username}]];
+      let loginUserRole = [[${userRole}]];
+      console.log(post_id);
 
-  // 선택 게시글 조회
-  $(document).ready(function() {
-    loadPostData()
-  });
-  function loadPostData() {
-    fetch('/api/post/'+post_id, {
-      method: 'GET',
-      headers: {'Content-Type': 'application/json'}
-    })
-            .then(response => response.json())
-            .then(data => {
-              $('#post-detail').empty()
-              console.log(data);
-              let userName = data.username;
-              let title = data.title;
-              let contents = data.contents;
+      // 선택 게시글 조회
+      $(document).ready(function() {
+          loadPostData()
+      });
+      function loadPostData() {
+          fetch('/api/post/'+post_id, {
+              method: 'GET',
+              headers: {'Content-Type': 'application/json'}
+          })
+              .then(response => response.json())
+              .then(data => {
+                  $('#post-detail').empty()
+                  console.log(data);
+                  let userName = data.username;
+                  let title = data.title;
+                  let contents = data.contents;
 
-              let likeCount;
-              if(data.likeCount === null) {
-                likeCount = 0;
-              } else {
-                likeCount = data.likeCount;
-              }
+                  let likeCount;
+                  if(data.likeCount === null) {
+                      likeCount = 0;
+                  } else {
+                      likeCount = data.likeCount;
+                  }
 
-              let postImage
-              if(data.image === '') {
-                postImage = "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcR_Ih5P8g67xK9l3ZN1h1IKXU79fwJICfapEuaSDt_hVf1F1coOhBH0O9MEj0KNkm0VD5s&usqp=CAU"
-              } else {
-                postImage = data.image;
-              }
+                  let postImage
+                  if(data.image === '') {
+                      postImage = "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcR_Ih5P8g67xK9l3ZN1h1IKXU79fwJICfapEuaSDt_hVf1F1coOhBH0O9MEj0KNkm0VD5s&usqp=CAU"
+                  } else {
+                      postImage = data.image;
+                  }
 
-              let temp_html = `<div id="post-box">
+                  let temp_html = `<div id="post-box">
                                 <div class="mb-5 fs-3 fw-bold" id = "post-title">${title}</div>
                                 <!-- 글 번호로 조회 -->
                                 <div class="d-flex ms-3" id="follow">
@@ -110,10 +69,10 @@
                                 <div class="container my-5" id="post-container">
                                   <div class="card mb-3 border border-0">
                                     <div class="row">
-                                      <div class="col-8">
+                                      <div class="col-sm-12 col-md-8">
                                         <img src= "${postImage}" class="img-fluid" alt="sampleImage" id="post-image">
                                       </div>
-                                      <div class="col-4">
+                                      <div class="col-sm-12 col-md-4">
                                         <div class="card-body border border-0 shadow h-100">
                                           <p class="card-text text-wrap" id = "post-content">${contents}</p>
                                         </div>
@@ -122,159 +81,159 @@
                                   </div>
                                   <!-- 좋아요 -->
                                   <div class="like-button d-flex justify-content-end">
-                                    <button type="submit" class="btn btn-dark" id="btn-like" onclick="like()">
+                                    <button type="submit" class="btn btn-sm btn-dark" id="btn-like" onclick="like()">
                                       좋아요 <span class="badge text-bg-secondary" >${likeCount}</span>
                                     </button>
-                                    <button type="button" class="btn btn-outline-dark ms-2" onclick="unlike()">
+                                    <button type="button" class="btn btn-sm btn-outline-dark ms-2" onclick="unlike()">
                                       좋아요 취소 <span class="badge text-bg-secondary" id="btn-unlike"></span>
                                     </button>
                                   </div>
                                 </div>
                               </div>`
 
-              $('#post-detail').append(temp_html);
-            })
-  }
-
-  //게시글 수정
-  function updatePost() {
-      const userData = document.getElementById('userName').innerText;
-
-      if (userData === loginUserName|| loginUserRole === "ADMIN") {
-        redirectToPage()
-      } else {
-        alert("자신이 작성한 게시글이 아닙니다.")
-        location.href = '/post/detail/'+post_id
+                  $('#post-detail').append(temp_html);
+              })
       }
-  }
 
-  //수정 페이지로 이동
-  function redirectToPage() {
+      //게시글 수정
+      function updatePost() {
+          const userData = document.getElementById('userName').innerText;
 
-    fetch(`/post/update/`+post_id, {
-      method: 'GET'
-    })
-            .then(response => {
-              if (response.status === 200) {
-                alert('페이지로 이동합니다.');
-                window.location.href = `/post/update/${post_id}`;
-              } else {
-                alert('페이지 이동에 실패하였습니다.');
+          if (userData === loginUserName|| loginUserRole === "ADMIN") {
+              redirectToPage()
+          } else {
+              alert("자신이 작성한 게시글이 아닙니다.")
+              location.href = '/post/detail/'+post_id
+          }
+      }
+
+      //수정 페이지로 이동
+      function redirectToPage() {
+
+          fetch(`/post/update/`+post_id, {
+              method: 'GET'
+          })
+              .then(response => {
+                  if (response.status === 200) {
+                      alert('페이지로 이동합니다.');
+                      window.location.href = `/post/update/${post_id}`;
+                  } else {
+                      alert('페이지 이동에 실패하였습니다.');
+                  }
+              })
+              .catch(error => {
+                  console.error('Error:', error);
+                  alert('오류가 발생하였습니다.');
+              });
+      }
+
+      //게시글 삭제
+      function deletePost() {
+          $.ajax({
+              type: "DELETE",
+              url:'/api/post/'+post_id,
+              dataType:"json"
+          }).done(function(res){
+              console.log(res)
+              console.log(res.status)
+              if (res.status === 200) {
+                  alert("성공적으로 게시글을 삭제했습니다.")
+                  location.href = '/'
+              } else if (res.status === 400) {
+                  alert("게시글 삭제에 실패했습니다. 본인이 작성한 게시글인지 확인해주세요.")
               }
-            })
-            .catch(error => {
-              console.error('Error:', error);
-              alert('오류가 발생하였습니다.');
-            });
-  }
-
-  //게시글 삭제
-  function deletePost() {
-    $.ajax({
-      type: "DELETE",
-      url:'/api/post/'+post_id,
-      dataType:"json"
-    }).done(function(res){
-      console.log(res)
-      console.log(res.status)
-      if (res.status === 200) {
-        alert("성공적으로 게시글을 삭제했습니다.")
-        location.href = '/'
-      } else if (res.status === 400) {
-        alert("게시글 삭제에 실패했습니다. 본인이 작성한 게시글인지 확인해주세요.")
+          }).fail(function (request, status, error){
+              console.log(status)
+              console.log(error)
+              alert("에러가 발생했습니다.");
+          });
       }
-    }).fail(function (request, status, error){
-      console.log(status)
-      console.log(error)
-      alert("에러가 발생했습니다.");
-    });
-  }
 
-  // 게시글 좋아요
-  function like() {
-      $.ajax({
-        type: "POST",
-        url:'/api/post/'+post_id+'/like',
-        contentType:"application/json; charset=urf-8",
-        dataType:"json"
-      }).done(function(res){
-        console.log(res)
-        console.log(res.status)
-        if (res.status === 200) {
-          alert("게시글 좋아요를 눌렀습니다.")
-          location.href = '/post/detail/'+post_id
-        } else if (res.status === 400) {
-          alert("이미 좋아요를 눌렀습니다.")
-        }
-      }).fail(function (request, status, error){
-        console.log(status)
-        console.log(error)
-        alert("에러가 발생했습니다.");
+      // 게시글 좋아요
+      function like() {
+          $.ajax({
+              type: "POST",
+              url:'/api/post/'+post_id+'/like',
+              contentType:"application/json; charset=urf-8",
+              dataType:"json"
+          }).done(function(res){
+              console.log(res)
+              console.log(res.status)
+              if (res.status === 200) {
+                  alert("게시글 좋아요를 눌렀습니다.")
+                  location.href = '/post/detail/'+post_id
+              } else if (res.status === 400) {
+                  alert("이미 좋아요를 눌렀습니다.")
+              }
+          }).fail(function (request, status, error){
+              console.log(status)
+              console.log(error)
+              alert("에러가 발생했습니다.");
+          });
+
+      }
+
+      // 게시글 좋아요 취소
+      function unlike() {
+          $.ajax({
+              type: "DELETE",
+              url:'/api/post/'+post_id+'/like',
+              contentType:"application/json; charset=urf-8",
+              dataType:"json"
+          }).done(function(res){
+              console.log(res)
+              console.log(res.status)
+              if (res.status === 200) {
+                  alert("게시글 좋아요를 취소했습니다.")
+                  location.href = '/post/detail/'+post_id
+              } else if (res.status === 400) {
+                  alert("아직 좋아요를 누르지 않았습니다.")
+              }
+          }).fail(function (request, status, error){
+              console.log(status)
+              console.log(error)
+              alert("에러가 발생했습니다.");
+          });
+
+      }
+
+      // 댓글 조회
+      $(document).ready(function() {
+          loadCommentData();
       });
 
-  }
+      function loadCommentData() {
+          // 게시글 데이터를 가져오는 Ajax 요청
+          fetch('/api/post/' + post_id, {
+              headers: { 'Content-Type': 'application/json' }
+          })
+              .then(response => response.json())
+              .then(data => {
+                  $('#comment-list').empty()
+                  let commentList = data.commentList;
+                  console.log(commentList);
 
-  // 게시글 좋아요 취소
-  function unlike() {
-    $.ajax({
-      type: "DELETE",
-      url:'/api/post/'+post_id+'/like',
-      contentType:"application/json; charset=urf-8",
-      dataType:"json"
-    }).done(function(res){
-      console.log(res)
-      console.log(res.status)
-      if (res.status === 200) {
-        alert("게시글 좋아요를 취소했습니다.")
-        location.href = '/post/detail/'+post_id
-      } else if (res.status === 400) {
-        alert("아직 좋아요를 누르지 않았습니다.")
-      }
-    }).fail(function (request, status, error){
-      console.log(status)
-      console.log(error)
-      alert("에러가 발생했습니다.");
-    });
+                  for (let i = commentList.length - 1; i >= 0; i--) {
+                      let comment = commentList[i].comment;
+                      let userName = commentList[i].username;
+                      let commentLikeCount = commentList[i].likeCount;
+                      let commentId = commentList[i].id;
 
-  }
-
-  // 댓글 조회
-  $(document).ready(function() {
-  loadCommentData();
-  });
-
-  function loadCommentData() {
-  // 게시글 데이터를 가져오는 Ajax 요청
-  fetch('/api/post/' + post_id, {
-  headers: { 'Content-Type': 'application/json' }
-  })
-  .then(response => response.json())
-  .then(data => {
-  $('#comment-list').empty()
-  let commentList = data.commentList;
-  console.log(commentList);
-
-  for (let i = commentList.length - 1; i >= 0; i--) {
-  let comment = commentList[i].comment;
-  let userName = commentList[i].username;
-  let commentLikeCount = commentList[i].likeCount;
-  let commentId = commentList[i].id;
-
-    let temp_html = `<div class="row comment-base-box px-4">
+                      let temp_html = `<div class="row comment-base-box px-4">
               <div class="d-flex p-3">
                 <div class="d-none">${commentId}</div>
-                <div class="comment-board col-7 border border-0 justify-content-start text-wrap" id="edit-box-${commentId}">
+                <div class="comment-board col-md-7 border border-0 justify-content-start text-wrap" id="edit-box-${commentId}">
                   <div class="comment-board form-control border border-0" id="comment-text-${commentId}">${comment}</div>
                   <textarea class="comment-board border border-0 border-bottom none" row="1" id="comment-input-${commentId}">${comment}</textarea>
                 </div>
-                <div class="col-2 text-center">${userName}</div>
-                <div class="col-1 text-center mb-2">
+                <div class="col-md-2 text-center">${userName}</div>
+                <div class="col-md-1 text-center mb-2">
                   <button type="button" class="btn pt-0" onclick="commentLike(${commentId})">
-                    <img src="/images/img_1.png" alt="" width="20">
+                    <i class="fa-regular fa-thumbs-up fa-beat fa-lg"></i>
                     <span class="fs-6">${commentLikeCount}</span>
                   </button>
                 </div>
-                <div class="btn-group col-2 justify-content-end pe-4">
+                <div class="btn-group col-md-2 justify-content-end pe-4">
                   <div class="d-flex">
                     <button type="submit" class="btn btn-dark btn-sm" id="comment-update-btn-${commentId}" onclick="updateComment(${commentId})">수정</button>
                     <button type="submit" class="btn btn-outline-dark btn-sm ms-2" id="comment-delete-btn-${commentId}" onclick="deleteComment(${commentId})">삭제</button>
@@ -286,167 +245,216 @@
               <hr class="border border-1">
             </div>`;
 
-  $('#comment-list').append(temp_html);
-  }
-  })
-  .catch(error => console.error('Error:', error));
-  }
+                      $('#comment-list').append(temp_html);
+                  }
+              })
+              .catch(error => console.error('Error:', error));
+      }
 
-  // 댓글 작성
-  function newComment() {
-    let data = {
-      comment: document.getElementById('input-comment').value
-    };
+      // 댓글 작성
+      function newComment() {
+          let data = {
+              comment: document.getElementById('input-comment').value
+          };
 
-    fetch('/api/post/' + post_id + '/comment', {
-      method: 'POST',
-      headers: {
-        'Content-Type': 'application/json; charset=utf-8'
-      },
-      body: JSON.stringify(data)
-    })
-            .then(response => response.json())
-            .then(res => {
-              console.log(res);
-              console.log(res.status);
-              if (res.status === 201) {
-                alert('댓글 작성이 완료되었습니다.');
-                location.href = '/post/detail/' + post_id;
-              } else if (res.status === 400) {
-                alert('댓글 작성에 실패했습니다.');
-              }
-            })
-            .catch(error => {
-              console.error(error);
-              alert('에러가 발생했습니다.');
-            });
-  }
-
-  // 댓글 수정
-  function updateComment(comment_id) {
-      // 댓글 내용 읽기 모드로 변경
-      $(`#comment-text-${comment_id}`).css("display", "none"); // 변경1: 수정 중에는 텍스트가 보이지 않도록 수정
-      $(`#comment-input-${comment_id}`).css("display", "block");
-
-      // 버튼 상태 변경
-      $(`#comment-update-btn-${comment_id}`).css("display", "none"); // 변경2: 수정 중에는 수정 버튼이 보이지 않도록 수정
-      $(`#comment-delete-btn-${comment_id}`).css("display", "none"); // 변경3: 수정 중에는 삭제 버튼이 보이지 않도록 수정
-      $(`#comment-edit-btn-${comment_id}`).css("display", "block");
-      $(`#comment-edit-cancel-btn-${comment_id}`).css("display", "block");
-  }
-
-  function cancelEditBtn(comment_id) {
-      // 댓글 입력창 보이도록 변경
-      $(`#comment-text-${comment_id}`).css("display", "block"); // 변경4: 수정 취소 시 텍스트가 보이도록 수정
-      $(`#comment-input-${comment_id}`).css("display", "none");
-
-      // 버튼 상태 변경
-      $(`#comment-update-btn-${comment_id}`).css("display", "block"); // 변경5: 수정 취소 시 수정 버튼이 보이도록 수정
-      $(`#comment-delete-btn-${comment_id}`).css("display", "block"); // 변경6: 수정 취소 시 삭제 버튼이 보이도록 수정
-      $(`#comment-edit-btn-${comment_id}`).css("display", "none");
-      $(`#comment-edit-cancel-btn-${comment_id}`).css("display", "none");
-  }
-
-  function editComment(comment_id) {
-      let data = {
-          comment: $(`#comment-input-${comment_id}`).val()
-      };
-
-      $.ajax({
-          type: "PUT",
-          url: '/api/comment/' + comment_id,
-          data: JSON.stringify(data),
-          contentType: "application/json; charset=utf-8",
-          dataType: "json"
-      })
-          .done(function (res) {
-              console.log(res);
-              console.log(res.status);
-              if (res.status === 200) {
-                  alert("성공적으로 댓글을 수정했습니다.");
-                  location.href = '/post/detail/' + post_id;
-              } else if (res.status === 400) {
-                  alert("게시글 수정에 실패했습니다. 본인이 작성한 댓글인지 확인해주세요.");
-              }
+          fetch('/api/post/' + post_id + '/comment', {
+              method: 'POST',
+              headers: {
+                  'Content-Type': 'application/json; charset=utf-8'
+              },
+              body: JSON.stringify(data)
           })
-          .fail(function (request, status, error) {
-              console.log(status);
-              console.log(error);
+              .then(response => response.json())
+              .then(res => {
+                  console.log(res);
+                  console.log(res.status);
+                  if (res.status === 201) {
+                      alert('댓글 작성이 완료되었습니다.');
+                      location.href = '/post/detail/' + post_id;
+                  } else if (res.status === 400) {
+                      alert('댓글 작성에 실패했습니다.');
+                  }
+              })
+              .catch(error => {
+                  console.error(error);
+                  alert('에러가 발생했습니다.');
+              });
+      }
+
+      // 댓글 수정
+      function updateComment(comment_id) {
+          // 댓글 내용 읽기 모드로 변경
+          $(`#comment-text-${comment_id}`).css("display", "none"); // 변경1: 수정 중에는 텍스트가 보이지 않도록 수정
+          $(`#comment-input-${comment_id}`).css("display", "block");
+
+          // 버튼 상태 변경
+          $(`#comment-update-btn-${comment_id}`).css("display", "none"); // 변경2: 수정 중에는 수정 버튼이 보이지 않도록 수정
+          $(`#comment-delete-btn-${comment_id}`).css("display", "none"); // 변경3: 수정 중에는 삭제 버튼이 보이지 않도록 수정
+          $(`#comment-edit-btn-${comment_id}`).css("display", "block");
+          $(`#comment-edit-cancel-btn-${comment_id}`).css("display", "block");
+      }
+
+      function cancelEditBtn(comment_id) {
+          // 댓글 입력창 보이도록 변경
+          $(`#comment-text-${comment_id}`).css("display", "block"); // 변경4: 수정 취소 시 텍스트가 보이도록 수정
+          $(`#comment-input-${comment_id}`).css("display", "none");
+
+          // 버튼 상태 변경
+          $(`#comment-update-btn-${comment_id}`).css("display", "block"); // 변경5: 수정 취소 시 수정 버튼이 보이도록 수정
+          $(`#comment-delete-btn-${comment_id}`).css("display", "block"); // 변경6: 수정 취소 시 삭제 버튼이 보이도록 수정
+          $(`#comment-edit-btn-${comment_id}`).css("display", "none");
+          $(`#comment-edit-cancel-btn-${comment_id}`).css("display", "none");
+      }
+
+      function editComment(comment_id) {
+          let data = {
+              comment: $(`#comment-input-${comment_id}`).val()
+          };
+
+          $.ajax({
+              type: "PUT",
+              url: '/api/comment/' + comment_id,
+              data: JSON.stringify(data),
+              contentType: "application/json; charset=utf-8",
+              dataType: "json"
+          })
+              .done(function (res) {
+                  console.log(res);
+                  console.log(res.status);
+                  if (res.status === 200) {
+                      alert("성공적으로 댓글을 수정했습니다.");
+                      location.href = '/post/detail/' + post_id;
+                  } else if (res.status === 400) {
+                      alert("게시글 수정에 실패했습니다. 본인이 작성한 댓글인지 확인해주세요.");
+                  }
+              })
+              .fail(function (request, status, error) {
+                  console.log(status);
+                  console.log(error);
+                  alert("에러가 발생했습니다.");
+              });
+      }
+
+      // 댓글 삭제
+      function deleteComment(comment_id) {
+          console.log(comment_id)
+          $.ajax({
+              type: "DELETE",
+              url:'/api/comment/'+comment_id,
+              dataType:"json"
+          }).done(function(res){
+              console.log(res)
+              console.log(res.status)
+              if (res.status === 200) {
+                  alert("성공적으로 댓글을 삭제했습니다.")
+                  location.href = '/post/detail/'+post_id
+              } else if (res.status === 400) {
+                  alert("게시글 삭제에 실패했습니다. 본인이 작성한 댓글인지 확인해주세요.")
+              }
+          }).fail(function (request, status, error){
+              console.log(status)
+              console.log(error)
               alert("에러가 발생했습니다.");
           });
-  }
-
-  // 댓글 삭제
-  function deleteComment(comment_id) {
-      console.log(comment_id)
-    $.ajax({
-      type: "DELETE",
-      url:'/api/comment/'+comment_id,
-      dataType:"json"
-    }).done(function(res){
-      console.log(res)
-      console.log(res.status)
-      if (res.status === 200) {
-        alert("성공적으로 댓글을 삭제했습니다.")
-        location.href = '/post/detail/'+post_id
-      } else if (res.status === 400) {
-        alert("게시글 삭제에 실패했습니다. 본인이 작성한 댓글인지 확인해주세요.")
       }
-    }).fail(function (request, status, error){
-      console.log(status)
-      console.log(error)
-      alert("에러가 발생했습니다.");
-    });
-  }
 
-  // 댓글 좋아요
-  // 함수를 두개 만들어서 서로 호출하는 방식
-  function commentLike(comment_id) {
-    $.ajax({
-      type: "POST",
-      url:'/api/post/'+post_id+'/comment/'+comment_id+'/like',
-      contentType:"application/json; charset=urf-8",
-      dataType:"json"
-    }).done(function(res){
-      console.log(res)
-      console.log(res.status)
-      if (res.status === 200) {
-        alert("댓글 좋아요를 눌렀습니다.")
-        location.href = '/post/detail/'+post_id
-      } else if (res.status === 400) {
-        commentUnlike(comment_id)
+      // 댓글 좋아요
+      // 함수를 두개 만들어서 서로 호출하는 방식
+      function commentLike(comment_id) {
+          $.ajax({
+              type: "POST",
+              url:'/api/post/'+post_id+'/comment/'+comment_id+'/like',
+              contentType:"application/json; charset=urf-8",
+              dataType:"json"
+          }).done(function(res){
+              console.log(res)
+              console.log(res.status)
+              if (res.status === 200) {
+                  alert("댓글 좋아요를 눌렀습니다.")
+                  location.href = '/post/detail/'+post_id
+              } else if (res.status === 400) {
+                  commentUnlike(comment_id)
+              }
+          }).fail(function (request, status, error){
+              console.log(status)
+              console.log(error)
+              alert("에러가 발생했습니다.");
+          });
+
       }
-    }).fail(function (request, status, error){
-      console.log(status)
-      console.log(error)
-      alert("에러가 발생했습니다.");
-    });
 
-  }
+      // 댓글 좋아요 취소
+      function commentUnlike(comment_id) {
+          $.ajax({
+              type: "DELETE",
+              url:'/api/post/'+post_id+'/comment/'+comment_id+'/like',
+              contentType:"application/json; charset=urf-8",
+              dataType:"json"
+          }).done(function(res){
+              console.log(res)
+              console.log(res.status)
+              if (res.status === 200) {
+                  alert("댓글 좋아요를 취소했습니다.")
+                  location.href = '/post/detail/'+post_id
+              } else if (res.status === 400) {
+                  commentLike(comment_id)
+              }
+          }).fail(function (request, status, error){
+              console.log(status)
+              console.log(error)
+              alert("에러가 발생했습니다.");
+          });
 
-  // 댓글 좋아요 취소
-  function commentUnlike(comment_id) {
-    $.ajax({
-      type: "DELETE",
-      url:'/api/post/'+post_id+'/comment/'+comment_id+'/like',
-      contentType:"application/json; charset=urf-8",
-      dataType:"json"
-    }).done(function(res){
-      console.log(res)
-      console.log(res.status)
-      if (res.status === 200) {
-        alert("댓글 좋아요를 취소했습니다.")
-        location.href = '/post/detail/'+post_id
-      } else if (res.status === 400) {
-        commentLike(comment_id)
       }
-    }).fail(function (request, status, error){
-      console.log(status)
-      console.log(error)
-      alert("에러가 발생했습니다.");
-    });
-
-  }
-</script>
+  </script>
+</head>
+<body>
+<!-- 네비게이션 바 start -->
+<nav class="bg-transparent navbar navbar-expand-lg" style="border-bottom: solid 1px #d9d9d9; margin-bottom: 100px;" >
+  <div class="container-fluid">
+    <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarTogglerDemo01" aria-controls="navbarTogglerDemo01" aria-expanded="false" aria-label="Toggle navigation">
+      <span class="navbar-toggler-icon"></span>
+    </button>
+    <div class="collapse navbar-collapse" id="navbarTogglerDemo01">
+      <a class="navbar-brand fs-4 fw-bold ms-5" href="/">밖에서 오늘 뭐하지?</a>
+      <div class="none px-5 position-absolute start-40" id="welcome"><span class="fw-bold" id="username" th:text="${username}"></span> 님 접속을 환영합니다.</div>
+      <ul class="navbar-nav me-auto mb-2 mb-lg-0 fw-bold position-absolute start-85">
+        <li class="nav-item"><a class="nav-link active none" href="/post/new-post" id="newpost-btn">글작성</a></li>
+        <li class="nav-item"><a class="nav-link active" onclick="updatePost()" id="update-btn" >수정</a></li>
+        <li class="nav-item"><a class="nav-link active" onclick="deletePost()" id="delete-btn" >삭제</a></li>
+        <li class="nav-item"><a class="nav-link active" href="/api/mypage" id="myPage-btn">My page</a></li>
+        <li class="nav-item"><a class="nav-link active none" href="/api/user/login" id="login-btn">Login</a></li>
+        <li class="nav-item"><a class="nav-link active" href="/" id="logout-btn">Logout</a></li>
+        <li class="nav-item"><a class="nav-link active none" href="/api/user/signup" id="signup-btn">Signup</a></li>
+        <li class="nav-item"><a class="nav-link active text-warning" href="/admin" id="admin-btn">Admin</a></li>
+      </ul>
+    </div>
+  </div>
+</nav>
+<div class="container" id="post-detail">
+  <!-- post 동적 데이터 삽입 -->
+</div>
+<!-- 댓글 머리글 start -->
+<div class="container my-3" id="comment-count">
+  <button type="button" class="btn bg-transparent position-relative fs-4 fw-bold">
+    댓글
+<!--    <span class="position-absolute top-0 start-100 translate-middle badge rounded-pill bg-danger">-->
+<!--      99+-->
+<!--      <span class="visually-hidden">댓글 수</span>-->
+<!--    </span>-->
+  </button>
+  <hr class="border border-3">
+</div>
+<!-- 댓글 목록 start -->
+<div class="container" id="comment-list">
+<!-- comment 동적 데이터 삽입 -->
+</div>
+<!-- 댓글 작성 start -->
+<div class="container my-5">
+  <textarea class="container rounded p-2 border border-0 shadow" rows="3" id="input-comment"></textarea>
+  <button type="button" class="float-end btn btn-dark mt-2 mb-5" onclick="newComment()">Submit</button>
+</div>
+<!-- footer -->
+<footer style="height: 200px; border-top: solid 1px #d9d9d9;" class="container-fluid footer fw-bold fs-3 justify-content-center d-flex p-5">동행조 화이팅!</footer>
 </body>
 </html>

@@ -9,11 +9,13 @@ import java.time.LocalDateTime;
 public class ProfilePostListResponseDto {
     private String username;
     private String title;
+    private String image;
     private LocalDateTime createdAt;
 
     public ProfilePostListResponseDto(Post post) {
-        this.title = post.getTitle();
         this.username = post.getUser().getUsername();
+        this.title = post.getTitle();
+        this.image = post.getUser().getImage();
         this.createdAt = post.getCreatedAt();
     }
 }

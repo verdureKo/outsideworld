@@ -1,14 +1,28 @@
-/* common css */
+/* common css 배경화면
+body {background-image: url("https://images.unsplash.com/photo-1533113354171-490d836238e3?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxzZWFyY2h8MTh8fHVuaXZlcnNlfGVufDB8fDB8fHww&auto=format&fit=crop&w=600&q=60")} */
+/* 전체 폰트 통일 */
 @import url('https://fonts.googleapis.com/css2?family=Noto+Sans+KR:wght@400;700&display=swap');
 *{font-family: 'Noto Sans KR', sans-serif;}
-/* 로고 호버 */
-a {text-decoration: none; color: black;}
-a:hover {color: #d9d9d9!important; transition: 0.2s !important;}
+/* 반응형 */
+@media (min-width: 992px) {.container {width: 940px; top: 300px;}}
+.container {width: 100%; padding: 25px; margin-top: 150px}
+/* 마우스 오버시 호버 */
+a {text-decoration: none; color: black; cursor: pointer}
+a:hover {color: #d9d9d9 !important; transition: 0.2s!important;}
+/* 네비게이션 요소 여백 값 지정 (다 쓰는건 아님) */
+.start-40 {left: 40%!important;}
+.start-45 {left: 45%!important;}
+.start-85 {left: 85%!important;}
+.start-90 {left: 90%!important;}
 .none {display: none;}
+/* 폼 그룹 지정공간 over시 말줄임 */
 textarea {width: -webkit-fill-available; height: fit-content; overflow-wrap: anywhere;}
-.btn-group, .btn-group-vertical {position: relative; display: inline-flex; vertical-align: middle; flex-direction: row; flex-wrap: nowrap; height: fit-content;}
 .text-wrap { overflow-wrap: anywhere;}
-.footer {margin-top: 150px}
-/* index.html */
+/* 버튼 그룹 움직임 */
+.btn-group, .btn-group-vertical {position: relative; display: inline-flex; vertical-align: middle; flex-direction: row; flex-wrap: nowrap; height: fit-content;}
+/* footer 윗여백 */
+.footer {margin-top: 150px;}
+/* index.html 카드 그림자 */
 .feed {-webkit-box-shadow: 1px 1px 15px 1px rgba(0,0,0,0.17); box-shadow: 1px 1px 15px 1px rgba(0,0,0,0.17);}
 .feed:hover {transition : 0.5s; -webkit-box-shadow: 5px 5px 20px 5px rgba(0,0,0,0.25); box-shadow: 5px 5px 20px 5px rgba(0,0,0,0.25);}
+

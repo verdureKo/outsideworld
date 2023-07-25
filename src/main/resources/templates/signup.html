@@ -1,9 +1,10 @@
 <!DOCTYPE html>
 <html lang="en">
-
 <head>
   <meta charset="UTF-8">
-  <link rel="icon" href="data:,">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>밖에서 오늘 뭐하지?</title>
   <script src="https://code.jquery.com/jquery-3.7.0.min.js"
           integrity="sha256-2Pmvv0kuTBOenSvLm6bvfBSSHrUJ+3A7x6P5Ebd07/g=" crossorigin="anonymous"></script>
   <script src="https://cdn.jsdelivr.net/npm/js-cookie@3.0.5/dist/js.cookie.min.js"></script>
@@ -12,179 +13,108 @@
         integrity="sha384-9ndCyUaIbzAi2FUVXJi0CjmCapSmO7SnpJef0486qhLnuZ2cdeRhO02iuK6FUUVM" crossorigin="anonymous">
   <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"
           integrity="sha384-geWF76RCwLtnZ8qwWowPQNguL3RmwHVBC9FhGdlKrxdiJJigb/j/68SIy3Te4Bkz"
-          crossorigin="anonymous">
-  </script>
-  <title>밖에서 오늘 뭐하지?</title>
-  <link href="/css/style.css" rel="stylesheet">
-  <style>
-    #btn-save {
-      width: 360px;
-      margin-top: 10px;
-      margin-bottom: 10px;
-      height: 50px;
-    }
-
-    #inputPassword,
-    #inputUsername,
-    #inputEmail,
-    #inputIntroduction,
-    #inputAdminToken,
-    #profile-image {
-      height: 50px;
-      margin-bottom: 15px;
-    }
-
-    #profile-image {
-      margin-top: 100px;
-    }
-
-    #login-btn {
-      margin-left: 10px;
-    }
-
-    #button {
-      margin-top: 10px;
-      padding-right: 70px;
-      display: flex;
-      align-items: center;
-      justify-content: center;
-    }
-  </style>
-  <script>
-    function onclickAdmin() {
-      // Get the checkbox
-      var checkBox = document.getElementById("admin-check");
-      // Get the output text
-      var box = document.getElementById("inputAdminToken");
-
-      // If the checkbox is checked, display the output text
-      if (checkBox.checked === true) {
-        box.style.display = "block";
-      } else {
-        box.style.display = "none";
-      }
-    }
-  </script>
+          crossorigin="anonymous"></script>
+  <link href="/css/style.css" rel="stylesheet"></style>
 </head>
 <body>
 <!-- 네비게이션 바 start -->
-<nav class="navbar bg-light mb-5">
-  <div class="container-fluid d-flex mx-3">
-    <a class="navbar-brand" href="/">
-      <div class="fs-4 fw-bold">밖에서 오늘 뭐하지?</div>
-    </a>
-    <div class="d-flex justify-content-end">
-      <a href="/"><button type="submit" class="btn btn-dark ms-2" id="home-btn">Home</button></a>
-      <a href="/api/user/login"><button type="submit" class="btn btn-dark ms-2 none" id="login-btn">Login</button></a>
-      <a href="/api/user/signup"><button type="submit" class="btn btn-dark ms-2 none" id="signup-btn">SignUp</button></a>
+<nav class="bg-transparent navbar navbar-expand-lg" style="border-bottom: solid 1px #d9d9d9; margin-bottom: 100px;" >
+  <div class="container-fluid">
+    <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarTogglerDemo01" aria-controls="navbarTogglerDemo01" aria-expanded="false" aria-label="Toggle navigation">
+      <span class="navbar-toggler-icon"></span>
+    </button>
+    <div class="collapse navbar-collapse" id="navbarTogglerDemo01">
+      <a class="navbar-brand fs-4 fw-bold ms-5" href="/">밖에서 오늘 뭐하지?</a>
+      <div class="none px-5 position-absolute start-40" id="welcome"><span class="fw-bold" id="username" th:text="${username}"></span> 님 접속을 환영합니다.</div>
+      <ul class="navbar-nav me-auto mb-2 mb-lg-0 fw-bold position-absolute start-90">
+        <li class="nav-item"><a class="nav-link active none" href="/post/new-post" id="newpost-btn">글작성</a></li>
+        <li class="nav-item"><a class="nav-link active none" onclick="updatePost()" id="update-btn" >수정</a></li>
+        <li class="nav-item"><a class="nav-link active none" onclick="deletePost()" id="delete-btn" >삭제</a></li>
+        <li class="nav-item"><a class="nav-link active none" href="/api/mypage" id="myPage-btn">My page</a></li>
+        <li class="nav-item"><a class="nav-link active" href="/api/user/login" id="login-btn">Login</a></li>
+        <li class="nav-item"><a class="nav-link active none" href="/" id="logout-btn">Logout</a></li>
+        <li class="nav-item"><a class="nav-link active none" href="/api/user/signup" id="signup-btn">Signup</a></li>
+        <li class="nav-item"><a class="nav-link active none" href="/admin" id="admin-btn">Admin</a></li>
+      </ul>
     </div>
   </div>
 </nav>
-<form class="container justify-content-end" style="width: 450px;">
-  <div class="form-group" id="profile-image">
-    <label for="inputUsername" class="col-sm-2 control-label">ProfileImageURL</label>
-    <div class="col-sm-10">
-      <input type="text" class="form-control" id="inputProfileImage" placeholder="Image URL" name = "image" value="/images/img_2.png" required/>
-    </div>
-  </div>
+<div class="container">
+  <label for="profile-image" class="control-label none">ProfileImageURL</label>
+  <input type="text" class="form-control shadow border-0 p-3 mb-2" id="profile-image" placeholder="Image URL" name = "image" value="/images/img_2.png" required/>
 
-  <div class="form-group" id="username">
-    <label for="inputUsername" class="col-sm-2 control-label">Username</label>
-    <div class="col-sm-10">
-      <input type="text" class="form-control" id="inputUsername" placeholder="Username" name = "username" required/>
-    </div>
-  </div>
+  <label for="inputUsername" class="control-label none">Username</label>
+  <input type="text" class="form-control shadow border-0 p-3 mb-2" id="inputUsername" placeholder="Username" name = "username" required/>
 
-  <div class="form-group">
-    <label for="inputPassword" class="col-sm-2 control-label">Password</label>
-    <div class="col-sm-10">
-      <input type="password" class="form-control" id="inputPassword" placeholder="Password" name = "password" required/>
-    </div>
-  </div>
+  <label for="inputPassword" class="control-label none">Password</label>
+  <input type="password" class="form-control shadow border-0 p-3 mb-2" id="inputPassword" placeholder="Password" name = "password" required/>
 
-  <div class="form-group">
-    <label for="inputEmail" class="col-sm-2 control-label">Email</label>
-    <div class="col-sm-10">
-      <input type="email" class="form-control" id="inputEmail" placeholder="Email" name = email required/>
-    </div>
-  </div>
+  <label for="inputEmail" class="control-label none">Email</label>
+  <input type="email" class="form-control shadow border-0 p-3 mb-2" id="inputEmail" placeholder="Email" name=email required/>
 
-  <div class="form-group">
-    <label for="inputIntroduction" class="col-sm-2 control-label">Introduction</label>
-    <div class="col-sm-10">
-      <input type="text" class="form-control" id="inputIntroduction" placeholder="Introduction" name = introduction required/>
-    </div>
-  </div>
+  <label for="inputIntroduction" class="control-label none">Introduction</label>
+  <input type="text" class="form-control shadow border-0 p-3 mb-2" id="inputIntroduction" placeholder="Introduction" name = introduction required/>
 
-  <div class="form-group">
-    <label for="admin-check"></label>
-    <input id="admin-check" type="checkbox" name="admin" onclick="onclickAdmin()" style="margin-top: 40px;">
-    Admin 계정
-    <div class="col-sm-10">
-      <input id="inputAdminToken" type="password" name="adminToken" placeholder="AdminToken"
-             class="form-control" style="display:none">
-    </div>
-  </div>
+  <label for="inputAdminToken">Admin 계정</label>
+  <input id="admin-check" type="checkbox" name="admin" onclick="onclickAdmin()" class="mb-2">
+  <input id="inputAdminToken" type="password" name="adminToken" placeholder="AdminToken" class="form-control shadow border-0 p-3 none mb-2">
 
-</form>
-<div id = "button"  class="mb-5">
-  <button class="btn btn-dark" id="btn-save"><strong>Submit</strong></button>
+  <button class="btn btn-dark p-3 w-100 mb-2" id="btn-save"><strong>Submit</strong></button>
 </div>
 <footer style="height: 200px; border-top: solid 1px #d9d9d9;" class="container-fluid footer fw-bold fs-3 justify-content-center d-flex p-5">동행조 화이팅!</footer>
 <script>
-  let index = {
-    init: function (){
-      $("#btn-save").on("click", () => {
-        this.save();
-      });
-    },
+    let index = {
+        init: function (){
+            $("#btn-save").on("click", () => {
+                this.save();
+            });
+        },
 
-    save: function () {
-      // alert("user의 save함수 호출됨");
-      let data = {
-        username : $('#inputUsername').val(),
-        password : $('#inputPassword').val(),
-        email : $('#inputEmail').val(),
-        introduction :$('#inputIntroduction').val(),
-        adminToken : $('#inputAdminToken').val(),
-        image : $('#inputProfileImage').val()
+        save: function () {
+            // alert("user의 save함수 호출됨");
+            let data = {
+                username : $('#inputUsername').val(),
+                password : $('#inputPassword').val(),
+                email : $('#inputEmail').val(),
+                introduction :$('#inputIntroduction').val(),
+                adminToken : $('#inputAdminToken').val(),
+                image : $('#inputProfileImage').val()
 
-      };
-      // console.log(data);
+            };
+            // console.log(data);
 
-      /**
-       * 회원가입시 Ajax를 사용하는 2가지 이유
-       * 1. 요청에 대한 응답을 HTML이 아닌 Data(Json)을 받기 위해! (웹, 앱 서비스 통일할 수 있음)
-       * 2. 비동기(순서에 상관없이) 통신을 하기 위해!
-       * ajax호출 시 default가 비동기 호출
-       */
+            /**
+             * 회원가입시 Ajax를 사용하는 2가지 이유
+             * 1. 요청에 대한 응답을 HTML이 아닌 Data(Json)을 받기 위해! (웹, 앱 서비스 통일할 수 있음)
+             * 2. 비동기(순서에 상관없이) 통신을 하기 위해!
+             * ajax호출 시 default가 비동기 호출
+             */
 
-      $.ajax({
-        // 회원가입 수행 요청
-        type: "POST",
-        url:"/api/user/signup",
-        data: JSON.stringify(data), // http body data
-        contentType:"application/json; charset=urf-8",
-        dataType:"json"
-      }).done(function(res){
-        console.log(res)
-        console.log(res.status)
-        if (res.status === 201) {
-          alert("회원가입이 완료되었습니다.")
-          location.href = "/api/user/login"
-        } else if (res.status === 400) {
-          alert("회원가입에 실패했습니다.")
+            $.ajax({
+                // 회원가입 수행 요청
+                type: "POST",
+                url:"/api/user/signup",
+                data: JSON.stringify(data), // http body data
+                contentType:"application/json; charset=urf-8",
+                dataType:"json"
+            }).done(function(res){
+                console.log(res)
+                console.log(res.status)
+                if (res.status === 201) {
+                    alert("회원가입이 완료되었습니다.")
+                    location.href = "/api/user/login"
+                } else if (res.status === 400) {
+                    alert("회원가입에 실패했습니다.")
+                }
+            }).fail(function (request, status, error){
+                console.log(status)
+                console.log(error)
+                alert("회원가입에 실패했습니다.");
+            }); //ajax 통신을 이용해서 파라미터를 json으로 변경하여 insert 요청
         }
-      }).fail(function (request, status, error){
-        console.log(status)
-        console.log(error)
-        alert("회원가입에 실패했습니다.");
-      }); //ajax 통신을 이용해서 파라미터를 json으로 변경하여 insert 요청
     }
-  }
 
-  index.init();
+    index.init();
 </script>
 </body>
-
 </html>
