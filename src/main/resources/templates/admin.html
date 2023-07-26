@@ -25,8 +25,8 @@
         </button>
         <div class="collapse navbar-collapse" id="navbarTogglerDemo01">
             <a class="navbar-brand fs-4 fw-bold me-auto" href="/">밖에서 오늘 뭐하지?</a>
-            <div class="d-none d-lg-block d-xl-block d-xxl-block px-5 position-absolute start-40" id="welcome"><span class="fw-bold" id="username" th:text="${username}"></span> 님 접속을 환영합니다.</div>
-            <ul class="navbar-nav me-auto mb-2 mb-lg-0 fw-bold position-absolute start-85">
+<!--            <div class="d-none d-lg-block d-xl-block d-xxl-block px-5 position-absolute start-40" id="welcome"><span class="fw-bold" id="username" th:text="${username}"></span> 님 접속을 환영합니다.</div>-->
+            <ul class="navbar-nav me-auto mb-2 mb-lg-0 fw-bold position-absolute start-75">
                 <li class="nav-item"><a class="nav-link active" href="/post/new-post" id="newpost-btn">글작성</a></li>
                 <li class="nav-item"><a class="nav-link active none" onclick="updatePost()" id="update-btn" >수정</a></li>
                 <li class="nav-item"><a class="nav-link active none" onclick="deletePost()" id="delete-btn" >삭제</a></li>
@@ -34,95 +34,24 @@
                 <li class="nav-item"><a class="nav-link active none" href="/api/user/login" id="login-btn">Login</a></li>
                 <li class="nav-item"><a class="nav-link active" href="/" id="logout-btn">Logout</a></li>
                 <li class="nav-item"><a class="nav-link active none" href="/api/user/signup" id="signup-btn">Signup</a></li>
-                <li class="nav-item"><a class="nav-link active text-warning" href="/admin" id="admin-btn">Admin</a></li>
+                <li class="nav-item"><a class="nav-link active text-warning none" href="/admin" id="admin-btn">Admin</a></li>
                 <li class="nav-item"><a class="nav-link active text-warning" id="userInfo-btn" onclick="userInfo()">전체 유저 조회</a></li>
                 <li class="nav-item"><a class="nav-link active text-warning" id="all-post-btn" onclick="postInfo()">전체 게시글 조회</a></li>
             </ul>
         </div>
     </div>
 </nav>
-<div class = "row">
-    <div class="col-1"></div>
-    <div class="col-10 none" id="user-box">
-        <div>
-            <div class="row">
-                <div class="col-2" style="border-bottom: solid gray 1px">
-                    <img src="../static/images/img.png" style="width: 100%; height: 100%">
-                </div>
-                <div class="col-8" style="border-bottom: solid gray 1px">
-                    <ol style="font-size: 20px">user-role : ${userRole}</ol>
-                    <ol style="font-size: 20px">username : ${username}</ol>
-                    <ol style="font-size: 20px">email : ${email}</ol>
-                    <ol style="font-size: 20px">introduction : ${introduction}</ol>
-                </div>
-                <div class="col-2">
-                    <button type="submit" class="btn btn-dark" id="user-edit-btn" onclick="openEditBox()">유저 프로필 수정</button>
-                    <button type="submit" class="btn btn-dark m-0" id="user-delete-btn">유저 삭제</button>
-                </div>
-            </div>
-            <div id = "edit-box" style="margin-top: 10px; display: none">
-                <div>
-                    <input type="email" class="form-control" id="edit-email" placeholder="수정할 Email을 입력해주세요." name = email required/>
-                </div>
-                <div style="margin-top: 10px">
-                    <input type="text" class="form-control" id="edit-introduction" placeholder="수정할 Introduction을 입력해주세요." name = introduction required/>
-                </div>
-                <div style="float: right; margin-top: 5px">
-                    <button type="submit" class="btn btn-dark" id="edit-user-role-admin-btn">ADMIN으로 바꾸기</button>
-                    <button type="submit" class="btn btn-dark" id="edit-user-role-user-btn">USER로 바꾸기</button>
-                    <button type="submit" class="btn btn-dark" id="edit-submit-btn">Submit</button>
-                </div>
-            </div>
-        </div>
-    </div>
-
-    <div class="col-10" id="post-box" style="border: solid gray 1px; margin-top: 30px; border-radius: 10px; padding: 0px 30px 30px 30px; display: none">
-        <div>
-            <div class="row">
-                <div class="col-2" style="border-bottom: solid gray 1px">
-                    <img src="../static/images/img.png" style="width: 100%; height: 100%">
-                </div>
-                <div class="col-8" style="border-bottom: solid gray 1px">
-                    <ol style="font-size: 20px">username : ${username}</ol>
-                    <ol style="font-size: 20px">title : ${title}</ol>
-                    <ol style="font-size: 20px">content : ${content}</ol>
-                </div>
-                <div class="d-grid gap-2 d-md-block">
-                    <p><button type="submit" class="btn btn-dark" id="post-edit-btn">게시글 수정</button></p>
-                    <p><button type="submit" class="btn btn-dark" id="post-delete-btn">게시글 삭제</button></p>
-                </div>
-            </div>
-            <div id = "comment-box" style="margin-top: 10px;">
-                <div class="" id = "comment-list">
-                    <div class="row comment-base-box" id="comment-base-box-${postId}">
-                        <div class="col-7" style="border-bottom: solid gray 1px">댓글 내용</div>
-                        <div class="col-1" style="border-bottom: solid gray 1px; text-align: right">댓글 작성자</div>
-                        <div class="col-2" style="border-bottom: solid gray 1px;">
-                               좋아요 개수 : ${likeCount}
-                        </div>
-                        <div class="d-grid gap-2 d-md-block">
-                            <button type="submit" class="btn btn-dark" id="comment-update-btn" onclick="" style="width: 55px; font-size: 12px">수 정</button>
-                            <button type="submit" class="btn btn-dark" id="comment-delete-btn" onclick="deleteComment()" style="width: 55px; font-size: 12px">삭 제</button>
-                        </div>
-                    </div>
-                    <div class="col-md-12 " id="comment-edit-box" style="">
-                        <div class="comment-board mt-2" style="width: 80%; float: left">
-                            <input class="content form-control col-sm-5" id="input-edit-comment">
-                        </div>
-                        <div class="d-grid gap-2 d-md-block">
-                            <button type="submit" class="btn btn-dark" id="comment-edit-btn" onclick="" style="width: 55px; font-size: 12px;">확 인</button>
-                            <button type="submit" class="btn btn-dark" id="comment-edit-cancel-btn" onclick="" style="width: 55px; font-size: 12px;">취 소</button>
-                        </div>
-                    </div>
-                </div>
-            </div>
-        </div>
-    </div>
-
-
-    <div class="col-1"></div>
+<div class = "container">
+  <div class="border border-bottom border-2 rounded p-3 none mb-2" id="user-box">
+  <!-- user-box 동적 데이터 삽입 구간 -->
+  </div>
+  <div class="border border-bottom border-2 rounded p-3 none mb-2" id="post-box">
+  <!-- post-box 동적 데이터 삽입 구간 -->
+  </div>
+  <div class="border border-bottom border-2 rounded p-3 none mb-2" id="comment-box">
+  <!-- comment-box 동적 데이터 삽입 구간 -->
+  </div>
 </div>
-
 <script>
     function userInfo() {
         if( document.getElementById('user-box').style.display === 'block'){
@@ -179,34 +108,37 @@
                     }
                     console.log(image)
 
-                    let temp_html = `<div class="row" style="margin-top: 50px">
-                                            <div class="col-2" style="border-bottom: solid gray 1px">
-                                                <img src="${image}" style="width: 100%; height: 100%">
-                                            </div>
-                                            <div class="col-8" style="border-bottom: solid gray 1px">
-                                                <ol style="font-size: 20px">user-role : ${userRole}</ol>
-                                                <ol style="font-size: 20px">username : ${username}</ol>
-                                                <ol style="font-size: 20px">email : ${email}</ol>
-                                                <ol style="font-size: 20px">introduction : ${introduction}</ol>
-                                            </div>
-                                            <div class="col-2" style="border-bottom: solid gray 1px; padding-top: 5%" >
-                                                <button type="submit" class="btn btn-dark" id="user-edit-btn" onclick="openEditBox(${userId})">유저 프로필 수정</button>
-                                                <button type="submit" class="btn btn-dark" id="user-delete-btn" onclick="deleteUser(${userId})">유저 삭제</button>
-                                            </div>
+                    let temp_html = `<div class="row">
+                                        <div class="col-sm-4 col-md-2">
+                                            <img src="${image}" class="img-fluid">
                                         </div>
-                                        <div id = "edit-box-${userId}" style="margin-top: 10px; display: none">
-                                            <div>
-                                                <input type="email" class="form-control" id="edit-email-${userId}" placeholder="수정할 Email을 입력해주세요." name = email required/>
-                                            </div>
-                                            <div style="margin-top: 10px">
-                                                <input type="text" class="form-control" id="edit-introduction-${userId}" placeholder="수정할 Introduction을 입력해주세요." name = introduction required/>
-                                            </div>
-                                            <div style="float: right; margin-top: 5px">
-                                                <button type="submit" class="btn btn-dark" id="edit-user-role-admin-btn" onclick="userRoleCheckUSER('${userRole}', ${userId})">ADMIN으로 바꾸기</button>
-                                                <button type="submit" class="btn btn-dark" id="edit-user-role-user-btn" onclick="userRoleCheckADMIN('${userRole}', ${userId})">USER로 바꾸기</button>
-                                                <button type="submit" class="btn btn-dark" id="edit-submit-btn" onclick="editUserInfo(${userId})">Submit</button>
-                                            </div>
-                                        </div>`
+                                        <div class="col-sm-6 col-md-7" class="none mb-2">
+                                          <ul class="fs-5">
+                                            <ol>user-role : <span class="fw-bold">${userRole}</span></ol>
+                                            <ol>username : <span class="fw-bold">${username}</span></ol>
+                                            <ol>email : <span class="fw-bold">${email}</span></ol>
+                                            <ol>introduction : <span class="fw-bold">${introduction}</span></ol>
+                                          </ul>
+                                        </div>
+                                        <div class="col-sm-4 col-md-3 d-flex align-items-center justify-content-center">
+                                            <button type="submit" class="btn btn-dark ms-1" id="user-edit-btn" onclick="openEditBox(${userId})">유저 프로필 수정</button>
+                                            <button type="submit" class="btn btn-dark ms-1" id="user-delete-btn" onclick="deleteUser(${userId})">유저 삭제</button>
+                                        </div>
+                                      </div>
+                                      <hr class="border border-1">
+                                      <div id="edit-box-${userId}" class="none mb-2">
+                                          <div class="mb-2">
+                                              <input type="email" class="form-control" id="edit-email-${userId}" placeholder="수정할 Email을 입력해주세요." name=email required/>
+                                          </div>
+                                          <div class="mb-2">
+                                              <input type="text" class="form-control" id="edit-introduction-${userId}" placeholder="수정할 Introduction을 입력해주세요." name=introduction required/>
+                                          </div>
+                                          <div class="d-flex justify-content-end me-auto">
+                                              <button type="submit" class="btn btn-dark ms-1" id="edit-user-role-admin-btn" onclick="userRoleCheckUSER('${userRole}', ${userId})">ADMIN으로 바꾸기</button>
+                                              <button type="submit" class="btn btn-dark ms-1" id="edit-user-role-user-btn" onclick="userRoleCheckADMIN('${userRole}', ${userId})">USER로 바꾸기</button>
+                                              <button type="submit" class="btn btn-dark ms-1" id="edit-submit-btn" onclick="editUserInfo(${userId})">Submit</button>
+                                          </div>
+                                      </div>`
                     $('#user-box').append(temp_html)
                 }
             })
@@ -366,22 +298,24 @@
 
 
 
-                    let temp_html = `<div style="margin-top: 50px">
-                                        <div class="row">
-                                            <div class="col-2" style="border-bottom: solid gray 1px">
-                                                <img src="${image}" style="width: 100%; height: 100%">
-                                            </div>
-                                            <div class="col-8" style="border-bottom: solid gray 1px">
-                                                <ol style="font-size: 20px">작성자     : ${username}</ol>
-                                                <ol style="font-size: 20px">게시글 제목 : ${title}</ol>
-                                                <ol style="font-size: 20px">내용       : ${contents}</ol>
-                                                <ol style="font-size: 20px">좋아요 개수 : ${likeCount}</ol>
-                                            </div>
-                                            <div class="col-2" style="border-bottom: solid gray 1px; padding-top: 5%">
-                                                <p><button type="submit" class="btn btn-dark" id="post-edit-btn" onclick="toEditPost(${postId})">게시글 수정</button></p>
-                                                <p><button type="submit" class="btn btn-dark" id="post-delete-btn" onclick="postDelete(${postId})">게시글 삭제</button></p>
-                                            </div>
-                                        </div>`
+                    let temp_html = `<div class="row">
+                                        <div class="col-2 mb-2">
+                                            <img src="${image}" class="img-fluid">
+                                        </div>
+                                        <div class="col-7 mb-2">
+                                          <ul class="fs-5">
+                                            <ol>작성자     : <span class="fw-bold">${username}</span></ol>
+                                            <ol>게시글 제목 : <span class="fw-bold">${title}</span></ol>
+                                            <ol>내용       : <span class="fw-bold">${contents}</span></ol>
+                                            <ol>좋아요 개수 : <span class="fw-bold">${likeCount}</span></ol>
+                                          </ul>
+                                        </div>
+                                        <div class="col-3 d-flex align-items-center justify-content-center">
+                                            <p><button type="submit" class="btn btn-dark ms-1" id="post-edit-btn" onclick="toEditPost(${postId})">게시글 수정</button></p>
+                                            <p><button type="submit" class="btn btn-dark ms-1" id="post-delete-btn" onclick="postDelete(${postId})">게시글 삭제</button></p>
+                                        </div>
+                                        <hr class="border border-1">
+                                    </div>`
 
                     $('#post-box').append(temp_html)
 
@@ -393,27 +327,28 @@
                         let commentLikeCount = commentList[j].likeCount;
                         let commentId = commentList[j].id;
 
-                        let temp_html2 = `<div class="comment-base-box" id="comment-base-box-${commentId}" style="margin-top: 10px">
-                                            <div class="row">
-                                              <div class="col-7" style="border-bottom: solid gray 1px">${comment}</div>
-                                              <div class="col-1" style="border-bottom: solid gray 1px; text-align: right">${userName}</div>
-                                              <div class="col-2" style="border-bottom: solid gray 1px;">
+                        let temp_html2 = `<div class="mb-2" id="comment-base-box-${commentId}">
+                                            <div class="row mx-3">
+                                              <div class="col-7">${comment}</div>
+                                              <div class="col-1">${userName}</div>
+                                              <div class="col-2">
                                                 좋아요 개수: ${commentLikeCount}
                                               </div>
-                                              <div class="col-2" style="border-bottom: solid gray 1px; padding-bottom: 5px">
-                                                <button type="button" class="btn btn-dark" onclick="updateComment(${commentId})" style="width: 55px; font-size: 12px">수정</button>
-                                                <button type="button" class="btn btn-dark" onclick="deleteComment(${commentId})" style="width: 55px; font-size: 12px">삭제</button>
+                                              <div class="col-md-2 d-flex align-items-center justify-content-end">
+                                                <button type="button" class="btn btn-dark btn-sm ms-1" onclick="updateComment(${commentId})">수정</button>
+                                                <button type="button" class="btn btn-dark btn-sm ms-1" onclick="deleteComment(${commentId})">삭제</button>
                                               </div>
                                             </div>
-                                            <div class="col-md-12 comment-edit-box" id="comment-edit-box-${commentId}" style="display: none;">
-                                              <div class="comment-board mt-2" style="width: 80%; float: left">
-                                                <input class="content form-control col-sm-5" id="input-edit-comment-${commentId}">
+                                            <div class="col-md-12 comment-edit-box none px-4" id="comment-edit-box-${commentId}">
+                                              <div class="comment-board mt-2">
+                                                <input class="content form-control col-sm-5 mb-2" id="input-edit-comment-${commentId}">
                                               </div>
-                                              <div style="float: right; margin-top: 5px; padding-right: 100px">
-                                                <button type="button" class="btn btn-dark" onclick="editComment(${commentId})" style="width: 55px; font-size: 12px;">확인</button>
-                                                <button type="button" class="btn btn-dark" onclick="cancelEditBtn(${commentId})" style="width: 55px; font-size: 12px;">취소</button>
+                                              <div class="col-md-12 d-flex align-items-center justify-content-end">
+                                                <button type="button" class="btn btn-dark btn-sm ms-1" onclick="editComment(${commentId})">확인</button>
+                                                <button type="button" class="btn btn-dark btn-sm ms-1" onclick="cancelEditBtn(${commentId})">취소</button>
                                               </div>
                                             </div>
+                                            <hr class="border border-1">
                                           </div>`
 
                         $('#post-box').append(temp_html2);

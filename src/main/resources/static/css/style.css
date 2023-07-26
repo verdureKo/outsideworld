@@ -12,6 +12,7 @@ a:hover {color: #d9d9d9 !important; transition: 0.2s!important;}
 /* 네비게이션 요소 여백 값 지정 (다 쓰는건 아님) */
 .start-40 {left: 40%!important;}
 .start-45 {left: 45%!important;}
+.start-75 {left: 75%!important;}
 .start-85 {left: 85%!important;}
 .start-90 {left: 90%!important;}
 .none {display: none;}
