@@ -140,14 +140,14 @@
     </button>
     <div class="collapse navbar-collapse" id="navbarTogglerDemo01">
       <a class="navbar-brand fs-4 fw-bold me-auto" href="/">밖에서 오늘 뭐하지?</a>
-      <div class="d-none d-lg-block d-xl-block d-xxl-block px-5 position-absolute start-40" id="welcome"><span class="fw-bold" id="username" th:text="${username}"></span> 님 접속을 환영합니다.</div>
+      <div class="none px-5 position-absolute start-40" id="welcome"><span class="fw-bold" id="username" th:text="${username}"></span> 님 접속을 환영합니다.</div>
       <ul class="navbar-nav me-auto mb-2 mb-lg-0 fw-bold position-absolute start-85">
         <li class="nav-item"><a class="nav-link active" href="/post/new-post" id="newpost-btn">글작성</a></li>
         <li class="nav-item"><a class="nav-link active none" onclick="updatePost()" id="update-btn" >수정</a></li>
         <li class="nav-item"><a class="nav-link active none" onclick="deletePost()" id="delete-btn" >삭제</a></li>
         <li class="nav-item"><a class="nav-link active" href="/api/mypage" id="myPage-btn">My page</a></li>
         <li class="nav-item"><a class="nav-link active" href="/api/user/login" id="login-btn">Login</a></li>
-        <li class="nav-item"><a class="nav-link active none" href="/" id="logout-btn">Logout</a></li>
+        <li class="nav-item"><a class="nav-link active none" href="/api/user/logout" id="logout-btn">Logout</a></li>
         <li class="nav-item"><a class="nav-link active" href="/api/user/signup" id="signup-btn">Signup</a></li>
         <li class="nav-item"><a class="nav-link active text-warning" href="/admin" id="admin-btn">Admin</a></li>
       </ul>
