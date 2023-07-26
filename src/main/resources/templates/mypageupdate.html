@@ -57,13 +57,14 @@
     function onUpdating() {
         let email = $('#email').val();
         let introduction = $('#introduction').val();
-        console.log(email, introduction);
+        let image = $('#image').val();
+        console.log(email, introduction, image);
 
         $.ajax({
             type: "PUT",
             url: `/api/profile`,
             contentType: "application/json",
-            data: JSON.stringify({ email: email, introduction: introduction }),
+            data: JSON.stringify({ email: email, introduction: introduction, image: image }),
             success: function(response) {
                 Swal.fire({
                     icon: 'success',                         // Alert 타입
